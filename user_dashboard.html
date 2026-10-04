@@ -15,37 +15,37 @@
     .brand-font { font-family: 'Montserrat', sans-serif; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
 
-  <!-- TOPBAR HEADER -->
+  <!-- TOPBAR HEADER CLIENT -->
   <header class="bg-blue-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16 items-center">
         
-        <!-- Logo & Portal Info -->
+        <!-- Logo & Brand -->
         <div class="flex items-center space-x-3">
           <div class="w-9 h-9 rounded-lg bg-amber-500 text-blue-950 font-black text-base flex items-center justify-center brand-font shadow">
             UB
           </div>
           <div>
-            <h1 class="text-base font-bold tracking-wide brand-font leading-tight">PORTAL SISFO UNISBA</h1>
-            <p class="text-[10px] text-blue-200">Sistem Informasi Pengajuan Aslab & Honorarium Lab</p>
+            <h1 class="text-base font-bold tracking-wide brand-font leading-tight">PORTAL SISFO CLIENT</h1>
+            <p class="text-[10px] text-blue-200">Sistem Pengajuan Aslab (SIAS) & Honorarium (SIPHON)</p>
           </div>
         </div>
 
-        <!-- User Info & Navigation -->
+        <!-- User Profile -->
         <div class="flex items-center space-x-4">
           <div class="hidden sm:flex items-center space-x-3 bg-blue-950/60 px-3 py-1.5 rounded-lg border border-blue-700/50">
             <div class="w-7 h-7 rounded-full bg-amber-500 text-blue-950 font-bold flex items-center justify-center text-xs">
-              AL
+              KS
             </div>
             <div class="text-left">
-              <p class="text-xs font-semibold leading-tight">Ahmad Labib, S.T.</p>
-              <p class="text-[10px] text-amber-400">PIC / Kasie Lab Komputer</p>
+              <p class="text-xs font-semibold leading-tight">Dr. Ir. Ahmad, M.T.</p>
+              <p class="text-[10px] text-amber-400">Kasie Lab Farmasi</p>
             </div>
           </div>
 
-          <a href="index.html" class="bg-red-600/80 hover:bg-red-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-sm">
+          <a href="index.html" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-sm">
             <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Keluar</span>
           </a>
@@ -55,19 +55,19 @@
     </div>
   </header>
 
-  <!-- NAVIGATION TABS (SIAS vs SIPHON) -->
+  <!-- NAVIGATION TABS -->
   <div class="bg-white border-b border-slate-200 sticky top-16 z-20 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex space-x-8">
-        <button id="tabSias" onclick="switchAppTab('SIAS')" class="py-4 text-sm font-bold border-b-2 border-blue-700 text-blue-700 flex items-center gap-2 transition">
-          <i data-lucide="user-check" class="w-4 h-4"></i>
-          <span>SIAS</span>
-          <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">Pengajuan Asisten</span>
+        <button id="tabSias" onclick="switchTab('SIAS')" class="py-4 text-sm font-bold border-b-2 border-blue-700 text-blue-700 flex items-center gap-2 transition">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>SIAS Client</span>
+          <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">Pengajuan Aslab</span>
         </button>
-        <button id="tabSiphon" onclick="switchAppTab('SIPHON')" class="py-4 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition">
-          <i data-lucide="receipt" class="w-4 h-4"></i>
-          <span>SIPHON</span>
-          <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">Pengajuan Honorarium</span>
+        <button id="tabSiphon" onclick="switchTab('SIPHON')" class="py-4 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition">
+          <i data-lucide="wallet" class="w-4 h-4"></i>
+          <span>SIPHON Client</span>
+          <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">Pengajuan Honor</span>
         </button>
       </div>
     </div>
@@ -77,350 +77,163 @@
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
     <!-- ================================================================= -->
-    <!-- MODULE 1: SIAS (Sistem Pengajuan Asisten Lab) -->
+    <!-- MODULE 1: SIAS (PENGAJUAN ASISTEN LAB BARU) -->
     <!-- ================================================================= -->
     <section id="moduleSias" class="space-y-6">
       
-      <!-- Module Banner -->
-      <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <!-- Banner Header -->
+      <div class="bg-gradient-to-r from-blue-900 via-blue-950 to-slate-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <span class="bg-amber-400 text-blue-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul SIAS</span>
-          <h2 class="text-xl font-extrabold brand-font">Sistem Pengajuan Asisten Lab</h2>
-          <p class="text-xs text-blue-200 mt-1">Pengajuan data asisten baru untuk penerbitan Kode Gaji resmi dari Kepegawaian/Admin.</p>
-        </div>
-        <div class="flex gap-2">
-          <span class="bg-blue-800/80 border border-blue-700 text-xs px-3 py-1.5 rounded-lg text-blue-100 flex items-center gap-1.5">
-            <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i> Status Cepat: <strong class="text-white">Realtime Audit</strong>
-          </span>
+          <span class="bg-amber-400 text-blue-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul 1: SIAS</span>
+          <h2 class="text-xl font-extrabold brand-font">Pengajuan Registrasi Asisten Lab</h2>
+          <p class="text-xs text-blue-200 mt-1">Input biodata asisten baru untuk diterbitkan Kode Gaji Resmi oleh Admin SDM.</p>
         </div>
       </div>
 
-      <!-- FORM PENGAJUAN ASISTEN BARU -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/60 flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <i data-lucide="user-plus" class="w-5 h-5 text-blue-700"></i>
-            <h3 class="font-bold text-slate-800 text-sm">Form Permohonan Kode Gaji Asisten Lab</h3>
-          </div>
-          <span class="text-[11px] font-medium text-slate-400" id="siasDateBadge">Tanggal: --/--/----</span>
-        </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- FORM INPUT ASLAB -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 pb-3 border-b border-slate-100">
+            <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+            Form Pengajuan Asisten
+          </h3>
 
-        <form onsubmit="handleSiasSubmit(event)" class="p-6 space-y-6">
-          
-          <!-- HIERARKI FILTER: FAKULTAS -> PRODI -> LAB -->
-          <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/80 space-y-3">
-            <p class="text-xs font-bold text-blue-900 flex items-center gap-1">
-              <i data-lucide="layers" class="w-3.5 h-3.5"></i> Unit Kerja Penempatan (Hirarki)
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <form onsubmit="submitSiasForm(event)" class="space-y-4 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nama Lengkap Asisten</label>
+              <input type="text" id="siasNama" placeholder="Contoh: Faisal Syahrul Abidin" required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">NIK KTP (16 Digit)</label>
+              <input type="text" id="siasNik" placeholder="Contoh: 3204370911030001" required font-mono class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none font-mono">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">1. Pilih Fakultas</label>
-                <select id="siasFakultas" onchange="updateSiasProdi()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                  <option value="">-- Pilih Fakultas --</option>
-                  <option value="FTI">Fakultas Teknologi Informasi</option>
-                  <option value="Farmasi">Fakultas Matematika & IPA (Farmasi)</option>
-                  <option value="FEB">Fakultas Ekonomi & Bisnis</option>
-                </select>
+                <label class="block font-semibold text-slate-700 mb-1">Tanggal Lahir</label>
+                <input type="date" id="siasTglLahir" required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">2. Pilih Program Studi</label>
-                <select id="siasProdi" onchange="updateSiasLab()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                  <option value="">-- Pilih Prodi Dahulu --</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">3. Pilih Nama Laboratorium</label>
-                <select id="siasLab" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                  <option value="">-- Pilih Lab Dahulu --</option>
-                </select>
+                <label class="block font-semibold text-slate-700 mb-1">No. WhatsApp/HP</label>
+                <input type="text" id="siasHp" placeholder="0857..." required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
               </div>
             </div>
-          </div>
 
-          <!-- DETAIL BIODATA ASLAB -->
-          <div class="space-y-4">
-            <p class="text-xs font-bold text-slate-800 flex items-center gap-1 border-b pb-2 border-slate-100">
-              <i data-lucide="id-card" class="w-3.5 h-3.5 text-blue-700"></i> Isian Biodata Asisten Baru
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap (Sesuai KTP & Gelar)</label>
-                <input type="text" id="siasNama" placeholder="Contoh: Rina Jayanti, S.Farm" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">Nomor KTP (NIK)</label>
-                <input type="text" id="siasKtp" placeholder="3204087001930002" maxlength="16" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none font-mono">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">Tempat Lahir</label>
-                <input type="text" id="siasTempatLahir" placeholder="Bandung" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Lahir</label>
-                <input type="date" id="siasTglLahir" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Lengkap</label>
-                <input type="text" id="siasAlamat" placeholder="Jl. Lengkong No. 12, Bandung" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">Nomor Telepon / WhatsApp</label>
-                <input type="tel" id="siasTelp" placeholder="081234567890" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
-              </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Unit Lab Penempatan</label>
+              <select id="siasLab" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
+                <option value="Farmasi (Terpadu Unit B)">Farmasi (Terpadu Unit B)</option>
+                <option value="Laboratorium Komputer">Laboratorium Komputer</option>
+                <option value="Laboratorium Kimia">Laboratorium Kimia</option>
+              </select>
             </div>
-          </div>
 
-          <div class="flex justify-end pt-2">
-            <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-6 py-3 rounded-lg shadow-md transition flex items-center gap-2">
+            <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg shadow transition flex items-center justify-center gap-2 mt-2">
               <i data-lucide="send" class="w-4 h-4"></i>
-              <span>Kirim Pengajuan ke Kepegawaian</span>
+              <span>Kirim Pengajuan ke Admin</span>
             </button>
-          </div>
-
-        </form>
-      </div>
-
-      <!-- TABEL STATUS PENGAJUAN KODE GAJI (SIAS) -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60 flex justify-between items-center">
-          <div>
-            <h3 class="font-bold text-slate-800 text-sm">Riwayat & Status Penerbitan Kode Gaji</h3>
-            <p class="text-[11px] text-slate-500">Daftar permohonan aslab beserta Kode Gaji yang diterbitkan oleh Admin</p>
-          </div>
-          <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-semibold">Live Monitor</span>
+          </form>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-100/80 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
-              <tr>
-                <th class="py-3 px-6">Tgl Pengajuan</th>
-                <th class="py-3 px-4">Nama Asisten & NIK</th>
-                <th class="py-3 px-4">Penempatan (Lab)</th>
-                <th class="py-3 px-4">Kontak</th>
-                <th class="py-3 px-4">Status Admin</th>
-                <th class="py-3 px-6 font-mono text-center">Kode Gaji Resmi</th>
-              </tr>
-            </thead>
-            <tbody id="siasTableBody" class="divide-y divide-slate-100">
-              <!-- Preset Data Dummy Sample (Sesuai Lampiran) -->
-              <tr class="hover:bg-slate-50">
-                <td class="py-3 px-6 text-slate-500 font-mono">01/10/2026</td>
-                <td class="py-3 px-4">
-                  <div class="font-bold text-slate-800">Rina Jayanti, S.Farm</div>
-                  <div class="text-[10px] text-slate-400 font-mono">3204087001930002</div>
-                </td>
-                <td class="py-3 px-4">
-                  <div class="text-slate-800 font-medium">Farmasi (Terpadu Unit B)</div>
-                  <div class="text-[10px] text-slate-400">FMIPA - Farmasi</div>
-                </td>
-                <td class="py-3 px-4 text-slate-600">081223344556</td>
-                <td class="py-3 px-4">
-                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center w-max gap-1">
-                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> Done
-                  </span>
-                </td>
-                <td class="py-3 px-6 text-center font-mono font-bold text-blue-700 bg-blue-50/50 rounded">
-                  KG-FAR-001
-                </td>
-              </tr>
+        <!-- RIWAYAT PENGAJUAN CLIENT -->
+        <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 pb-3 border-b border-slate-100">
+            <i data-lucide="history" class="w-4 h-4 text-blue-600"></i>
+            Status Pengajuan Aslab Anda
+          </h3>
 
-              <tr class="hover:bg-slate-50">
-                <td class="py-3 px-6 text-slate-500 font-mono">02/10/2026</td>
-                <td class="py-3 px-4">
-                  <div class="font-bold text-slate-800">Faisal Syahrul Abidin</div>
-                  <div class="text-[10px] text-slate-400 font-mono">3204370911030001</div>
-                </td>
-                <td class="py-3 px-4">
-                  <div class="text-slate-800 font-medium">Lab Komputer Lanjut</div>
-                  <div class="text-[10px] text-slate-400">FTI - Teknik Informatika</div>
-                </td>
-                <td class="py-3 px-4 text-slate-600">085799887766</td>
-                <td class="py-3 px-4">
-                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 flex items-center w-max gap-1">
-                    <i data-lucide="clock" class="w-3 h-3"></i> On Process
-                  </span>
-                </td>
-                <td class="py-3 px-6 text-center font-mono italic text-slate-400">
-                  (Menunggu Admin)
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">Tgl</th>
+                  <th class="py-3 px-4">Nama Asisten</th>
+                  <th class="py-3 px-4">Lab</th>
+                  <th class="py-3 px-4">Status Admin</th>
+                  <th class="py-3 px-4">Kode Gaji Terbit</th>
+                </tr>
+              </thead>
+              <tbody id="siasClientTableBody" class="divide-y divide-slate-100">
+                <!-- Data akan dirender lewat JavaScript -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
     </section>
 
     <!-- ================================================================= -->
-    <!-- MODULE 2: SIPHON (Sistem Pengajuan Honor Lab) -->
+    <!-- MODULE 2: SIPHON (PENGAJUAN HONORARIUM) -->
     <!-- ================================================================= -->
     <section id="moduleSiphon" class="hidden space-y-6">
       
-      <!-- Module Banner -->
-      <div class="bg-gradient-to-r from-indigo-900 to-slate-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <!-- Banner Header -->
+      <div class="bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <span class="bg-indigo-400 text-indigo-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul SIPHON</span>
-          <h2 class="text-xl font-extrabold brand-font">Sistem Pengajuan Honor Lab</h2>
-          <p class="text-xs text-indigo-200 mt-1">Pengajuan honorarium berdasarkan Kode Gaji resmi yang diterbitkan dari modul SIAS.</p>
-        </div>
-        <div>
-          <span class="bg-indigo-800/80 border border-indigo-700 text-xs px-3 py-1.5 rounded-lg text-indigo-100 flex items-center gap-1.5">
-            <i data-lucide="wallet" class="w-3.5 h-3.5 text-emerald-400"></i> Status Honor: <strong class="text-white">Siap Hitung</strong>
-          </span>
+          <span class="bg-indigo-400 text-indigo-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul 2: SIPHON</span>
+          <h2 class="text-xl font-extrabold brand-font">Pengajuan Honorarium Aslab</h2>
+          <p class="text-xs text-indigo-200 mt-1">Kalkulasi honor berdasarkan jam kerja praktikum dan Kode Gaji resmi.</p>
         </div>
       </div>
 
-      <!-- FORM PENGAJUAN HONORARIUM -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/60 flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <i data-lucide="calculator" class="w-5 h-5 text-indigo-700"></i>
-            <h3 class="font-bold text-slate-800 text-sm">Form Rincian Honor Praktikum Lab</h3>
-          </div>
-          <span class="text-[11px] font-medium text-slate-400" id="siphonDateBadge">Tanggal: --/--/----</span>
-        </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- FORM PENGAJUAN HONOR -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 pb-3 border-b border-slate-100">
+            <i data-lucide="calculator" class="w-4 h-4 text-indigo-600"></i>
+            Form Tagihan Honor
+          </h3>
 
-        <form onsubmit="handleSiphonSubmit(event)" class="p-6 space-y-6">
-          
-          <!-- HIERARKI FILTER: FAKULTAS -> PRODI -> LAB -->
-          <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100/80 space-y-3">
-            <p class="text-xs font-bold text-indigo-900 flex items-center gap-1">
-              <i data-lucide="layers" class="w-3.5 h-3.5"></i> Unit Kerja Penempatan (Hirarki)
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">1. Pilih Fakultas</label>
-                <select id="siphonFakultas" onchange="updateSiphonProdi()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-                  <option value="">-- Pilih Fakultas --</option>
-                  <option value="FTI">Fakultas Teknologi Informasi</option>
-                  <option value="Farmasi">Fakultas Matematika & IPA (Farmasi)</option>
-                  <option value="FEB">Fakultas Ekonomi & Bisnis</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">2. Pilih Program Studi</label>
-                <select id="siphonProdi" onchange="updateSiphonLab()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-                  <option value="">-- Pilih Prodi Dahulu --</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">3. Pilih Nama Laboratorium</label>
-                <select id="siphonLab" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-                  <option value="">-- Pilih Lab Dahulu --</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- PILIH ASISTEN & KODE GAJI -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <form onsubmit="submitSiphonForm(event)" class="space-y-4 text-xs">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Asisten Lab (Sudah Verified SIAS)</label>
-              <select id="siphonAslabSelect" onchange="autoFillKodeGaji()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none font-medium">
-                <option value="">-- Pilih Nama Asisten --</option>
-                <option value="Rina Jayanti, S.Farm" data-kodegaji="KG-FAR-001">Rina Jayanti, S.Farm (Done SIAS)</option>
-                <option value="Ahmad Labib, S.T." data-kodegaji="KG-FTI-088">Ahmad Labib, S.T. (Done SIAS)</option>
+              <label class="block font-semibold text-slate-700 mb-1">Pilih Asisten (Ber-Kode Gaji)</label>
+              <select id="siphonAslab" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
+                <option value="Rina Jayanti, S.Farm (KG-FAR-001)">Rina Jayanti, S.Farm (KG-FAR-001)</option>
               </select>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Kode Gaji Asisten</label>
-              <input type="text" id="siphonKodeGaji" placeholder="Terisi Otomatis" readonly class="w-full text-xs border border-slate-200 bg-slate-100 rounded-lg p-2.5 font-mono font-bold text-indigo-700">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Mata Kuliah Praktikum</label>
-              <input type="text" id="siphonMK" placeholder="Contoh: Farmakologi Dasar" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-            </div>
-          </div>
 
-          <!-- RANCANGAN KALKULASI HONORARIUM -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Tarif Honor / Jam (Rp)</label>
-              <input type="number" id="siphonTarif" value="50000" oninput="calculateSiphonHonor()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
+              <label class="block font-semibold text-slate-700 mb-1">Mata Kuliah Praktikum</label>
+              <input type="text" id="siphonMatkul" placeholder="Contoh: Farmakologi Dasar" required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-600 focus:outline-none">
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah Pertemuan / Bulan</label>
-              <input type="number" id="siphonPertemuan" value="4" oninput="calculateSiphonHonor()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah Jam / Shift</label>
-              <input type="number" id="siphonJam" value="3" oninput="calculateSiphonHonor()" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-            </div>
-          </div>
 
-          <!-- OUTPUT KALKULASI -->
-          <div class="flex items-center justify-between bg-indigo-50/80 p-4 rounded-xl border border-indigo-200">
             <div>
-              <span class="text-xs font-bold text-indigo-900 block uppercase tracking-wider">Total Output Honorarium</span>
-              <span class="text-[11px] text-slate-500">Kalkulasi: (Pertemuan × Jam) × Tarif</span>
+              <label class="block font-semibold text-slate-700 mb-1">Total Nominal Honor (Rp)</label>
+              <input type="number" id="siphonNominal" placeholder="Contoh: 600000" required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-600 focus:outline-none font-mono">
             </div>
-            <div class="text-2xl font-black text-indigo-700" id="displaySiphonTotal">
-              Rp 600.000
-            </div>
-          </div>
 
-          <div class="flex justify-end pt-2">
-            <button type="submit" class="bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold px-6 py-3 rounded-lg shadow-md transition flex items-center gap-2">
-              <i data-lucide="file-check" class="w-4 h-4"></i>
-              <span>Kirim Pengajuan Honor ke Kasie/Akademik</span>
+            <button type="submit" class="w-full bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-3 rounded-lg shadow transition flex items-center justify-center gap-2 mt-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Ajukan Pencairan Honor</span>
             </button>
-          </div>
-
-        </form>
-      </div>
-
-      <!-- TABEL STATUS PENGAJUAN HONOR (SIPHON) -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60 flex justify-between items-center">
-          <div>
-            <h3 class="font-bold text-slate-800 text-sm">Riwayat & Status Pengajuan Honorarium</h3>
-            <p class="text-[11px] text-slate-500">Pantau proses approval berjenjang Kasie ➔ Akademik ➔ SDM</p>
-          </div>
-          <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-semibold">Monitoring</span>
+          </form>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-100/80 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
-              <tr>
-                <th class="py-3 px-6">Tgl Pengajuan</th>
-                <th class="py-3 px-4">Nama & Kode Gaji</th>
-                <th class="py-3 px-4">Praktikum & Lab</th>
-                <th class="py-3 px-4">Total Honor</th>
-                <th class="py-3 px-6 text-center">Status Approvals Berjenjang</th>
-              </tr>
-            </thead>
-            <tbody id="siphonTableBody" class="divide-y divide-slate-100">
-              <tr class="hover:bg-slate-50">
-                <td class="py-3 px-6 text-slate-500 font-mono">03/10/2026</td>
-                <td class="py-3 px-4">
-                  <div class="font-bold text-slate-800">Rina Jayanti, S.Farm</div>
-                  <div class="text-[10px] text-indigo-700 font-mono font-bold">KG-FAR-001</div>
-                </td>
-                <td class="py-3 px-4">
-                  <div class="text-slate-800 font-medium">Farmakologi Dasar</div>
-                  <div class="text-[10px] text-slate-400">Farmasi (Terpadu Unit B)</div>
-                </td>
-                <td class="py-3 px-4 font-extrabold text-indigo-700">
-                  Rp 600.000
-                </td>
-                <td class="py-3 px-6 text-center">
-                  <div class="flex items-center justify-center space-x-1 text-[10px]">
-                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold flex items-center gap-1">
-                      <i data-lucide="check" class="w-3 h-3"></i> Kasie
-                    </span>
-                    <span class="text-slate-300">➔</span>
-                    <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold flex items-center gap-1">
-                      <i data-lucide="clock" class="w-3 h-3"></i> Akademik
-                    </span>
-                    <span class="text-slate-300">➔</span>
-                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-400 font-medium">SDM</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- RIWAYAT HONOR CLIENT -->
+        <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 pb-3 border-b border-slate-100">
+            <i data-lucide="receipt" class="w-4 h-4 text-indigo-600"></i>
+            Status Tagihan Honorarium
+          </h3>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-3 px-4">Tgl</th>
+                  <th class="py-3 px-4">Asisten</th>
+                  <th class="py-3 px-4">Matkul</th>
+                  <th class="py-3 px-4">Nominal</th>
+                  <th class="py-3 px-4">Status SDM</th>
+                </tr>
+              </thead>
+              <tbody id="siphonClientTableBody" class="divide-y divide-slate-100">
+                <!-- Data dirender lewat JavaScript -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -434,41 +247,25 @@
     </div>
   </footer>
 
-  <!-- SCRIPT INTERAKTIF & LOGIKA DATA -->
   <script>
     lucide.createIcons();
 
-    // Data Master Hirarki Fakultas -> Prodi -> Lab (Berdasarkan Spreadsheet)
-    const masterHierarchy = {
-      "FTI": {
-        "S1 Teknik Informatika": ["Lab Komputer Lanjut", "Lab Jaringan & Komputasi Awan"],
-        "S1 Teknik Industri": ["LAB. TEKNIK SISTEM PRODUKSI", "Laboratorium APK & Ergonomi", "LSIK"]
-      },
-      "Farmasi": {
-        "S1 Farmasi": [
-          "Farmasi (FKK)",
-          "Farmasi (Terpadu Unit A)",
-          "Farmasi (Terpadu Unit B)",
-          "Farmasi (Terpadu Unit C)",
-          "Farmasi (Terpadu Unit D)",
-          "Farmasi (Terpadu Unit E)"
-        ],
-        "S1 Matematika": ["Komputasi Matematika"]
-      },
-      "FEB": {
-        "S1 Akuntansi": ["Lab Akuntansi"],
-        "S1 Manajemen": ["Lab Manajemen"]
-      }
-    };
+    // Default Storage Setup
+    let siasData = JSON.parse(localStorage.getItem('siasRequests')) || [
+      { id: 1, tgl: '01/10/2026', nama: 'Rina Jayanti, S.Farm', nik: '3204087001930002', lab: 'Farmasi (Terpadu Unit B)', status: 'Done', kodeGaji: 'KG-FAR-001' },
+      { id: 2, tgl: '02/10/2026', nama: 'Faisal Syahrul Abidin', nik: '3204370911030001', lab: 'Farmasi (Terpadu Unit B)', status: 'On Process', kodeGaji: '-' }
+    ];
 
-    // Set Automatic Date Stamp (Realtime 2026)
-    const now = new Date();
-    const dateFormatted = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    document.getElementById('siasDateBadge').innerText = 'Tanggal Pengajuan: ' + dateFormatted;
-    document.getElementById('siphonDateBadge').innerText = 'Tanggal Pengajuan: ' + dateFormatted;
+    let siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [
+      { id: 1, tgl: '03/10/2026', aslab: 'Rina Jayanti, S.Farm (KG-FAR-001)', matkul: 'Farmakologi Dasar', nominal: '600000', status: 'Approved SDM' }
+    ];
 
-    // Switch Tab (SIAS vs SIPHON)
-    function switchAppTab(tabName) {
+    // Initial Render
+    renderSiasTable();
+    renderSiphonTable();
+
+    // Switch Tab
+    function switchTab(tabName) {
       const moduleSias = document.getElementById('moduleSias');
       const moduleSiphon = document.getElementById('moduleSiphon');
       const tabSias = document.getElementById('tabSias');
@@ -487,161 +284,88 @@
       }
     }
 
-    // Dynamic Cascading Dropdown SIAS
-    function updateSiasProdi() {
-      const fak = document.getElementById('siasFakultas').value;
-      const prodiSelect = document.getElementById('siasProdi');
-      const labSelect = document.getElementById('siasLab');
-
-      prodiSelect.innerHTML = '<option value="">-- Pilih Prodi --</option>';
-      labSelect.innerHTML = '<option value="">-- Pilih Lab Dahulu --</option>';
-
-      if (fak && masterHierarchy[fak]) {
-        Object.keys(masterHierarchy[fak]).forEach(prodi => {
-          prodiSelect.innerHTML += `<option value="${prodi}">${prodi}</option>`;
-        });
-      }
-    }
-
-    function updateSiasLab() {
-      const fak = document.getElementById('siasFakultas').value;
-      const prodi = document.getElementById('siasProdi').value;
-      const labSelect = document.getElementById('siasLab');
-
-      labSelect.innerHTML = '<option value="">-- Pilih Lab --</option>';
-
-      if (fak && prodi && masterHierarchy[fak][prodi]) {
-        masterHierarchy[fak][prodi].forEach(lab => {
-          labSelect.innerHTML += `<option value="${lab}">${lab}</option>`;
-        });
-      }
-    }
-
-    // Dynamic Cascading Dropdown SIPHON
-    function updateSiphonProdi() {
-      const fak = document.getElementById('siphonFakultas').value;
-      const prodiSelect = document.getElementById('siphonProdi');
-      const labSelect = document.getElementById('siphonLab');
-
-      prodiSelect.innerHTML = '<option value="">-- Pilih Prodi --</option>';
-      labSelect.innerHTML = '<option value="">-- Pilih Lab Dahulu --</option>';
-
-      if (fak && masterHierarchy[fak]) {
-        Object.keys(masterHierarchy[fak]).forEach(prodi => {
-          prodiSelect.innerHTML += `<option value="${prodi}">${prodi}</option>`;
-        });
-      }
-    }
-
-    function updateSiphonLab() {
-      const fak = document.getElementById('siphonFakultas').value;
-      const prodi = document.getElementById('siphonProdi').value;
-      const labSelect = document.getElementById('siphonLab');
-
-      labSelect.innerHTML = '<option value="">-- Pilih Lab --</option>';
-
-      if (fak && prodi && masterHierarchy[fak][prodi]) {
-        masterHierarchy[fak][prodi].forEach(lab => {
-          labSelect.innerHTML += `<option value="${lab}">${lab}</option>`;
-        });
-      }
-    }
-
-    // Submit Handler SIAS
-    function handleSiasSubmit(e) {
+    // Submit SIAS Form (Save to localStorage)
+    function submitSiasForm(e) {
       e.preventDefault();
       const nama = document.getElementById('siasNama').value;
-      const ktp = document.getElementById('siasKtp').value;
-      const lab = document.getElementById('siasLab').value || 'Lab Terkait';
-      const telp = document.getElementById('siasTelp').value;
+      const nik = document.getElementById('siasNik').value;
+      const lab = document.getElementById('siasLab').value;
 
-      const table = document.getElementById('siasTableBody');
-      const row = document.createElement('tr');
-      row.className = "hover:bg-slate-50 bg-blue-50/30";
-      row.innerHTML = `
-        <td class="py-3 px-6 text-slate-500 font-mono">${dateFormatted}</td>
-        <td class="py-3 px-4">
-          <div class="font-bold text-slate-800">${nama}</div>
-          <div class="text-[10px] text-slate-400 font-mono">${ktp}</div>
-        </td>
-        <td class="py-3 px-4">
-          <div class="text-slate-800 font-medium">${lab}</div>
-          <div class="text-[10px] text-slate-400">Unit Pengajuan Baru</div>
-        </td>
-        <td class="py-3 px-4 text-slate-600">${telp}</td>
-        <td class="py-3 px-4">
-          <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 flex items-center w-max gap-1">
-            <i data-lucide="clock" class="w-3 h-3"></i> On Process
-          </span>
-        </td>
-        <td class="py-3 px-6 text-center font-mono italic text-slate-400">
-          (Menunggu Admin)
-        </td>
-      `;
+      const newEntry = {
+        id: Date.now(),
+        tgl: new Date().toLocaleDateString('id-ID'),
+        nama: nama,
+        nik: nik,
+        lab: lab,
+        status: 'On Process',
+        kodeGaji: '-'
+      };
 
-      table.prepend(row);
-      lucide.createIcons();
-      alert('Permohonan Kode Gaji berhasil dikirim ke Admin Kepegawaian!');
+      siasData.unshift(newEntry);
+      localStorage.setItem('siasRequests', JSON.stringify(siasData));
+
+      renderSiasTable();
       e.target.reset();
+      alert('Pengajuan Asisten berhasil dikirim ke Admin Kepegawaian!');
     }
 
-    // Auto Fill Kode Gaji di SIPHON
-    function autoFillKodeGaji() {
-      const select = document.getElementById('siphonAslabSelect');
-      const selectedOption = select.options[select.selectedIndex];
-      const kodeGaji = selectedOption.getAttribute('data-kodegaji') || '';
-      document.getElementById('siphonKodeGaji').value = kodeGaji;
-    }
-
-    // Siphon Calculation
-    function calculateSiphonHonor() {
-      const tarif = parseFloat(document.getElementById('siphonTarif').value) || 0;
-      const pertemuan = parseFloat(document.getElementById('siphonPertemuan').value) || 0;
-      const jam = parseFloat(document.getElementById('siphonJam').value) || 0;
-
-      const total = (pertemuan * jam) * tarif;
-      document.getElementById('displaySiphonTotal').innerText = "Rp " + total.toLocaleString('id-ID');
-    }
-
-    // Submit Handler SIPHON
-    function handleSiphonSubmit(e) {
+    // Submit SIPHON Form (Save to localStorage)
+    function submitSiphonForm(e) {
       e.preventDefault();
-      const nama = document.getElementById('siphonAslabSelect').value;
-      const kodeGaji = document.getElementById('siphonKodeGaji').value;
-      const mk = document.getElementById('siphonMK').value;
-      const lab = document.getElementById('siphonLab').value || 'Lab Terkait';
-      const totalHonor = document.getElementById('displaySiphonTotal').innerText;
+      const aslab = document.getElementById('siphonAslab').value;
+      const matkul = document.getElementById('siphonMatkul').value;
+      const nominal = document.getElementById('siphonNominal').value;
 
-      const table = document.getElementById('siphonTableBody');
-      const row = document.createElement('tr');
-      row.className = "hover:bg-slate-50 bg-indigo-50/30";
-      row.innerHTML = `
-        <td class="py-3 px-6 text-slate-500 font-mono">${dateFormatted}</td>
-        <td class="py-3 px-4">
-          <div class="font-bold text-slate-800">${nama}</div>
-          <div class="text-[10px] text-indigo-700 font-mono font-bold">${kodeGaji}</div>
-        </td>
-        <td class="py-3 px-4">
-          <div class="text-slate-800 font-medium">${mk}</div>
-          <div class="text-[10px] text-slate-400">${lab}</div>
-        </td>
-        <td class="py-3 px-4 font-extrabold text-indigo-700">
-          ${totalHonor}
-        </td>
-        <td class="py-3 px-6 text-center">
-          <div class="flex items-center justify-center space-x-1 text-[10px]">
-            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold flex items-center gap-1">
-              <i data-lucide="clock" class="w-3 h-3"></i> Menunggu Kasie
-            </span>
-          </div>
-        </td>
-      `;
+      const newEntry = {
+        id: Date.now(),
+        tgl: new Date().toLocaleDateString('id-ID'),
+        aslab: aslab,
+        matkul: matkul,
+        nominal: nominal,
+        status: 'Pending Admin'
+      };
 
-      table.prepend(row);
-      lucide.createIcons();
-      alert('Pengajuan honorarium berhasil diajukan ke Kasie Lab!');
+      siphonData.unshift(newEntry);
+      localStorage.setItem('siphonRequests', JSON.stringify(siphonData));
+
+      renderSiphonTable();
       e.target.reset();
-      calculateSiphonHonor();
+      alert('Pengajuan Honorarium berhasil dikirim ke Admin SDM!');
+    }
+
+    // Render Tables
+    function renderSiasTable() {
+      const tbody = document.getElementById('siasClientTableBody');
+      tbody.innerHTML = siasData.map(item => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-mono text-slate-500">${item.tgl}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${item.nama}<div class="text-[10px] text-slate-400 font-normal font-mono">${item.nik}</div></td>
+          <td class="py-3 px-4 text-slate-600">${item.lab}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.status === 'Done' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${item.status}
+            </span>
+          </td>
+          <td class="py-3 px-4 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderSiphonTable() {
+      const tbody = document.getElementById('siphonClientTableBody');
+      tbody.innerHTML = siphonData.map(item => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-mono text-slate-500">${item.tgl}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${item.aslab}</td>
+          <td class="py-3 px-4 text-slate-600">${item.matkul}</td>
+          <td class="py-3 px-4 font-bold text-indigo-700">Rp ${parseInt(item.nominal).toLocaleString('id-ID')}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.status === 'Approved SDM' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${item.status}
+            </span>
+          </td>
+        </tr>
+      `).join('');
     }
   </script>
 </body>
