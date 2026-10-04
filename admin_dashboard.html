@@ -4,11 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PORTAL SISFO - Admin & Verifikator (SIAS & SIPHON)</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
@@ -21,8 +18,6 @@
   <header class="bg-amber-600 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16 items-center">
-        
-        <!-- Logo & Admin Badge -->
         <div class="flex items-center space-x-3">
           <div class="w-9 h-9 rounded-lg bg-blue-950 text-amber-400 font-black text-base flex items-center justify-center brand-font shadow">
             ADM
@@ -32,11 +27,10 @@
               <h1 class="text-base font-bold tracking-wide brand-font leading-tight">PORTAL SISFO ADMIN</h1>
               <span class="bg-amber-800 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded text-amber-200">Kepegawaian & SDM</span>
             </div>
-            <p class="text-[10px] text-amber-100">Verifikasi KTP, Penerbitan Kode Gaji & Approval Honorarium</p>
+            <p class="text-[10px] text-amber-100">Verifikasi NIK KTP, Penerbitan Kode Gaji & Approval Honorarium</p>
           </div>
         </div>
 
-        <!-- Admin Profile -->
         <div class="flex items-center space-x-4">
           <div class="hidden sm:flex items-center space-x-3 bg-amber-700/80 px-3 py-1.5 rounded-lg border border-amber-500/50">
             <div class="w-7 h-7 rounded-full bg-blue-950 text-amber-400 font-bold flex items-center justify-center text-xs">
@@ -53,12 +47,11 @@
             <span class="hidden sm:inline">Keluar</span>
           </a>
         </div>
-
       </div>
     </div>
   </header>
 
-  <!-- NAVIGATION TABS FOR ADMIN -->
+  <!-- NAVIGATION TABS -->
   <div class="bg-white border-b border-slate-200 sticky top-16 z-20 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex space-x-8">
@@ -79,131 +72,60 @@
   <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- ================================================================= -->
-    <!-- MODULE 1: SIAS ADMIN (VERIFIKASI & INPUT KODE GAJI) -->
-    <!-- ================================================================= -->
+    <!-- MODULE 1: SIAS ADMIN -->
     <section id="moduleAdminSias" class="space-y-6">
-      
-      <!-- Admin Banner -->
       <div class="bg-gradient-to-r from-amber-700 via-amber-800 to-slate-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <span class="bg-amber-400 text-slate-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Verifikator Kepegawaian</span>
           <h2 class="text-xl font-extrabold brand-font">Verifikasi Permohonan Kode Gaji Aslab</h2>
-          <p class="text-xs text-amber-100 mt-1">Cek keabsahan NIK KTP asisten, lalu centang untuk menerbitkan Kode Gaji resmi.</p>
+          <p class="text-xs text-amber-100 mt-1">Cek keabsahan NIK KTP asisten, lalu terbitkan Kode Gaji resmi.</p>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="loadAdminSiasData()" class="bg-amber-600 hover:bg-amber-500 border border-amber-400 text-xs px-3 py-2 rounded-lg text-white font-semibold flex items-center gap-1.5 shadow transition">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Data Client
-          </button>
-        </div>
+        <button onclick="renderAdminData()" class="bg-amber-600 hover:bg-amber-500 border border-amber-400 text-xs px-3 py-2 rounded-lg text-white font-semibold flex items-center gap-1.5 shadow transition">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Data
+        </button>
       </div>
 
-      <!-- TABEL DAFTAR PENGAJUAN KODE GAJI -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60 flex justify-between items-center">
           <div class="flex items-center gap-2">
             <i data-lucide="users" class="w-5 h-5 text-amber-600"></i>
             <h3 class="font-bold text-slate-800 text-sm">Daftar Pengajuan Masuk Dari Fakultas / Lab</h3>
           </div>
-          <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-bold">Verifikasi Akses</span>
+          <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-bold">Verifikasi SDM</span>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead class="bg-slate-100/80 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
               <tr>
-                <th class="py-3 px-6">Tgl Pengajuan</th>
+                <th class="py-3 px-6">Tgl</th>
                 <th class="py-3 px-4">Nama & NIK KTP</th>
-                <th class="py-3 px-4">Unit Penempatan (Lab)</th>
-                <th class="py-3 px-4">Biodata Singkat</th>
-                <th class="py-3 px-4">Status & Action</th>
+                <th class="py-3 px-4">Unit Lab / Prodi / Fakultas</th>
+                <th class="py-3 px-4">Kontak</th>
+                <th class="py-3 px-4">Status</th>
                 <th class="py-3 px-6 text-center">Input Kode Gaji Resmi</th>
               </tr>
             </thead>
             <tbody id="adminSiasTableBody" class="divide-y divide-slate-100">
-              
-              <!-- SAMPLE 1: DATA BELUM ADA KODE GAJI (ON PROCESS) -->
-              <tr class="hover:bg-slate-50 bg-amber-50/20" id="row-aslab-1">
-                <td class="py-3 px-6 text-slate-500 font-mono">02/10/2026</td>
-                <td class="py-3 px-4">
-                  <div class="font-bold text-slate-800">Faisal Syahrul Abidin</div>
-                  <div class="text-[10px] text-slate-500 font-mono">3204370911030001</div>
-                </td>
-                <td class="py-3 px-4">
-                  <div class="text-slate-800 font-medium">Farmasi (Terpadu Unit B)</div>
-                  <div class="text-[10px] text-slate-400">FMIPA - Farmasi</div>
-                </td>
-                <td class="py-3 px-4 text-slate-600">
-                  <div>Tgl Lahir: 09/11/2003</div>
-                  <div class="text-[10px] text-slate-400">Hp: 085799887766</div>
-                </td>
-                <td class="py-3 px-4">
-                  <span id="badge-status-1" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 flex items-center w-max gap-1">
-                    <i data-lucide="clock" class="w-3 h-3"></i> On Process
-                  </span>
-                </td>
-                <td class="py-3 px-6 text-center">
-                  <div class="flex items-center justify-center gap-2">
-                    <input type="text" id="input-kg-1" placeholder="Isi Kode (e.g. KG-FAR-002)" class="text-xs border border-slate-300 rounded px-2 py-1 font-mono font-bold w-36 uppercase focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                    <button onclick="approveKodeGaji(1)" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1 rounded font-bold transition flex items-center gap-1">
-                      <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Simpan
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- SAMPLE 2: DATA SUDAH DONE (BER-KODE GAJI) -->
-              <tr class="hover:bg-slate-50">
-                <td class="py-3 px-6 text-slate-500 font-mono">01/10/2026</td>
-                <td class="py-3 px-4">
-                  <div class="font-bold text-slate-800">Rina Jayanti, S.Farm</div>
-                  <div class="text-[10px] text-slate-500 font-mono">3204087001930002</div>
-                </td>
-                <td class="py-3 px-4">
-                  <div class="text-slate-800 font-medium">Farmasi (Terpadu Unit B)</div>
-                  <div class="text-[10px] text-slate-400">FMIPA - Farmasi</div>
-                </td>
-                <td class="py-3 px-4 text-slate-600">
-                  <div>Tgl Lahir: 30/01/1993</div>
-                  <div class="text-[10px] text-slate-400">Hp: 081223344556</div>
-                </td>
-                <td class="py-3 px-4">
-                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center w-max gap-1">
-                    <i data-lucide="check-circle-2" class="w-3 h-3"></i> Done
-                  </span>
-                </td>
-                <td class="py-3 px-6 text-center font-mono font-bold text-blue-700 bg-blue-50/50 rounded">
-                  KG-FAR-001
-                </td>
-              </tr>
-
             </tbody>
           </table>
         </div>
       </div>
-
     </section>
 
-    <!-- ================================================================= -->
-    <!-- MODULE 2: SIPHON ADMIN (APPROVAL HONORARIUM) -->
-    <!-- ================================================================= -->
+    <!-- MODULE 2: SIPHON ADMIN -->
     <section id="moduleAdminSiphon" class="hidden space-y-6">
-      
-      <!-- Admin Banner -->
       <div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-blue-950 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <span class="bg-indigo-400 text-indigo-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Verifikator Keuangan / SDM</span>
           <h2 class="text-xl font-extrabold brand-font">Approval Pengajuan Honorarium Lab</h2>
-          <p class="text-xs text-indigo-200 mt-1">Pemeriksaan pencairan honor berdasarkan Kode Gaji resmi dan jam kerja praktikum.</p>
+          <p class="text-xs text-indigo-200 mt-1">Pemeriksaan pencairan honor berdasarkan Kode Gaji resmi.</p>
         </div>
-        <div>
-          <button onclick="loadAdminSiphonData()" class="bg-indigo-700 hover:bg-indigo-600 border border-indigo-500 text-xs px-3 py-2 rounded-lg text-white font-semibold flex items-center gap-1.5 shadow transition">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Pengajuan Honor
-          </button>
-        </div>
+        <button onclick="renderAdminData()" class="bg-indigo-700 hover:bg-indigo-600 border border-indigo-500 text-xs px-3 py-2 rounded-lg text-white font-semibold flex items-center gap-1.5 shadow transition">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Data
+        </button>
       </div>
 
-      <!-- TABEL APPROVAL HONORARIUM -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60 flex justify-between items-center">
           <div class="flex items-center gap-2">
@@ -217,53 +139,18 @@
           <table class="w-full text-left text-xs">
             <thead class="bg-slate-100/80 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
               <tr>
-                <th class="py-3 px-6">Tgl Pengajuan</th>
+                <th class="py-3 px-6">Tgl</th>
                 <th class="py-3 px-4">Asisten & Kode Gaji</th>
-                <th class="py-3 px-4">Mata Kuliah & Lab</th>
+                <th class="py-3 px-4">Mata Kuliah Praktikum</th>
                 <th class="py-3 px-4">Total Nominal</th>
-                <th class="py-3 px-4">Progress Approvals</th>
                 <th class="py-3 px-6 text-center">Keputusan Admin</th>
               </tr>
             </thead>
             <tbody id="adminSiphonTableBody" class="divide-y divide-slate-100">
-              
-              <tr class="hover:bg-slate-50">
-                <td class="py-3 px-6 text-slate-500 font-mono">03/10/2026</td>
-                <td class="py-3 px-4">
-                  <div class="font-bold text-slate-800">Rina Jayanti, S.Farm</div>
-                  <div class="text-[10px] text-indigo-700 font-mono font-bold">KG-FAR-001</div>
-                </td>
-                <td class="py-3 px-4">
-                  <div class="text-slate-800 font-medium">Farmakologi Dasar</div>
-                  <div class="text-[10px] text-slate-400">Farmasi (Terpadu Unit B)</div>
-                </td>
-                <td class="py-3 px-4 font-extrabold text-indigo-700">
-                  Rp 600.000
-                </td>
-                <td class="py-3 px-4">
-                  <div class="flex items-center space-x-1 text-[10px]">
-                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Kasie OK</span>
-                    <span class="text-slate-300">➔</span>
-                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">Akademik OK</span>
-                  </div>
-                </td>
-                <td class="py-3 px-6 text-center">
-                  <div class="flex items-center justify-center gap-1.5" id="action-honor-1">
-                    <button onclick="approveHonor(1)" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 shadow-sm">
-                      <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve SDM
-                    </button>
-                    <button onclick="rejectHonor(1)" class="bg-red-600 hover:bg-red-700 text-white text-[11px] px-2.5 py-1.5 rounded-lg font-bold transition">
-                      Tolak
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
             </tbody>
           </table>
         </div>
       </div>
-
     </section>
 
   </main>
@@ -275,9 +162,126 @@
   </footer>
 
   <script>
-    lucide.createIcons();
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderAdminData();
+    });
 
-    // Switch Admin Tab
+    window.addEventListener('storage', () => {
+      renderAdminData();
+    });
+
+    function renderAdminData() {
+      const siasData = JSON.parse(localStorage.getItem('siasRequests')) || [];
+      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
+
+      // SIAS Admin Table
+      const siasBody = document.getElementById('adminSiasTableBody');
+      siasBody.innerHTML = siasData.map(item => `
+        <tr class="hover:bg-slate-50 ${item.status === 'On Process' ? 'bg-amber-50/20' : ''}">
+          <td class="py-3 px-6 text-slate-500 font-mono">${item.tgl}</td>
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-800">${item.nama}</div>
+            <div class="text-[10px] text-slate-500 font-mono">NIK: ${item.nik}</div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="text-slate-800 font-bold">${item.lab || '-'}</div>
+            <div class="text-[10px] text-slate-400">${item.fakultas || '-'} - ${item.prodi || '-'}</div>
+          </td>
+          <td class="py-3 px-4 text-slate-600">
+            <div>Tgl Lahir: ${item.tglLahir || '-'}</div>
+            <div class="text-[10px] text-slate-400">HP: ${item.hp || '-'}</div>
+          </td>
+          <td class="py-3 px-4">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${item.status === 'Done' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${item.status}
+            </span>
+          </td>
+          <td class="py-3 px-6 text-center">
+            ${item.status === 'Done' ? `
+              <span class="font-mono font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded border border-blue-200">${item.kodeGaji}</span>
+            ` : `
+              <div class="flex items-center justify-center gap-2">
+                <input type="text" id="input-kg-${item.id}" placeholder="e.g. KG-FAR-002" class="text-xs border border-slate-300 rounded px-2 py-1 font-mono font-bold w-32 uppercase focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                <button onclick="approveKodeGaji(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1 rounded font-bold transition">
+                  Simpan
+                </button>
+              </div>
+            `}
+          </td>
+        </tr>
+      `).join('');
+
+      // SIPHON Admin Table
+      const siphonBody = document.getElementById('adminSiphonTableBody');
+      siphonBody.innerHTML = siphonData.map(item => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-6 text-slate-500 font-mono">${item.tgl}</td>
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-800">${item.aslab}</div>
+          </td>
+          <td class="py-3 px-4 text-slate-700 font-medium">${item.matkul}</td>
+          <td class="py-3 px-4 font-extrabold text-indigo-700">Rp ${parseInt(item.nominal || 0).toLocaleString('id-ID')}</td>
+          <td class="py-3 px-6 text-center">
+            ${item.status === 'Approved SDM' ? `
+              <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">Cair (Approved SDM)</span>
+            ` : `
+              <div class="flex items-center justify-center gap-1.5">
+                <button onclick="approveHonor(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-3 py-1.5 rounded-lg font-bold transition">Approve SDM</button>
+                <button onclick="rejectHonor(${item.id})" class="bg-red-600 hover:bg-red-700 text-white text-[11px] px-2.5 py-1.5 rounded-lg font-bold transition">Tolak</button>
+              </div>
+            `}
+          </td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function approveKodeGaji(id) {
+      const input = document.getElementById(`input-kg-${id}`);
+      const val = input ? input.value.trim().toUpperCase() : '';
+
+      if (!val) {
+        alert('Harap masukkan Kode Gaji terlebih dahulu!');
+        return;
+      }
+
+      const siasData = JSON.parse(localStorage.getItem('siasRequests')) || [];
+      const index = siasData.findIndex(i => i.id == id);
+
+      if (index !== -1) {
+        siasData[index].status = 'Done';
+        siasData[index].kodeGaji = val;
+        localStorage.setItem('siasRequests', JSON.stringify(siasData));
+        renderAdminData();
+        alert(`Kode Gaji ${val} berhasil diterbitkan!`);
+      }
+    }
+
+    function approveHonor(id) {
+      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
+      const index = siphonData.findIndex(i => i.id == id);
+
+      if (index !== -1) {
+        siphonData[index].status = 'Approved SDM';
+        localStorage.setItem('siphonRequests', JSON.stringify(siphonData));
+        renderAdminData();
+        alert('Pencairan honorarium berhasil disetujui!');
+      }
+    }
+
+    function rejectHonor(id) {
+      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
+      const index = siphonData.findIndex(i => i.id == id);
+
+      if (index !== -1) {
+        siphonData[index].status = 'Ditolak';
+        localStorage.setItem('siphonRequests', JSON.stringify(siphonData));
+        renderAdminData();
+      }
+    }
+
     function switchAdminTab(tabName) {
       const moduleSias = document.getElementById('moduleAdminSias');
       const moduleSiphon = document.getElementById('moduleAdminSiphon');
@@ -294,50 +298,6 @@
         moduleSiphon.classList.remove('hidden');
         tabSiphon.className = "py-4 text-sm font-bold border-b-2 border-indigo-700 text-indigo-700 flex items-center gap-2 transition";
         tabSias.className = "py-4 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition";
-      }
-    }
-
-    // Approve & Input Kode Gaji
-    function approveKodeGaji(id) {
-      const input = document.getElementById(`input-kg-${id}`);
-      const val = input ? input.value.trim() : '';
-
-      if (!val) {
-        alert('Harap masukkan Kode Gaji resmi terlebih dahulu!');
-        return;
-      }
-
-      const row = document.getElementById(`row-aslab-${id}`);
-      const badge = document.getElementById(`badge-status-${id}`);
-
-      if (badge) {
-        badge.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center w-max gap-1";
-        badge.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3"></i> Done`;
-      }
-
-      if (input) {
-        const parent = input.parentElement;
-        parent.innerHTML = `<span class="font-mono font-bold text-blue-700 bg-blue-50/80 px-3 py-1 rounded border border-blue-200">${val.toUpperCase()}</span>`;
-      }
-
-      lucide.createIcons();
-      alert(`Kode Gaji ${val.toUpperCase()} berhasil diterbitkan & disetujui!`);
-    }
-
-    // Approve Honorarium SDM
-    function approveHonor(id) {
-      const actionDiv = document.getElementById(`action-honor-${id}`);
-      if (actionDiv) {
-        actionDiv.innerHTML = `<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Cair (Approved SDM)</span>`;
-        lucide.createIcons();
-      }
-      alert('Pencairan honorarium berhasil disetujui oleh SDM!');
-    }
-
-    function rejectHonor(id) {
-      const actionDiv = document.getElementById(`action-honor-${id}`);
-      if (actionDiv) {
-        actionDiv.innerHTML = `<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-red-100 text-red-800">Ditolak</span>`;
       }
     }
   </script>
