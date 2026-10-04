@@ -4,11 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PORTAL SISFO - Client Dashboard (SIAS & SIPHON)</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
@@ -21,8 +18,6 @@
   <header class="bg-blue-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16 items-center">
-        
-        <!-- Logo & Brand -->
         <div class="flex items-center space-x-3">
           <div class="w-9 h-9 rounded-lg bg-amber-500 text-blue-950 font-black text-base flex items-center justify-center brand-font shadow">
             UB
@@ -33,7 +28,6 @@
           </div>
         </div>
 
-        <!-- User Profile -->
         <div class="flex items-center space-x-4">
           <div class="hidden sm:flex items-center space-x-3 bg-blue-950/60 px-3 py-1.5 rounded-lg border border-blue-700/50">
             <div class="w-7 h-7 rounded-full bg-amber-500 text-blue-950 font-bold flex items-center justify-center text-xs">
@@ -41,7 +35,7 @@
             </div>
             <div class="text-left">
               <p class="text-xs font-semibold leading-tight">Dr. Ir. Ahmad, M.T.</p>
-              <p class="text-[10px] text-amber-400">Kasie Lab Farmasi</p>
+              <p class="text-[10px] text-amber-400">Kasie / PIC Lab</p>
             </div>
           </div>
 
@@ -50,7 +44,6 @@
             <span class="hidden sm:inline">Keluar</span>
           </a>
         </div>
-
       </div>
     </div>
   </header>
@@ -76,18 +69,12 @@
   <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- ================================================================= -->
-    <!-- MODULE 1: SIAS (PENGAJUAN ASISTEN LAB BARU) -->
-    <!-- ================================================================= -->
+    <!-- MODULE 1: SIAS -->
     <section id="moduleSias" class="space-y-6">
-      
-      <!-- Banner Header -->
-      <div class="bg-gradient-to-r from-blue-900 via-blue-950 to-slate-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <span class="bg-amber-400 text-blue-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul 1: SIAS</span>
-          <h2 class="text-xl font-extrabold brand-font">Pengajuan Registrasi Asisten Lab</h2>
-          <p class="text-xs text-blue-200 mt-1">Input biodata asisten baru untuk diterbitkan Kode Gaji Resmi oleh Admin SDM.</p>
-        </div>
+      <div class="bg-gradient-to-r from-blue-900 via-blue-950 to-slate-900 rounded-2xl p-6 text-white shadow-md">
+        <span class="bg-amber-400 text-blue-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul 1: SIAS</span>
+        <h2 class="text-xl font-extrabold brand-font">Pengajuan Registrasi Asisten Lab</h2>
+        <p class="text-xs text-blue-200 mt-1">Input biodata asisten baru untuk diterbitkan Kode Gaji Resmi oleh Admin SDM.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -106,7 +93,7 @@
 
             <div>
               <label class="block font-semibold text-slate-700 mb-1">NIK KTP (16 Digit)</label>
-              <input type="text" id="siasNik" placeholder="Contoh: 3204370911030001" required font-mono class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none font-mono">
+              <input type="text" id="siasNik" maxlength="16" placeholder="Contoh: 3204370911030001" required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none font-mono">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -116,16 +103,29 @@
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">No. WhatsApp/HP</label>
-                <input type="text" id="siasHp" placeholder="0857..." required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
+                <input type="text" id="siasHp" placeholder="085799887766" required class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:outline-none">
               </div>
             </div>
 
+            <!-- DROPDOWN BERJENJANGsesuai EXCEL -->
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Unit Lab Penempatan</label>
-              <select id="siasLab" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                <option value="Farmasi (Terpadu Unit B)">Farmasi (Terpadu Unit B)</option>
-                <option value="Laboratorium Komputer">Laboratorium Komputer</option>
-                <option value="Laboratorium Kimia">Laboratorium Kimia</option>
+              <label class="block font-semibold text-slate-700 mb-1">Pilih Fakultas / Unit</label>
+              <select id="siasFakultas" onchange="onFakultasChange()" required class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
+                <option value="">-- Pilih Fakultas / Unit --</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Pilih Program Studi</label>
+              <select id="siasProdi" onchange="onProdiChange()" disabled required class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none disabled:bg-slate-100">
+                <option value="">-- Pilih Prodi Dahulu --</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Pilih Nama Laboratorium</label>
+              <select id="siasLab" disabled required class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none disabled:bg-slate-100">
+                <option value="">-- Pilih Lab Dahulu --</option>
               </select>
             </div>
 
@@ -149,37 +149,28 @@
                 <tr>
                   <th class="py-3 px-4">Tgl</th>
                   <th class="py-3 px-4">Nama Asisten</th>
-                  <th class="py-3 px-4">Lab</th>
+                  <th class="py-3 px-4">Fakultas / Prodi / Lab</th>
                   <th class="py-3 px-4">Status Admin</th>
                   <th class="py-3 px-4">Kode Gaji Terbit</th>
                 </tr>
               </thead>
               <tbody id="siasClientTableBody" class="divide-y divide-slate-100">
-                <!-- Data akan dirender lewat JavaScript -->
               </tbody>
             </table>
           </div>
         </div>
       </div>
-
     </section>
 
-    <!-- ================================================================= -->
-    <!-- MODULE 2: SIPHON (PENGAJUAN HONORARIUM) -->
-    <!-- ================================================================= -->
+    <!-- MODULE 2: SIPHON -->
     <section id="moduleSiphon" class="hidden space-y-6">
-      
-      <!-- Banner Header -->
-      <div class="bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <span class="bg-indigo-400 text-indigo-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul 2: SIPHON</span>
-          <h2 class="text-xl font-extrabold brand-font">Pengajuan Honorarium Aslab</h2>
-          <p class="text-xs text-indigo-200 mt-1">Kalkulasi honor berdasarkan jam kerja praktikum dan Kode Gaji resmi.</p>
-        </div>
+      <div class="bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white shadow-md">
+        <span class="bg-indigo-400 text-indigo-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Modul 2: SIPHON</span>
+        <h2 class="text-xl font-extrabold brand-font">Pengajuan Honorarium Aslab</h2>
+        <p class="text-xs text-indigo-200 mt-1">Kalkulasi honor berdasarkan jam kerja praktikum dan Kode Gaji resmi.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- FORM PENGAJUAN HONOR -->
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
           <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 pb-3 border-b border-slate-100">
             <i data-lucide="calculator" class="w-4 h-4 text-indigo-600"></i>
@@ -189,8 +180,7 @@
           <form onsubmit="submitSiphonForm(event)" class="space-y-4 text-xs">
             <div>
               <label class="block font-semibold text-slate-700 mb-1">Pilih Asisten (Ber-Kode Gaji)</label>
-              <select id="siphonAslab" class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
-                <option value="Rina Jayanti, S.Farm (KG-FAR-001)">Rina Jayanti, S.Farm (KG-FAR-001)</option>
+              <select id="siphonAslabSelect" required class="w-full border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-indigo-600 focus:outline-none">
               </select>
             </div>
 
@@ -211,7 +201,6 @@
           </form>
         </div>
 
-        <!-- RIWAYAT HONOR CLIENT -->
         <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
           <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 pb-3 border-b border-slate-100">
             <i data-lucide="receipt" class="w-4 h-4 text-indigo-600"></i>
@@ -230,15 +219,12 @@
                 </tr>
               </thead>
               <tbody id="siphonClientTableBody" class="divide-y divide-slate-100">
-                <!-- Data dirender lewat JavaScript -->
               </tbody>
             </table>
           </div>
         </div>
       </div>
-
     </section>
-
   </main>
 
   <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
@@ -248,23 +234,235 @@
   </footer>
 
   <script>
-    lucide.createIcons();
-
-    // Default Storage Setup
-    let siasData = JSON.parse(localStorage.getItem('siasRequests')) || [
-      { id: 1, tgl: '01/10/2026', nama: 'Rina Jayanti, S.Farm', nik: '3204087001930002', lab: 'Farmasi (Terpadu Unit B)', status: 'Done', kodeGaji: 'KG-FAR-001' },
-      { id: 2, tgl: '02/10/2026', nama: 'Faisal Syahrul Abidin', nik: '3204370911030001', lab: 'Farmasi (Terpadu Unit B)', status: 'On Process', kodeGaji: '-' }
+    // DATA MATRIX DARI IMAGE SPREADSHEET UNISBA
+    const masterData = [
+      { fakultas: "Ekonomi dan Bisnis", prodi: "Akuntansi", lab: "Akuntansi" },
+      { fakultas: "Ekonomi dan Bisnis", prodi: "Manajemen", lab: "Manajemen" },
+      { fakultas: "Ekonomi dan Bisnis", prodi: "Manajemen", lab: "Prodi Manajemen, Konsentrasi Pemasaran" },
+      { fakultas: "Teknik", prodi: "Teknik Pertambangan", lab: "EKSPLORASI" },
+      { fakultas: "Teknik", prodi: "Teknik Pertambangan", lab: "GEOLOGI" },
+      { fakultas: "Teknik", prodi: "Teknik Pertambangan", lab: "Per. & Simulasi Tambang" },
+      { fakultas: "Teknik", prodi: "Teknik Pertambangan", lab: "Perpetaan" },
+      { fakultas: "Teknik", prodi: "Teknik Pertambangan", lab: "PPSR" },
+      { fakultas: "Teknik", prodi: "Teknik Pertambangan", lab: "Tambang" },
+      { fakultas: "Teknik", prodi: "Pendidikan Agama Islam", lab: "EKSPLORASI" },
+      { fakultas: "Teknik", prodi: "Perencanaan Wilayah & Kota", lab: "ENERGI DAN LINGKUNGAN" },
+      { fakultas: "Teknik", prodi: "Perencanaan Wilayah & Kota", lab: "Perpetaan" },
+      { fakultas: "Teknik", prodi: "Perencanaan Wilayah & Kota", lab: "PPSR" },
+      { fakultas: "Teknik", prodi: "Perencanaan Wilayah & Kota", lab: "STUDIO" },
+      { fakultas: "Teknik", prodi: "Teknik Industri", lab: "LAB. TEKNIK SISTEM PRODUKSI" },
+      { fakultas: "Teknik", prodi: "Teknik Industri", lab: "Laboraotium APK & Ergonomi" },
+      { fakultas: "Teknik", prodi: "Teknik Industri", lab: "LSIK (Laboratorium Sistem Informasi dan Keputusan)" },
+      { fakultas: "Teknik", prodi: "Teknik Industri", lab: "Manajemen Kualitas" },
+      { fakultas: "Teknik", prodi: "Teknik Industri", lab: "PPSR" },
+      { fakultas: "Teknik", prodi: "Manajemen Kualitas", lab: "Manajemen Kualitas" },
+      { fakultas: "Farmasi dan Sains", prodi: "Farmasi", lab: "Farmasi (FKK)" },
+      { fakultas: "Farmasi dan Sains", prodi: "Farmasi", lab: "Farmasi (Terpadu Unit A)" },
+      { fakultas: "Farmasi dan Sains", prodi: "Farmasi", lab: "Farmasi (Terpadu Unit B)" },
+      { fakultas: "Farmasi dan Sains", prodi: "Farmasi", lab: "Farmasi (Terpadu Unit C)" },
+      { fakultas: "Farmasi dan Sains", prodi: "Farmasi", lab: "Farmasi (Terpadu Unit D)" },
+      { fakultas: "Farmasi dan Sains", prodi: "Farmasi", lab: "Farmasi (Terpadu Unit E)" },
+      { fakultas: "Farmasi dan Sains", prodi: "Matematika", lab: "Komputasi Matematika" },
+      { fakultas: "Farmasi dan Sains", prodi: "Statistika", lab: "Statistika" },
+      { fakultas: "Ilmu Komunikasi", prodi: "Ilmu Komunikasi", lab: "Fotografi" },
+      { fakultas: "Ilmu Komunikasi", prodi: "Ilmu Komunikasi", lab: "Komunikasi Grafis" },
+      { fakultas: "Ilmu Komunikasi", prodi: "Ilmu Komunikasi", lab: "LAB. FILM" },
+      { fakultas: "Ilmu Komunikasi", prodi: "Ilmu Komunikasi", lab: "LAB. TELEVISI" },
+      { fakultas: "Ilmu Komunikasi", prodi: "Ilmu Komunikasi", lab: "MULTIMEDIA" },
+      { fakultas: "Ilmu Komunikasi", prodi: "Ilmu Komunikasi", lab: "Radio" },
+      { fakultas: "Ilmu Komunikasi", prodi: "Ilmu Komunikasi", lab: "Simulasi Komunikasi" },
+      { fakultas: "Dakwah", prodi: "Komunikasi dan Penyiaran Islam", lab: "Lab. Produksi Film, Siaran Radio, Televisi & Multimedia Dakwah" },
+      { fakultas: "Psikologi", prodi: "Magister Psikologi", lab: "PSIKOLOGI" },
+      { fakultas: "Psikologi", prodi: "Psikologi", lab: "PSIKOLOGI" },
+      { fakultas: "Syari`ah", prodi: "Ahwal Al-syakhshiyah", lab: "Syari'ah" },
+      { fakultas: "UPT. Bahasa", prodi: "UPT. Bahasa", lab: "UPT BAHASA" }
     ];
 
-    let siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [
-      { id: 1, tgl: '03/10/2026', aslab: 'Rina Jayanti, S.Farm (KG-FAR-001)', matkul: 'Farmakologi Dasar', nominal: '600000', status: 'Approved SDM' }
+    // INITIALIZATION & LOCAL STORAGE DUMMY
+    const initialSias = [
+      { id: 101, tgl: '01/10/2026', nama: 'Rina Jayanti, S.Farm', nik: '3204087001930002', tglLahir: '1993-01-30', hp: '081223344556', fakultas: 'Farmasi dan Sains', prodi: 'Farmasi', lab: 'Farmasi (Terpadu Unit B)', status: 'Done', kodeGaji: 'KG-FAR-001' },
+      { id: 102, tgl: '02/10/2026', nama: 'Faisal Syahrul Abidin', nik: '3204370911030001', tglLahir: '2003-11-09', hp: '085799887766', fakultas: 'Farmasi dan Sains', prodi: 'Farmasi', lab: 'Farmasi (Terpadu Unit B)', status: 'On Process', kodeGaji: '-' }
     ];
 
-    // Initial Render
-    renderSiasTable();
-    renderSiphonTable();
+    const initialSiphon = [
+      { id: 201, tgl: '03/10/2026', aslab: 'Rina Jayanti, S.Farm (KG-FAR-001)', matkul: 'Farmakologi Dasar', nominal: '600000', status: 'Approved SDM' }
+    ];
 
-    // Switch Tab
+    if (!localStorage.getItem('siasRequests')) {
+      localStorage.setItem('siasRequests', JSON.stringify(initialSias));
+    }
+    if (!localStorage.getItem('siphonRequests')) {
+      localStorage.setItem('siphonRequests', JSON.stringify(initialSiphon));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      populateFakultasDropdown();
+      renderAllTables();
+      populateSiphonAslabDropdown();
+    });
+
+    window.addEventListener('storage', () => {
+      renderAllTables();
+      populateSiphonAslabDropdown();
+    });
+
+    // CASCADE DROPDOWN LOGIC
+    function populateFakultasDropdown() {
+      const fakSelect = document.getElementById('siasFakultas');
+      const fakultasSet = [...new Set(masterData.map(item => item.fakultas))];
+      
+      fakSelect.innerHTML = '<option value="">-- Pilih Fakultas / Unit --</option>' + 
+        fakultasSet.map(f => `<option value="${f}">${f}</option>`).join('');
+    }
+
+    function onFakultasChange() {
+      const selectedFak = document.getElementById('siasFakultas').value;
+      const prodiSelect = document.getElementById('siasProdi');
+      const labSelect = document.getElementById('siasLab');
+
+      labSelect.innerHTML = '<option value="">-- Pilih Lab Dahulu --</option>';
+      labSelect.disabled = true;
+
+      if (!selectedFak) {
+        prodiSelect.innerHTML = '<option value="">-- Pilih Prodi Dahulu --</option>';
+        prodiSelect.disabled = true;
+        return;
+      }
+
+      const filteredProdi = [...new Set(masterData.filter(item => item.fakultas === selectedFak).map(item => item.prodi))];
+      prodiSelect.innerHTML = '<option value="">-- Pilih Program Studi --</option>' + 
+        filteredProdi.map(p => `<option value="${p}">${p}</option>`).join('');
+      prodiSelect.disabled = false;
+    }
+
+    function onProdiChange() {
+      const selectedFak = document.getElementById('siasFakultas').value;
+      const selectedProdi = document.getElementById('siasProdi').value;
+      const labSelect = document.getElementById('siasLab');
+
+      if (!selectedProdi) {
+        labSelect.innerHTML = '<option value="">-- Pilih Lab Dahulu --</option>';
+        labSelect.disabled = true;
+        return;
+      }
+
+      const filteredLab = masterData
+        .filter(item => item.fakultas === selectedFak && item.prodi === selectedProdi)
+        .map(item => item.lab);
+
+      labSelect.innerHTML = '<option value="">-- Pilih Nama Laboratorium --</option>' + 
+        filteredLab.map(l => `<option value="${l}">${l}</option>`).join('');
+      labSelect.disabled = false;
+    }
+
+    // FORM SUBMISSIONS
+    function submitSiasForm(e) {
+      e.preventDefault();
+      const siasData = JSON.parse(localStorage.getItem('siasRequests')) || [];
+
+      const newEntry = {
+        id: Date.now(),
+        tgl: new Date().toLocaleDateString('id-ID'),
+        nama: document.getElementById('siasNama').value.trim(),
+        nik: document.getElementById('siasNik').value.trim(),
+        tglLahir: document.getElementById('siasTglLahir').value,
+        hp: document.getElementById('siasHp').value.trim(),
+        fakultas: document.getElementById('siasFakultas').value,
+        prodi: document.getElementById('siasProdi').value,
+        lab: document.getElementById('siasLab').value,
+        status: 'On Process',
+        kodeGaji: '-'
+      };
+
+      siasData.unshift(newEntry);
+      localStorage.setItem('siasRequests', JSON.stringify(siasData));
+
+      e.target.reset();
+      document.getElementById('siasProdi').disabled = true;
+      document.getElementById('siasLab').disabled = true;
+
+      renderAllTables();
+      alert('Pengajuan Asisten berhasil dikirim dan tersimpan ke Admin SDM!');
+    }
+
+    function submitSiphonForm(e) {
+      e.preventDefault();
+      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
+
+      const newEntry = {
+        id: Date.now(),
+        tgl: new Date().toLocaleDateString('id-ID'),
+        aslab: document.getElementById('siphonAslabSelect').value,
+        matkul: document.getElementById('siphonMatkul').value.trim(),
+        nominal: document.getElementById('siphonNominal').value,
+        status: 'Pending Admin'
+      };
+
+      siphonData.unshift(newEntry);
+      localStorage.setItem('siphonRequests', JSON.stringify(siphonData));
+
+      e.target.reset();
+      renderAllTables();
+      alert('Pengajuan Honorarium berhasil dikirim ke Admin!');
+    }
+
+    // RENDER FUNCTIONS
+    function renderAllTables() {
+      const siasData = JSON.parse(localStorage.getItem('siasRequests')) || [];
+      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
+
+      // Render SIAS Table
+      const siasBody = document.getElementById('siasClientTableBody');
+      siasBody.innerHTML = siasData.map(item => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-mono text-slate-500">${item.tgl}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${item.nama}<div class="text-[10px] text-slate-400 font-normal font-mono">NIK: ${item.nik}</div></td>
+          <td class="py-3 px-4 text-slate-600">
+            <div class="font-semibold text-slate-700">${item.lab}</div>
+            <div class="text-[10px] text-slate-400">${item.fakultas} - ${item.prodi}</div>
+          </td>
+          <td class="py-3 px-4">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${item.status === 'Done' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${item.status}
+            </span>
+          </td>
+          <td class="py-3 px-4 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
+        </tr>
+      `).join('');
+
+      // Render SIPHON Table
+      const siphonBody = document.getElementById('siphonClientTableBody');
+      siphonBody.innerHTML = siphonData.map(item => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-mono text-slate-500">${item.tgl}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${item.aslab}</td>
+          <td class="py-3 px-4 text-slate-600">${item.matkul}</td>
+          <td class="py-3 px-4 font-bold text-indigo-700">Rp ${parseInt(item.nominal || 0).toLocaleString('id-ID')}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.status === 'Approved SDM' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${item.status}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function populateSiphonAslabDropdown() {
+      const siasData = JSON.parse(localStorage.getItem('siasRequests')) || [];
+      const select = document.getElementById('siphonAslabSelect');
+      const approvedAslab = siasData.filter(i => i.status === 'Done');
+
+      if (approvedAslab.length === 0) {
+        select.innerHTML = '<option value="Rina Jayanti, S.Farm (KG-FAR-001)">Rina Jayanti, S.Farm (KG-FAR-001)</option>';
+        return;
+      }
+
+      select.innerHTML = approvedAslab.map(i => 
+        `<option value="${i.nama} (${i.kodeGaji})">${i.nama} (${i.kodeGaji})</option>`
+      ).join('');
+    }
+
     function switchTab(tabName) {
       const moduleSias = document.getElementById('moduleSias');
       const moduleSiphon = document.getElementById('moduleSiphon');
@@ -282,90 +480,6 @@
         tabSiphon.className = "py-4 text-sm font-bold border-b-2 border-indigo-700 text-indigo-700 flex items-center gap-2 transition";
         tabSias.className = "py-4 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition";
       }
-    }
-
-    // Submit SIAS Form (Save to localStorage)
-    function submitSiasForm(e) {
-      e.preventDefault();
-      const nama = document.getElementById('siasNama').value;
-      const nik = document.getElementById('siasNik').value;
-      const lab = document.getElementById('siasLab').value;
-
-      const newEntry = {
-        id: Date.now(),
-        tgl: new Date().toLocaleDateString('id-ID'),
-        nama: nama,
-        nik: nik,
-        lab: lab,
-        status: 'On Process',
-        kodeGaji: '-'
-      };
-
-      siasData.unshift(newEntry);
-      localStorage.setItem('siasRequests', JSON.stringify(siasData));
-
-      renderSiasTable();
-      e.target.reset();
-      alert('Pengajuan Asisten berhasil dikirim ke Admin Kepegawaian!');
-    }
-
-    // Submit SIPHON Form (Save to localStorage)
-    function submitSiphonForm(e) {
-      e.preventDefault();
-      const aslab = document.getElementById('siphonAslab').value;
-      const matkul = document.getElementById('siphonMatkul').value;
-      const nominal = document.getElementById('siphonNominal').value;
-
-      const newEntry = {
-        id: Date.now(),
-        tgl: new Date().toLocaleDateString('id-ID'),
-        aslab: aslab,
-        matkul: matkul,
-        nominal: nominal,
-        status: 'Pending Admin'
-      };
-
-      siphonData.unshift(newEntry);
-      localStorage.setItem('siphonRequests', JSON.stringify(siphonData));
-
-      renderSiphonTable();
-      e.target.reset();
-      alert('Pengajuan Honorarium berhasil dikirim ke Admin SDM!');
-    }
-
-    // Render Tables
-    function renderSiasTable() {
-      const tbody = document.getElementById('siasClientTableBody');
-      tbody.innerHTML = siasData.map(item => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-3 px-4 font-mono text-slate-500">${item.tgl}</td>
-          <td class="py-3 px-4 font-bold text-slate-800">${item.nama}<div class="text-[10px] text-slate-400 font-normal font-mono">${item.nik}</div></td>
-          <td class="py-3 px-4 text-slate-600">${item.lab}</td>
-          <td class="py-3 px-4">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.status === 'Done' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-              ${item.status}
-            </span>
-          </td>
-          <td class="py-3 px-4 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
-        </tr>
-      `).join('');
-    }
-
-    function renderSiphonTable() {
-      const tbody = document.getElementById('siphonClientTableBody');
-      tbody.innerHTML = siphonData.map(item => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-3 px-4 font-mono text-slate-500">${item.tgl}</td>
-          <td class="py-3 px-4 font-bold text-slate-800">${item.aslab}</td>
-          <td class="py-3 px-4 text-slate-600">${item.matkul}</td>
-          <td class="py-3 px-4 font-bold text-indigo-700">Rp ${parseInt(item.nominal).toLocaleString('id-ID')}</td>
-          <td class="py-3 px-4">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.status === 'Approved SDM' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-              ${item.status}
-            </span>
-          </td>
-        </tr>
-      `).join('');
     }
   </script>
 </body>
