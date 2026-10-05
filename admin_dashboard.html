@@ -6,7 +6,11 @@
     <title>Admin Dashboard - SISFO UNISBA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>.bg-unisba { background-color: #0d1e3a; }</style>
+    <style>
+        .bg-unisba { background-color: #0d1e3a; }
+        .tab-active { @apply bg-blue-50/80 text-blue-700 border-b-2 border-blue-600 font-bold shadow-sm; }
+        .tab-inactive { @apply text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-medium; }
+    </style>
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
 
@@ -24,12 +28,12 @@
     </header>
 
     <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
-        <!-- Navigation Tabs -->
-        <div class="flex border-b border-slate-200 mb-6 bg-white rounded-t-xl px-4 pt-2 shadow-sm">
-            <button onclick="switchTab('sigas')" id="tab-sigas" class="px-5 py-3 text-sm font-bold border-b-2 border-blue-600 text-blue-600">
+        <!-- Dynamic Navigation Tabs -->
+        <div class="flex gap-2 border-b border-slate-200 mb-6 bg-white rounded-t-xl p-2 shadow-sm">
+            <button onclick="switchTab('sigas')" id="tab-sigas" class="px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active">
                 <i class="fa-solid fa-id-card"></i> Kelola SIGAS & Kode Gaji
             </button>
-            <button onclick="switchTab('master')" id="tab-master" class="px-5 py-3 text-sm font-semibold text-slate-500 hover:text-blue-600">
+            <button onclick="switchTab('master')" id="tab-master" class="px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive">
                 <i class="fa-solid fa-database text-amber-500"></i> Master Data (Fakultas, Prodi, Lab)
             </button>
         </div>
@@ -43,10 +47,10 @@
                         <p class="text-xs text-slate-500">Terbitkan kode gaji resmi dan atur status keaktifan Aslab</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg">
+                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg shadow-sm">
                             <i class="fa-solid fa-file-excel"></i> Export CSV
                         </button>
-                        <button onclick="openImportModal()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg">
+                        <button onclick="openImportModal()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg shadow-sm">
                             <i class="fa-solid fa-file-import"></i> Import CSV
                         </button>
                     </div>
@@ -58,7 +62,7 @@
                             <tr class="bg-slate-100 text-slate-700 border-b">
                                 <th class="p-3">No</th>
                                 <th class="p-3">Nama Aslab</th>
-                                <th class="p-3">NPM</th>
+                                <th class="p-3">NIK (16 Digit)</th>
                                 <th class="p-3">TTL</th>
                                 <th class="p-3">Prodi / Lab</th>
                                 <th class="p-3">Kode Gaji</th>
@@ -72,48 +76,87 @@
             </div>
         </div>
 
-        <!-- Master Data Management -->
-        <div id="module-master" class="hidden bg-white p-6 rounded-xl shadow-sm border">
-            <h3 class="text-base font-bold text-slate-800 mb-4">Kelola Master Data Struktur</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Tambah Fakultas -->
-                <div class="bg-slate-50 p-4 rounded-xl border">
-                    <h4 class="font-bold text-xs text-slate-700 uppercase mb-2">Tambah Fakultas</h4>
-                    <div class="flex gap-2 mb-3">
-                        <input type="text" id="input-fakultas" placeholder="Fakultas Baru" class="flex-1 px-3 py-1.5 border rounded text-xs">
-                        <button onclick="addMasterFakultas()" class="px-3 py-1.5 bg-amber-500 text-white text-xs rounded font-semibold">Tambah</button>
+        <!-- Master Data Management (Urutan: Fakultas -> Prodi -> Lab) -->
+        <div id="module-master" class="hidden bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-sitemap text-amber-500"></i> Kelola Master Data Struktur (Fakultas > Prodi > Laboratorium)
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- 1. KELOLA FAKULTAS -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-xs text-slate-700 uppercase mb-3 flex items-center gap-1">
+                            <span class="bg-amber-400 text-slate-900 rounded-full w-4 h-4 inline-flex items-center justify-center text-[10px]">1</span> Fakultas
+                        </h4>
+                        <div class="flex gap-2 mb-3">
+                            <input type="text" id="input-fakultas" placeholder="Fakultas Baru" class="flex-1 px-3 py-1.5 border rounded text-xs outline-none">
+                            <button onclick="addMasterFakultas()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded font-semibold transition">Tambah</button>
+                        </div>
                     </div>
-                    <ul id="list-fakultas" class="space-y-1 text-xs max-h-40 overflow-y-auto"></ul>
+                    <div>
+                        <p class="text-[10px] font-semibold text-slate-400 uppercase mb-1">Daftar Fakultas</p>
+                        <ul id="list-fakultas" class="space-y-1 text-xs max-h-48 overflow-y-auto"></ul>
+                    </div>
                 </div>
 
-                <!-- Tambah Lab -->
-                <div class="bg-slate-50 p-4 rounded-xl border">
-                    <h4 class="font-bold text-xs text-slate-700 uppercase mb-2">Tambah Laboratorium</h4>
-                    <div class="flex gap-2 mb-3">
-                        <input type="text" id="input-lab" placeholder="Nama Lab Baru" class="flex-1 px-3 py-1.5 border rounded text-xs">
-                        <button onclick="addMasterLab()" class="px-3 py-1.5 bg-amber-500 text-white text-xs rounded font-semibold">Tambah</button>
+                <!-- 2. KELOLA PRODI -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-xs text-slate-700 uppercase mb-3 flex items-center gap-1">
+                            <span class="bg-amber-400 text-slate-900 rounded-full w-4 h-4 inline-flex items-center justify-center text-[10px]">2</span> Program Studi
+                        </h4>
+                        <select id="master-select-fakultas" class="w-full px-2 py-1.5 border rounded text-xs mb-2 outline-none"></select>
+                        <div class="flex gap-2 mb-3">
+                            <input type="text" id="input-prodi" placeholder="Prodi Baru" class="flex-1 px-3 py-1.5 border rounded text-xs outline-none">
+                            <button onclick="addMasterProdi()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded font-semibold transition">Tambah</button>
+                        </div>
                     </div>
-                    <ul id="list-lab" class="space-y-1 text-xs max-h-40 overflow-y-auto"></ul>
+                    <div>
+                        <p class="text-[10px] font-semibold text-slate-400 uppercase mb-1">Daftar Program Studi</p>
+                        <ul id="list-prodi" class="space-y-1 text-xs max-h-48 overflow-y-auto"></ul>
+                    </div>
+                </div>
+
+                <!-- 3. KELOLA LAB -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-xs text-slate-700 uppercase mb-3 flex items-center gap-1">
+                            <span class="bg-amber-400 text-slate-900 rounded-full w-4 h-4 inline-flex items-center justify-center text-[10px]">3</span> Laboratorium
+                        </h4>
+                        <div class="flex gap-2 mb-3">
+                            <input type="text" id="input-lab" placeholder="Nama Lab Baru" class="flex-1 px-3 py-1.5 border rounded text-xs outline-none">
+                            <button onclick="addMasterLab()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded font-semibold transition">Tambah</button>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-semibold text-slate-400 uppercase mb-1">Daftar Laboratorium</p>
+                        <ul id="list-lab" class="space-y-1 text-xs max-h-48 overflow-y-auto"></ul>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Modal Import -->
-    <div id="modal-import" class="hidden fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6">
+    <div id="modal-import" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
             <h3 class="font-bold text-slate-800 text-sm mb-2">Import Data CSV Aslab</h3>
-            <textarea id="import-text" rows="5" placeholder="Format: Nama,NPM,TempatLahir,TglLahir,Fakultas,Prodi,Lab,Rekening" class="w-full p-2 border rounded text-xs font-mono mb-4"></textarea>
+            <textarea id="import-text" rows="5" placeholder="Format: Nama,NIK,TempatLahir,TglLahir,Fakultas,Prodi,Lab" class="w-full p-2 border rounded text-xs font-mono mb-4 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             <div class="flex justify-end gap-2">
-                <button onclick="closeImportModal()" class="px-3 py-1.5 bg-slate-200 text-xs rounded">Batal</button>
-                <button onclick="processImport()" class="px-3 py-1.5 bg-purple-600 text-white text-xs rounded">Import</button>
+                <button onclick="closeImportModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded font-semibold">Batal</button>
+                <button onclick="processImport()" class="px-3 py-1.5 bg-purple-600 text-white text-xs rounded font-semibold">Import Data</button>
             </div>
         </div>
     </div>
 
     <script>
         let sigasData = JSON.parse(localStorage.getItem('sigas_data')) || [];
-        let masterData = JSON.parse(localStorage.getItem('master_data')) || { fakultas: [], prodi: {}, labs: [] };
+        let masterData = JSON.parse(localStorage.getItem('master_data')) || {
+            fakultas: ["Fakultas Teknik", "Fakultas Ekonomi & Bisnis", "Fakultas MIPA"],
+            prodi: { "Fakultas Teknik": ["Teknik Informatika", "Teknik Industri"], "Fakultas Ekonomi & Bisnis": ["Akuntansi", "Manajemen"], "Fakultas MIPA": ["Farmasi"] },
+            labs: ["Lab Rekayasa Perangkat Lunak", "Lab Jaringan Computer", "Lab Simulasi Bisnis"]
+        };
 
         window.onload = function() {
             renderTable();
@@ -126,14 +169,14 @@
                 <tr class="hover:bg-slate-50">
                     <td class="p-3">${idx + 1}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
-                    <td class="p-3">${item.npm}</td>
+                    <td class="p-3 font-mono">${item.nik}</td>
                     <td class="p-3">${item.tempatLahir}, ${item.tglLahir}</td>
                     <td class="p-3">${item.prodi} <br><span class="text-[10px] text-slate-400">${item.lab}</span></td>
                     <td class="p-3">${item.kodeGaji ? `<span class="bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded font-bold">${item.kodeGaji}</span>` : `<span class="text-slate-400 italic">Belum Terbit</span>`}</td>
-                    <td class="p-3">${item.statusAktif ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px]">Aktif</span>` : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-[10px]">Non-Aktif</span>`}</td>
+                    <td class="p-3">${item.statusAktif ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-semibold">Aktif</span>` : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-[10px] font-semibold">Non-Aktif</span>`}</td>
                     <td class="p-3 text-center">
-                        ${!item.kodeGaji ? `<button onclick="generateKode(${item.id})" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] mr-1">Terbitkan Kode</button>` : ''}
-                        <button onclick="toggleStatus(${item.id})" class="px-2 py-1 bg-slate-200 text-slate-700 rounded text-[10px]">Toggle Status</button>
+                        ${!item.kodeGaji ? `<button onclick="generateKode(${item.id})" class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] mr-1">Terbitkan Kode</button>` : ''}
+                        <button onclick="toggleStatus(${item.id})" class="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded text-[10px]">Toggle Status</button>
                     </td>
                 </tr>
             `).join('');
@@ -158,16 +201,45 @@
         }
 
         function renderMasterLists() {
-            document.getElementById('list-fakultas').innerHTML = masterData.fakultas.map(f => `<li class="p-1.5 bg-white border rounded">${f}</li>`).join('');
-            document.getElementById('list-lab').innerHTML = masterData.labs.map(l => `<li class="p-1.5 bg-white border rounded">${l}</li>`).join('');
+            // Render List Fakultas
+            document.getElementById('list-fakultas').innerHTML = masterData.fakultas.map(f => `<li class="p-1.5 bg-white border rounded text-slate-700">${f}</li>`).join('');
+            
+            // Render Dropdown & List Prodi
+            const selectFak = document.getElementById('master-select-fakultas');
+            selectFak.innerHTML = masterData.fakultas.map(f => `<option value="${f}">${f}</option>`).join('');
+            renderProdiList();
+
+            // Render List Lab
+            document.getElementById('list-lab').innerHTML = masterData.labs.map(l => `<li class="p-1.5 bg-white border rounded text-slate-700">${l}</li>`).join('');
         }
+
+        function renderProdiList() {
+            const selectedFak = document.getElementById('master-select-fakultas').value;
+            const prodiList = masterData.prodi[selectedFak] || [];
+            document.getElementById('list-prodi').innerHTML = prodiList.map(p => `<li class="p-1.5 bg-white border rounded text-slate-700">${p}</li>`).join('');
+        }
+
+        document.getElementById('master-select-fakultas').onchange = renderProdiList;
 
         function addMasterFakultas() {
             const val = document.getElementById('input-fakultas').value.trim();
             if (val && !masterData.fakultas.includes(val)) {
                 masterData.fakultas.push(val);
+                masterData.prodi[val] = [];
                 localStorage.setItem('master_data', JSON.stringify(masterData));
                 renderMasterLists();
+                document.getElementById('input-fakultas').value = '';
+            }
+        }
+
+        function addMasterProdi() {
+            const fak = document.getElementById('master-select-fakultas').value;
+            const val = document.getElementById('input-prodi').value.trim();
+            if (fak && val && masterData.prodi[fak]) {
+                masterData.prodi[fak].push(val);
+                localStorage.setItem('master_data', JSON.stringify(masterData));
+                renderProdiList();
+                document.getElementById('input-prodi').value = '';
             }
         }
 
@@ -177,6 +249,7 @@
                 masterData.labs.push(val);
                 localStorage.setItem('master_data', JSON.stringify(masterData));
                 renderMasterLists();
+                document.getElementById('input-lab').value = '';
             }
         }
 
@@ -188,11 +261,11 @@
             if (!text) return;
             text.split('\n').forEach(line => {
                 const cols = line.split(',').map(c => c.trim());
-                if (cols.length >= 7) {
+                if (cols.length >= 6) {
                     sigasData.push({
                         id: Date.now() + Math.random(),
-                        nama: cols[0], npm: cols[1], tempatLahir: cols[2], tglLahir: cols[3],
-                        fakultas: cols[4], prodi: cols[5], lab: cols[6], rekening: cols[7] || '-',
+                        nama: cols[0], nik: cols[1], tempatLahir: cols[2], tglLahir: cols[3],
+                        fakultas: cols[4], prodi: cols[5], lab: cols[6] || '-',
                         kodeGaji: null, statusAktif: true
                     });
                 }
@@ -203,8 +276,8 @@
         }
 
         function exportToCSV() {
-            let csv = "data:text/csv;charset=utf-8,Nama,NPM,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
-            sigasData.forEach(r => { csv += `"${r.nama}","${r.npm}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
+            let csv = "data:text/csv;charset=utf-8,Nama,NIK,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
+            sigasData.forEach(r => { csv += `"${r.nama}","${r.nik}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
             const link = document.createElement("a");
             link.href = encodeURI(csv);
             link.download = `SIGAS_Admin_Rekap.csv`;
@@ -212,8 +285,20 @@
         }
 
         function switchTab(tab) {
-            document.getElementById('module-sigas').classList.toggle('hidden', tab !== 'sigas');
-            document.getElementById('module-master').classList.toggle('hidden', tab !== 'master');
+            const sigasBtn = document.getElementById('tab-sigas');
+            const masterBtn = document.getElementById('tab-master');
+
+            if (tab === 'sigas') {
+                document.getElementById('module-sigas').classList.remove('hidden');
+                document.getElementById('module-master').classList.add('hidden');
+                sigasBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active";
+                masterBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive";
+            } else {
+                document.getElementById('module-sigas').classList.add('hidden');
+                document.getElementById('module-master').classList.remove('hidden');
+                sigasBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive";
+                masterBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active";
+            }
         }
     </script>
 </body>
