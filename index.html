@@ -3,90 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTAL SISFO - UNISBA</title>
+    <title>Login - PORTAL SDM DAN ADMINISTRASI UMUM UNIVERSITAS ISLAM BANDUNG</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .bg-unisba { background-color: #0d1e3a; }
-        .bg-unisba-card { background-color: #12284c; }
+        .bg-unisba-blue {
+            background: linear-gradient(135deg, #0b192e 0%, #1e3a8a 70%, #1e40af 100%);
+        }
+        .campus-bg {
+            background-image: url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
-<body class="bg-slate-100 font-sans min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-900 font-sans min-h-screen flex items-center justify-center p-0 md:p-6 lg:p-10">
 
-    <div class="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
-        <!-- Branding Side -->
-        <div class="bg-unisba text-white p-8 flex flex-col justify-between">
+    <!-- Container Utama Split Screen -->
+    <div class="w-full max-w-6xl min-h-screen md:min-h-[640px] bg-white md:rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-slate-700/30">
+        
+        <!-- SISI KIRI: Form Login Minimalis -->
+        <div class="lg:col-span-5 p-8 sm:p-12 flex flex-col justify-between bg-white z-10">
+            <!-- Branding Header -->
             <div>
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-amber-400 text-slate-900 font-bold px-3 py-1 rounded-lg text-lg">UB</div>
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="bg-amber-400 text-slate-900 font-black w-10 h-10 rounded-xl flex items-center justify-center shadow-md border-2 border-amber-300 text-sm">
+                        UB
+                    </div>
                     <div>
-                        <h1 class="font-bold tracking-wider text-xl">PORTAL SISFO</h1>
-                        <p class="text-xs text-amber-400 uppercase tracking-widest">Universitas Islam Bandung</p>
+                        <h1 class="font-extrabold text-xs tracking-wider text-blue-900 uppercase leading-tight">
+                            PORTAL SDM & ADM UMUM
+                        </h1>
+                        <p class="text-[11px] text-slate-500 font-medium">Universitas Islam Bandung</p>
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="p-4 rounded-xl bg-unisba-card border border-slate-700/50">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Modul 1</span>
-                        <h3 class="font-bold text-lg text-white">SIGAS</h3>
-                        <p class="text-xs text-slate-300">Sistem Pengajuan Kode Gaji Asisten Laboratorium</p>
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-slate-800">Masuk ke Akun Anda</h2>
+                    <p class="text-xs text-slate-500 mt-1">Silakan masukkan kredensial akun akademik Anda.</p>
+                </div>
+
+                <!-- Form Login -->
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Username / NIP / NPM</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-xs">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" id="username" placeholder="Masukkan Username..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
+                        </div>
                     </div>
-                    <div class="p-4 rounded-xl bg-unisba-card border border-slate-700/50">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Modul 2</span>
-                        <h3 class="font-bold text-lg text-white">SIPHON</h3>
-                        <p class="text-xs text-slate-300">Sistem Pengajuan Honor Lab (Kalkulasi & Approval Berjenjang)</p>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Kata Sandi</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-xs">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" id="password" placeholder="••••••••" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Masuk Sebagai</label>
+                        <select id="role-select" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
+                            <option value="user">Client / Dosen / Aslab</option>
+                            <option value="admin">Admin LSIK / Keuangan</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full mt-2 py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-lg shadow-blue-900/20 transition duration-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+                    </button>
+                </form>
+
+                <!-- Shortcut Demo -->
+                <div class="mt-6 pt-5 border-t border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center mb-2.5">Akses Pintas Demo</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="user_dashboard.html" class="py-2 px-3 bg-slate-50 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-slate-700 font-bold text-[11px] rounded-xl text-center transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-desktop text-blue-600"></i> Demo Client
+                        </a>
+                        <a href="admin_dashboard.html" class="py-2 px-3 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200 text-slate-700 font-bold text-[11px] rounded-xl text-center transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-user-shield text-indigo-600"></i> Demo Admin
+                        </a>
                     </div>
                 </div>
             </div>
-            <p class="text-xs text-slate-400 mt-8">© 2026 Lembaga Sistem Informasi & Kepegawaian UNISBA</p>
-        </div>
 
-        <!-- Form Side -->
-        <div class="p-8 flex flex-col justify-center">
-            <h2 class="text-2xl font-bold text-slate-800 mb-1">Masuk Portal</h2>
-            <p class="text-xs text-slate-500 mb-6">Silakan pilih jenis pengguna untuk masuk ke sistem</p>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Jenis Pengguna</label>
-                    <select id="login-role" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
-                        <option value="user_dashboard.html">Dosen / Kasie Lab / PIC (Client)</option>
-                        <option value="admin_dashboard.html">Admin LSIK / Keuangan (Admin)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">NIP / Username</label>
-                    <input type="text" required placeholder="Masukkan NIP atau Username" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Kata Sandi</label>
-                    <input type="password" required value="******" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-lg shadow-blue-500/30">
-                    Masuk ke Sistem <i class="fa-solid fa-arrow-right ml-1"></i>
-                </button>
-            </form>
-
-            <div class="mt-8 pt-6 border-t border-slate-100">
-                <p class="text-xs text-center text-slate-400 mb-3 font-semibold uppercase tracking-wider">Quick Login Demo Lomba</p>
-                <div class="grid grid-cols-2 gap-2">
-                    <a href="user_dashboard.html" class="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-user"></i> Demo Client
-                    </a>
-                    <a href="admin_dashboard.html" class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-medium rounded-lg flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-user-shield"></i> Demo Admin
-                    </a>
-                </div>
+            <!-- Footer -->
+            <div class="mt-8 pt-4 border-t border-slate-100 text-center lg:text-left">
+                <p class="text-[10px] text-slate-400 font-medium">&copy; 2026 Universitas Islam Bandung. All rights reserved.</p>
             </div>
         </div>
+
+        <!-- SISI KANAN: Visual Hero Kampus dengan Overlay Blue Glass -->
+        <div class="lg:col-span-7 campus-bg relative hidden lg:flex flex-col justify-between p-12 text-white overflow-hidden">
+            <!-- Overlay Biru & Gradient khas Kampus -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-blue-950/95 via-blue-900/80 to-blue-800/60 mix-blend-multiply"></div>
+            
+            <!-- Ornamen Geometris Lingkaran Khas UI Rujukan -->
+            <div class="absolute -right-20 -bottom-20 w-96 h-96 border-[40px] border-amber-400/20 rounded-full blur-sm"></div>
+            <div class="absolute right-32 top-10 w-64 h-64 bg-blue-500/20 rounded-full blur-2xl"></div>
+
+            <!-- Header Kanan (Logo / Tagline Atas) -->
+            <div class="relative z-10 flex justify-end">
+                <span class="text-xs font-semibold tracking-widest uppercase bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full text-amber-300">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i> UNIVERSITAS ISLAM BANDUNG
+                </span>
+            </div>
+
+            <!-- Content Kanan (Tagline Utama & Quote) -->
+            <div class="relative z-10 my-auto max-w-lg">
+                <div class="w-12 h-1 bg-amber-400 rounded-full mb-6"></div>
+                <h2 class="text-2xl font-black uppercase tracking-wide leading-snug text-white drop-shadow-md">
+                    Sistem Integrasi SDM & Administrasi Umum
+                </h2>
+                <p class="text-xs text-blue-100 mt-3 leading-relaxed font-light backdrop-blur-xs">
+                    Mewujudkan kelancaran tata kelola administrasi, verifikasi kode gaji asisten laboratorium (SIGAS), serta efisiensi pencairan honorarium (SIPHON).
+                </p>
+            </div>
+
+            <!-- Footer Kanan (Status Indicator) -->
+            <div class="relative z-10 flex items-center justify-between text-[11px] text-blue-200/80 border-t border-white/10 pt-4">
+                <span><i class="fa-solid fa-shield-halved text-amber-400 mr-1"></i> Terenkripsi & Terintegrasi</span>
+            </div>
+        </div>
+
     </div>
 
     <script>
         function handleLogin(e) {
             e.preventDefault();
-            const targetPage = document.getElementById('login-role').value;
-            window.location.href = targetPage;
+            const role = document.getElementById('role-select').value;
+            if (role === 'admin') {
+                window.location.href = 'admin_dashboard.html';
+            } else {
+                window.location.href = 'user_dashboard.html';
+            }
         }
     </script>
 </body>
