@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - SISFO UNISBA</title>
+    <title>Admin Dashboard - PORTAL SDM DAN ADMINISTRASI UMUM UNIVERSITAS ISLAM BANDUNG</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .bg-unisba { background-color: #0d1e3a; }
+        .bg-unisba { background: linear-gradient(135deg, #0b192e 0%, #1e3a8a 100%); }
     </style>
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
 
-    <header class="bg-unisba text-white px-6 py-3 flex items-center justify-between shadow-md">
+    <header class="bg-unisba text-white px-6 py-3.5 flex items-center justify-between shadow-md border-b border-blue-900/50">
         <div class="flex items-center gap-3">
-            <div class="bg-amber-400 text-slate-900 font-bold px-2.5 py-0.5 rounded text-sm">UB</div>
+            <div class="bg-amber-400 text-slate-900 font-black px-2.5 py-1 rounded-lg text-sm shadow">UB</div>
             <div>
-                <h1 class="font-bold text-sm tracking-wide">PORTAL SISFO UNISBA</h1>
-                <p class="text-[10px] text-amber-400 uppercase tracking-widest">Admin LSIK / Keuangan Mode</p>
+                <h1 class="font-extrabold text-xs sm:text-sm tracking-wide text-amber-300 leading-tight">
+                    PORTAL SDM DAN ADMINISTRASI UMUM UNIVERSITAS ISLAM BANDUNG
+                </h1>
+                <p class="text-[10px] text-slate-300 font-medium">Admin LSIK / Keuangan Mode</p>
             </div>
         </div>
-        <a href="index.html" class="bg-red-500/20 hover:bg-red-500/30 text-red-200 px-3 py-1.5 rounded text-xs border border-red-500/30">
+        <a href="index.html" class="bg-red-500/20 hover:bg-red-500/30 text-red-200 px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 transition">
             <i class="fa-solid fa-sign-out-alt"></i> Keluar
         </a>
     </header>
@@ -28,7 +30,7 @@
     <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
         <!-- Navigation Tabs Admin -->
         <div class="bg-white p-1.5 rounded-xl shadow-sm border border-slate-200 mb-6 flex gap-2 w-fit">
-            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm">
+            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm">
                 <i class="fa-solid fa-id-card"></i> Kelola SIGAS & Kode Gaji
             </button>
             <button onclick="switchTab('approval')" id="tab-approval" class="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
@@ -41,17 +43,17 @@
 
         <!-- SIGAS Admin Management -->
         <div id="module-sigas" class="space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <h3 class="text-base font-bold text-slate-800">Verifikasi & Penerbitan Kode Gaji Aslab</h3>
                         <p class="text-xs text-slate-500">Terbitkan kode gaji resmi, edit data, dan atur status keaktifan Aslab</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg shadow-sm">
+                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm">
                             <i class="fa-solid fa-file-excel"></i> Export CSV
                         </button>
-                        <button onclick="openImportModal()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg shadow-sm">
+                        <button onclick="openImportModal()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-lg shadow-sm">
                             <i class="fa-solid fa-file-import"></i> Import CSV
                         </button>
                     </div>
@@ -60,7 +62,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="bg-slate-100 text-slate-700 border-b">
+                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
                                 <th class="p-3">No</th>
                                 <th class="p-3">Tgl Pengajuan</th>
                                 <th class="p-3">Nama Aslab</th>
@@ -79,14 +81,14 @@
         </div>
 
         <!-- TAB APPROVAL SIPHON HONORARIUM -->
-        <div id="module-approval" class="hidden bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div id="module-approval" class="hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-file-signature text-emerald-600"></i> Persetujuan (Approval) Pengajuan Honorarium SIPHON
             </h3>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-100 text-slate-700 border-b">
+                        <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
                             <th class="p-3">No</th>
                             <th class="p-3">Tgl Pengajuan</th>
                             <th class="p-3">Nama Aslab</th>
@@ -104,7 +106,7 @@
         </div>
 
         <!-- Master Data Management -->
-        <div id="module-master" class="hidden bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div id="module-master" class="hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-sitemap text-amber-500"></i> Kelola Master Data Struktur (Fakultas > Prodi > Laboratorium)
             </h3>
@@ -117,8 +119,8 @@
                             <span class="bg-amber-400 text-slate-900 rounded-full w-4 h-4 inline-flex items-center justify-center text-[10px]">1</span> Fakultas
                         </h4>
                         <div class="flex gap-2 mb-3">
-                            <input type="text" id="input-fakultas" placeholder="Fakultas Baru" class="flex-1 px-3 py-1.5 border rounded text-xs outline-none">
-                            <button onclick="addMasterFakultas()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded font-semibold transition">Tambah</button>
+                            <input type="text" id="input-fakultas" placeholder="Fakultas Baru" class="flex-1 px-3 py-1.5 border rounded-lg text-xs outline-none">
+                            <button onclick="addMasterFakultas()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded-lg font-bold transition">Tambah</button>
                         </div>
                     </div>
                     <div>
@@ -133,10 +135,10 @@
                         <h4 class="font-bold text-xs text-slate-700 uppercase mb-3 flex items-center gap-1">
                             <span class="bg-amber-400 text-slate-900 rounded-full w-4 h-4 inline-flex items-center justify-center text-[10px]">2</span> Program Studi
                         </h4>
-                        <select id="master-select-fakultas" class="w-full px-2 py-1.5 border rounded text-xs mb-2 outline-none"></select>
+                        <select id="master-select-fakultas" class="w-full px-2 py-1.5 border rounded-lg text-xs mb-2 outline-none"></select>
                         <div class="flex gap-2 mb-3">
-                            <input type="text" id="input-prodi" placeholder="Prodi Baru" class="flex-1 px-3 py-1.5 border rounded text-xs outline-none">
-                            <button onclick="addMasterProdi()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded font-semibold transition">Tambah</button>
+                            <input type="text" id="input-prodi" placeholder="Prodi Baru" class="flex-1 px-3 py-1.5 border rounded-lg text-xs outline-none">
+                            <button onclick="addMasterProdi()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded-lg font-bold transition">Tambah</button>
                         </div>
                     </div>
                     <div>
@@ -152,8 +154,8 @@
                             <span class="bg-amber-400 text-slate-900 rounded-full w-4 h-4 inline-flex items-center justify-center text-[10px]">3</span> Laboratorium
                         </h4>
                         <div class="flex gap-2 mb-3">
-                            <input type="text" id="input-lab" placeholder="Nama Lab Baru" class="flex-1 px-3 py-1.5 border rounded text-xs outline-none">
-                            <button onclick="addMasterLab()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded font-semibold transition">Tambah</button>
+                            <input type="text" id="input-lab" placeholder="Nama Lab Baru" class="flex-1 px-3 py-1.5 border rounded-lg text-xs outline-none">
+                            <button onclick="addMasterLab()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs rounded-lg font-bold transition">Tambah</button>
                         </div>
                     </div>
                     <div>
@@ -167,39 +169,39 @@
 
     <!-- Modal Edit Aslab Admin -->
     <div id="modal-edit-admin" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <h3 class="font-bold text-slate-800 text-sm mb-4">Edit Data Aslab (Admin)</h3>
             <form onsubmit="saveAdminEdit(event)" class="space-y-3">
                 <input type="hidden" id="edit-admin-id">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Pengajuan</label>
-                    <input type="date" id="edit-admin-tgl-pengajuan" required class="w-full px-3 py-1.5 border rounded text-xs">
+                    <input type="date" id="edit-admin-tgl-pengajuan" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
-                    <input type="text" id="edit-admin-nama" required class="w-full px-3 py-1.5 border rounded text-xs">
+                    <input type="text" id="edit-admin-nama" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">NIK (16 Digit)</label>
-                    <input type="text" id="edit-admin-nik" required pattern="[0-9]{16}" maxlength="16" class="w-full px-3 py-1.5 border rounded text-xs">
+                    <input type="text" id="edit-admin-nik" required pattern="[0-9]{16}" maxlength="16" class="w-full px-3 py-1.5 border rounded-lg text-xs">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Tempat Lahir</label>
-                        <input type="text" id="edit-admin-tempat" required class="w-full px-3 py-1.5 border rounded text-xs">
+                        <input type="text" id="edit-admin-tempat" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Lahir</label>
-                        <input type="date" id="edit-admin-tgl" required class="w-full px-3 py-1.5 border rounded text-xs">
+                        <input type="date" id="edit-admin-tgl" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Kode Gaji (Manual Edit)</label>
-                    <input type="text" id="edit-admin-kode" class="w-full px-3 py-1.5 border rounded text-xs font-mono">
+                    <input type="text" id="edit-admin-kode" class="w-full px-3 py-1.5 border rounded-lg text-xs font-mono">
                 </div>
                 <div class="flex justify-end gap-2 pt-3">
-                    <button type="button" onclick="closeAdminEditModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded font-semibold">Batal</button>
-                    <button type="submit" class="px-3 py-1.5 bg-blue-600 text-white text-xs rounded font-semibold">Simpan Perubahan</button>
+                    <button type="button" onclick="closeAdminEditModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded-lg font-semibold">Batal</button>
+                    <button type="submit" class="px-3 py-1.5 bg-blue-600 text-white text-xs rounded-lg font-bold">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -207,12 +209,12 @@
 
     <!-- Modal Import -->
     <div id="modal-import" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <h3 class="font-bold text-slate-800 text-sm mb-2">Import Data CSV Aslab</h3>
-            <textarea id="import-text" rows="5" placeholder="Format: Nama,NIK,TempatLahir,TglLahir,Fakultas,Prodi,Lab,TglPengajuan" class="w-full p-2 border rounded text-xs font-mono mb-4 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            <textarea id="import-text" rows="5" placeholder="Format: Nama,NIK,TempatLahir,TglLahir,Fakultas,Prodi,Lab,TglPengajuan" class="w-full p-2 border rounded-xl text-xs font-mono mb-4 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             <div class="flex justify-end gap-2">
-                <button onclick="closeImportModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded font-semibold">Batal</button>
-                <button onclick="processImport()" class="px-3 py-1.5 bg-purple-600 text-white text-xs rounded font-semibold">Import Data</button>
+                <button onclick="closeImportModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded-lg font-semibold">Batal</button>
+                <button onclick="processImport()" class="px-3 py-1.5 bg-purple-600 text-white text-xs rounded-lg font-bold">Import Data</button>
             </div>
         </div>
     </div>
@@ -356,17 +358,17 @@
 
         // --- MASTER DATA STRUCT ---
         function renderMasterLists() {
-            document.getElementById('list-fakultas').innerHTML = masterData.fakultas.map(f => `<li class="p-1.5 bg-white border rounded text-slate-700">${f}</li>`).join('');
+            document.getElementById('list-fakultas').innerHTML = masterData.fakultas.map(f => `<li class="p-1.5 bg-white border rounded-lg text-slate-700">${f}</li>`).join('');
             const selectFak = document.getElementById('master-select-fakultas');
             selectFak.innerHTML = masterData.fakultas.map(f => `<option value="${f}">${f}</option>`).join('');
             renderProdiList();
-            document.getElementById('list-lab').innerHTML = masterData.labs.map(l => `<li class="p-1.5 bg-white border rounded text-slate-700">${l}</li>`).join('');
+            document.getElementById('list-lab').innerHTML = masterData.labs.map(l => `<li class="p-1.5 bg-white border rounded-lg text-slate-700">${l}</li>`).join('');
         }
 
         function renderProdiList() {
             const selectedFak = document.getElementById('master-select-fakultas').value;
             const prodiList = masterData.prodi[selectedFak] || [];
-            document.getElementById('list-prodi').innerHTML = prodiList.map(p => `<li class="p-1.5 bg-white border rounded text-slate-700">${p}</li>`).join('');
+            document.getElementById('list-prodi').innerHTML = prodiList.map(p => `<li class="p-1.5 bg-white border rounded-lg text-slate-700">${p}</li>`).join('');
         }
 
         document.getElementById('master-select-fakultas').onchange = renderProdiList;
@@ -450,14 +452,14 @@
 
             if (tab === 'sigas') {
                 document.getElementById('module-sigas').classList.remove('hidden');
-                sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
+                sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm";
             } else if (tab === 'approval') {
                 document.getElementById('module-approval').classList.remove('hidden');
-                approvalBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
+                approvalBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm";
                 renderApprovalTable();
             } else {
                 document.getElementById('module-master').classList.remove('hidden');
-                masterBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
+                masterBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm";
             }
         }
     </script>
