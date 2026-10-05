@@ -8,8 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .bg-unisba { background-color: #0d1e3a; }
-        .tab-active { @apply bg-blue-50/80 text-blue-700 border-b-2 border-blue-600 font-bold shadow-sm; }
-        .tab-inactive { @apply text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-medium; }
+        .tab-active { @apply text-blue-600 font-bold border-b-2 border-blue-600 pb-2 transition-all; }
+        .tab-inactive { @apply text-slate-500 hover:text-slate-800 font-medium border-b-2 border-transparent pb-2 transition-all; }
     </style>
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
@@ -34,12 +34,12 @@
     </header>
 
     <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
-        <!-- Dynamic Navigation Tabs -->
-        <div class="flex gap-2 border-b border-slate-200 mb-6 bg-white rounded-t-xl p-2 shadow-sm">
-            <button onclick="switchTab('sigas')" id="tab-sigas" class="px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active">
+        <!-- Dynamic Navigation Tabs dengan Underline -->
+        <div class="flex gap-8 border-b border-slate-200 mb-6 px-4 pt-3 bg-white rounded-t-xl">
+            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 tab-active">
                 <i class="fa-solid fa-id-card"></i> SIGAS (Kode Gaji)
             </button>
-            <button onclick="switchTab('siphon')" id="tab-siphon" class="px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive">
+            <button onclick="switchTab('siphon')" id="tab-siphon" class="flex items-center gap-2 tab-inactive">
                 <i class="fa-solid fa-file-invoice-dollar"></i> SIPHON (Honorarium)
             </button>
         </div>
@@ -106,6 +106,7 @@
                                 <th class="p-3">Prodi / Lab</th>
                                 <th class="p-3">Kode Gaji</th>
                                 <th class="p-3">Status</th>
+                                <th class="p-3 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="sigas-table-body" class="divide-y divide-slate-100"></tbody>
@@ -167,6 +168,38 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal Edit Aslab Client -->
+    <div id="modal-edit-client" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+            <h3 class="font-bold text-slate-800 text-sm mb-4">Edit Data Aslab</h3>
+            <form onsubmit="saveClientEdit(event)" class="space-y-3">
+                <input type="hidden" id="edit-client-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
+                    <input type="text" id="edit-client-nama" required class="w-full px-3 py-1.5 border rounded text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">NIK (16 Digit)</label>
+                    <input type="text" id="edit-client-nik" required pattern="[0-9]{16}" maxlength="16" class="w-full px-3 py-1.5 border rounded text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tempat Lahir</label>
+                        <input type="text" id="edit-client-tempat" required class="w-full px-3 py-1.5 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Lahir</label>
+                        <input type="date" id="edit-client-tgl" required class="w-full px-3 py-1.5 border rounded text-xs">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-3">
+                    <button type="button" onclick="closeClientEditModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded font-semibold">Batal</button>
+                    <button type="submit" class="px-3 py-1.5 bg-blue-600 text-white text-xs rounded font-semibold">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         const defaultMasterData = {
@@ -238,8 +271,44 @@
                     <td class="p-3">${item.prodi} <br><span class="text-[10px] text-slate-400">${item.lab}</span></td>
                     <td class="p-3">${item.kodeGaji ? `<span class="bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded font-bold">${item.kodeGaji}</span>` : `<span class="text-slate-400 italic">Belum Terbit</span>`}</td>
                     <td class="p-3">${item.statusAktif ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-semibold">Aktif</span>` : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-[10px] font-semibold">Non-Aktif</span>`}</td>
+                    <td class="p-3 text-center">
+                        <button onclick="openClientEditModal(${item.id})" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded text-[10px]">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </button>
+                    </td>
                 </tr>
             `).join('');
+        }
+
+        function openClientEditModal(id) {
+            const item = sigasData.find(x => x.id === id);
+            if (!item) return;
+            document.getElementById('edit-client-id').value = item.id;
+            document.getElementById('edit-client-nama').value = item.nama;
+            document.getElementById('edit-client-nik').value = item.nik;
+            document.getElementById('edit-client-tempat').value = item.tempatLahir;
+            document.getElementById('edit-client-tgl').value = item.tglLahir;
+            document.getElementById('modal-edit-client').classList.remove('hidden');
+        }
+
+        function closeClientEditModal() {
+            document.getElementById('modal-edit-client').classList.add('hidden');
+        }
+
+        function saveClientEdit(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('edit-client-id').value);
+            const item = sigasData.find(x => x.id === id);
+            if (item) {
+                item.nama = document.getElementById('edit-client-nama').value;
+                item.nik = document.getElementById('edit-client-nik').value;
+                item.tempatLahir = document.getElementById('edit-client-tempat').value;
+                item.tglLahir = document.getElementById('edit-client-tgl').value;
+                localStorage.setItem('sigas_data', JSON.stringify(sigasData));
+                renderSigasTable();
+                closeClientEditModal();
+                alert('Data Aslab berhasil diperbarui!');
+            }
         }
 
         function renderSiphonDropdown() {
@@ -274,7 +343,7 @@
 
             localStorage.setItem('siphon_data', JSON.stringify(siphonData));
             renderSiphonTable();
-            alert('Pengajuan Honor SIPHON Berhasil Dihitung!');
+            alert('Pengajuan Honor SIPHON Berhasil Dihitung & Dikirim ke Admin!');
         }
 
         function renderSiphonTable() {
@@ -287,7 +356,11 @@
                     <td class="p-3">${item.sks} SKS</td>
                     <td class="p-3">${item.jam} Jam</td>
                     <td class="p-3 font-bold text-emerald-700">Rp ${item.total.toLocaleString('id-ID')}</td>
-                    <td class="p-3"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-semibold">${item.status}</span></td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${item.status === 'Disetujui' ? 'bg-emerald-100 text-emerald-800' : item.status === 'Ditolak' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">
+                            ${item.status}
+                        </span>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -308,13 +381,13 @@
             if (tab === 'sigas') {
                 document.getElementById('module-sigas').classList.remove('hidden');
                 document.getElementById('module-siphon').classList.add('hidden');
-                sigasBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active";
-                siphonBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive";
+                sigasBtn.className = "flex items-center gap-2 tab-active";
+                siphonBtn.className = "flex items-center gap-2 tab-inactive";
             } else {
                 document.getElementById('module-sigas').classList.add('hidden');
                 document.getElementById('module-siphon').classList.remove('hidden');
-                sigasBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive";
-                siphonBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active";
+                sigasBtn.className = "flex items-center gap-2 tab-inactive";
+                siphonBtn.className = "flex items-center gap-2 tab-active";
             }
         }
     </script>
