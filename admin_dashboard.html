@@ -8,8 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .bg-unisba { background-color: #0d1e3a; }
-        .tab-active { @apply text-blue-600 font-bold border-b-2 border-blue-600 pb-2 transition-all; }
-        .tab-inactive { @apply text-slate-500 hover:text-slate-800 font-medium border-b-2 border-transparent pb-2 transition-all; }
     </style>
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
@@ -28,16 +26,16 @@
     </header>
 
     <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
-        <!-- Dynamic Navigation Tabs dengan Underline -->
-        <div class="flex gap-8 border-b border-slate-200 mb-6 px-4 pt-3 bg-white rounded-t-xl">
-            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 tab-active">
+        <!-- Navigation Tabs Admin Rapi -->
+        <div class="bg-white p-1.5 rounded-xl shadow-sm border border-slate-200 mb-6 flex gap-2 w-fit">
+            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm">
                 <i class="fa-solid fa-id-card"></i> Kelola SIGAS & Kode Gaji
             </button>
-            <button onclick="switchTab('approval')" id="tab-approval" class="flex items-center gap-2 tab-inactive">
+            <button onclick="switchTab('approval')" id="tab-approval" class="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
                 <i class="fa-solid fa-file-signature text-emerald-600"></i> Approval SIPHON (Honor)
             </button>
-            <button onclick="switchTab('master')" id="tab-master" class="flex items-center gap-2 tab-inactive">
-                <i class="fa-solid fa-database text-amber-500"></i> Master Data (Fakultas, Prodi, Lab)
+            <button onclick="switchTab('master')" id="tab-master" class="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
+                <i class="fa-solid fa-database text-amber-500"></i> Master Data Structure
             </button>
         </div>
 
@@ -91,8 +89,8 @@
                             <th class="p-3">No</th>
                             <th class="p-3">Nama Aslab</th>
                             <th class="p-3">Kode Gaji</th>
-                            <th class="p-3">SKS</th>
-                            <th class="p-3">Jam Praktikum</th>
+                            <th class="p-3">Rekening Pencairan</th>
+                            <th class="p-3">SKS / Jam</th>
                             <th class="p-3">Total Honor</th>
                             <th class="p-3">Status Saat Ini</th>
                             <th class="p-3 text-center">Aksi Approval</th>
@@ -103,7 +101,7 @@
             </div>
         </div>
 
-        <!-- Master Data Management (Urutan: Fakultas -> Prodi -> Lab) -->
+        <!-- Master Data Management -->
         <div id="module-master" class="hidden bg-white p-6 rounded-xl shadow-sm border border-slate-200">
             <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-sitemap text-amber-500"></i> Kelola Master Data Struktur (Fakultas > Prodi > Laboratorium)
@@ -234,7 +232,7 @@
                 <tr class="hover:bg-slate-50">
                     <td class="p-3">${idx + 1}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
-                    <td class="p-3 font-mono">${item.nik}</td>
+                    <td class="p-3 font-mono">${item.nik || '-'}</td>
                     <td class="p-3">${item.tempatLahir}, ${item.tglLahir}</td>
                     <td class="p-3">${item.prodi} <br><span class="text-[10px] text-slate-400">${item.lab}</span></td>
                     <td class="p-3">${item.kodeGaji ? `<span class="bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded font-bold">${item.kodeGaji}</span>` : `<span class="text-slate-400 italic">Belum Terbit</span>`}</td>
@@ -253,7 +251,7 @@
             if (!item) return;
             document.getElementById('edit-admin-id').value = item.id;
             document.getElementById('edit-admin-nama').value = item.nama;
-            document.getElementById('edit-admin-nik').value = item.nik;
+            document.getElementById('edit-admin-nik').value = item.nik || '';
             document.getElementById('edit-admin-tempat').value = item.tempatLahir;
             document.getElementById('edit-admin-tgl').value = item.tglLahir;
             document.getElementById('edit-admin-kode').value = item.kodeGaji || '';
@@ -311,8 +309,12 @@
                     <td class="p-3">${idx + 1}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
                     <td class="p-3 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
-                    <td class="p-3">${item.sks} SKS</td>
-                    <td class="p-3">${item.jam} Jam</td>
+                    <td class="p-3">
+                        <span class="font-semibold text-slate-700">${item.bank || 'Bank Mandiri'}</span><br>
+                        <span class="font-mono text-slate-500">${item.norek || '13100029381'}</span> <br>
+                        <span class="text-[10px] text-slate-400">a.n. ${item.an || item.nama}</span>
+                    </td>
+                    <td class="p-3">${item.sks} SKS / ${item.jam} Jam</td>
                     <td class="p-3 font-bold text-emerald-700">Rp ${item.total.toLocaleString('id-ID')}</td>
                     <td class="p-3">
                         <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${item.status === 'Disetujui' ? 'bg-emerald-100 text-emerald-800' : item.status === 'Ditolak' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">
@@ -413,7 +415,7 @@
 
         function exportToCSV() {
             let csv = "data:text/csv;charset=utf-8,Nama,NIK,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
-            sigasData.forEach(r => { csv += `"${r.nama}","${r.nik}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
+            sigasData.forEach(r => { csv += `"${r.nama}","${r.nik||''}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
             const link = document.createElement("a");
             link.href = encodeURI(csv);
             link.download = `SIGAS_Admin_Rekap.csv`;
@@ -429,20 +431,20 @@
             document.getElementById('module-approval').classList.add('hidden');
             document.getElementById('module-master').classList.add('hidden');
 
-            sigasBtn.className = "flex items-center gap-2 tab-inactive";
-            approvalBtn.className = "flex items-center gap-2 tab-inactive";
-            masterBtn.className = "flex items-center gap-2 tab-inactive";
+            sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+            approvalBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+            masterBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
 
             if (tab === 'sigas') {
                 document.getElementById('module-sigas').classList.remove('hidden');
-                sigasBtn.className = "flex items-center gap-2 tab-active";
+                sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
             } else if (tab === 'approval') {
                 document.getElementById('module-approval').classList.remove('hidden');
-                approvalBtn.className = "flex items-center gap-2 tab-active";
+                approvalBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
                 renderApprovalTable();
             } else {
                 document.getElementById('module-master').classList.remove('hidden');
-                masterBtn.className = "flex items-center gap-2 tab-active";
+                masterBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
             }
         }
     </script>
