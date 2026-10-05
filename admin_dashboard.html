@@ -26,7 +26,7 @@
     </header>
 
     <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
-        <!-- Navigation Tabs Admin Rapi -->
+        <!-- Navigation Tabs Admin -->
         <div class="bg-white p-1.5 rounded-xl shadow-sm border border-slate-200 mb-6 flex gap-2 w-fit">
             <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm">
                 <i class="fa-solid fa-id-card"></i> Kelola SIGAS & Kode Gaji
@@ -62,6 +62,7 @@
                         <thead>
                             <tr class="bg-slate-100 text-slate-700 border-b">
                                 <th class="p-3">No</th>
+                                <th class="p-3">Tgl Pengajuan</th>
                                 <th class="p-3">Nama Aslab</th>
                                 <th class="p-3">NIK (16 Digit)</th>
                                 <th class="p-3">TTL</th>
@@ -87,6 +88,7 @@
                     <thead>
                         <tr class="bg-slate-100 text-slate-700 border-b">
                             <th class="p-3">No</th>
+                            <th class="p-3">Tgl Pengajuan</th>
                             <th class="p-3">Nama Aslab</th>
                             <th class="p-3">Kode Gaji</th>
                             <th class="p-3">Rekening Pencairan</th>
@@ -170,6 +172,10 @@
             <form onsubmit="saveAdminEdit(event)" class="space-y-3">
                 <input type="hidden" id="edit-admin-id">
                 <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Pengajuan</label>
+                    <input type="date" id="edit-admin-tgl-pengajuan" required class="w-full px-3 py-1.5 border rounded text-xs">
+                </div>
+                <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
                     <input type="text" id="edit-admin-nama" required class="w-full px-3 py-1.5 border rounded text-xs">
                 </div>
@@ -203,7 +209,7 @@
     <div id="modal-import" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
             <h3 class="font-bold text-slate-800 text-sm mb-2">Import Data CSV Aslab</h3>
-            <textarea id="import-text" rows="5" placeholder="Format: Nama,NIK,TempatLahir,TglLahir,Fakultas,Prodi,Lab" class="w-full p-2 border rounded text-xs font-mono mb-4 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            <textarea id="import-text" rows="5" placeholder="Format: Nama,NIK,TempatLahir,TglLahir,Fakultas,Prodi,Lab,TglPengajuan" class="w-full p-2 border rounded text-xs font-mono mb-4 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             <div class="flex justify-end gap-2">
                 <button onclick="closeImportModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded font-semibold">Batal</button>
                 <button onclick="processImport()" class="px-3 py-1.5 bg-purple-600 text-white text-xs rounded font-semibold">Import Data</button>
@@ -212,6 +218,8 @@
     </div>
 
     <script>
+        const today = new Date().toISOString().split('T')[0];
+
         let sigasData = JSON.parse(localStorage.getItem('sigas_data')) || [];
         let siphonData = JSON.parse(localStorage.getItem('siphon_data')) || [];
         let masterData = JSON.parse(localStorage.getItem('master_data')) || {
@@ -231,6 +239,7 @@
             tbody.innerHTML = sigasData.map((item, idx) => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3">${idx + 1}</td>
+                    <td class="p-3 font-medium text-slate-600">${item.tglPengajuan || today}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
                     <td class="p-3 font-mono">${item.nik || '-'}</td>
                     <td class="p-3">${item.tempatLahir}, ${item.tglLahir}</td>
@@ -250,6 +259,7 @@
             const item = sigasData.find(x => x.id === id);
             if (!item) return;
             document.getElementById('edit-admin-id').value = item.id;
+            document.getElementById('edit-admin-tgl-pengajuan').value = item.tglPengajuan || today;
             document.getElementById('edit-admin-nama').value = item.nama;
             document.getElementById('edit-admin-nik').value = item.nik || '';
             document.getElementById('edit-admin-tempat').value = item.tempatLahir;
@@ -267,6 +277,7 @@
             const id = parseInt(document.getElementById('edit-admin-id').value);
             const item = sigasData.find(x => x.id === id);
             if (item) {
+                item.tglPengajuan = document.getElementById('edit-admin-tgl-pengajuan').value;
                 item.nama = document.getElementById('edit-admin-nama').value;
                 item.nik = document.getElementById('edit-admin-nik').value;
                 item.tempatLahir = document.getElementById('edit-admin-tempat').value;
@@ -301,18 +312,19 @@
         function renderApprovalTable() {
             const tbody = document.getElementById('admin-siphon-table');
             if (siphonData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400 italic">Belum ada pengajuan honorarium dari Client.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-slate-400 italic">Belum ada pengajuan honorarium dari Client.</td></tr>`;
                 return;
             }
             tbody.innerHTML = siphonData.map((item, idx) => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3">${idx + 1}</td>
+                    <td class="p-3 font-medium text-slate-600">${item.tglPengajuan || today}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
                     <td class="p-3 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
                     <td class="p-3">
-                        <span class="font-semibold text-slate-700">${item.bank || 'Bank Mandiri'}</span><br>
-                        <span class="font-mono text-slate-500">${item.norek || '13100029381'}</span> <br>
-                        <span class="text-[10px] text-slate-400">a.n. ${item.an || item.nama}</span>
+                        <span class="font-semibold text-slate-700">${item.bank}</span><br>
+                        <span class="font-mono text-slate-500">${item.norek}</span> <br>
+                        <span class="text-[10px] text-slate-400">a.n. ${item.an}</span>
                     </td>
                     <td class="p-3">${item.sks} SKS / ${item.jam} Jam</td>
                     <td class="p-3 font-bold text-emerald-700">Rp ${item.total.toLocaleString('id-ID')}</td>
@@ -404,6 +416,7 @@
                         id: Date.now() + Math.random(),
                         nama: cols[0], nik: cols[1], tempatLahir: cols[2], tglLahir: cols[3],
                         fakultas: cols[4], prodi: cols[5], lab: cols[6] || '-',
+                        tglPengajuan: cols[7] || today,
                         kodeGaji: null, statusAktif: true
                     });
                 }
@@ -414,8 +427,8 @@
         }
 
         function exportToCSV() {
-            let csv = "data:text/csv;charset=utf-8,Nama,NIK,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
-            sigasData.forEach(r => { csv += `"${r.nama}","${r.nik||''}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
+            let csv = "data:text/csv;charset=utf-8,Tgl Pengajuan,Nama,NIK,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
+            sigasData.forEach(r => { csv += `"${r.tglPengajuan||''}","${r.nama}","${r.nik||''}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
             const link = document.createElement("a");
             link.href = encodeURI(csv);
             link.download = `SIGAS_Admin_Rekap.csv`;
