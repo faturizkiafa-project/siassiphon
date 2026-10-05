@@ -7,27 +7,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .bg-unisba-blue {
-            background: linear-gradient(135deg, #0b192e 0%, #1e3a8a 70%, #1e40af 100%);
-        }
         .campus-bg {
-            background-image: url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1920&auto=format&fit=crop');
+            background-image: linear-gradient(135deg, rgba(11, 25, 46, 0.92) 0%, rgba(30, 58, 138, 0.85) 100%), 
+                              url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
+        }
+        .bg-navy-solid {
+            background: linear-gradient(145deg, #0b192e 0%, #1e3a8a 100%);
         }
     </style>
 </head>
-<body class="bg-slate-900 font-sans min-h-screen flex items-center justify-center p-0 md:p-6 lg:p-10">
+<body class="campus-bg font-sans min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10 relative overflow-x-hidden">
 
-    <!-- Container Utama Split Screen -->
-    <div class="w-full max-w-6xl min-h-screen md:min-h-[640px] bg-white md:rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-slate-700/30">
+    <!-- Ornamen Glow Latar Belakang HP/Desktop -->
+    <div class="fixed -right-20 -bottom-20 w-80 h-80 lg:w-96 lg:h-96 border-[30px] border-amber-400/20 rounded-full blur-sm pointer-events-none"></div>
+    <div class="fixed -left-20 -top-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Card Container Main -->
+    <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-slate-200/50 relative z-10 my-auto">
         
-        <!-- SISI KIRI: Form Login Minimalis -->
-        <div class="lg:col-span-5 p-8 sm:p-12 flex flex-col justify-between bg-white z-10">
-            <!-- Branding Header -->
+        <!-- SISI KIRI: Form Login -->
+        <div class="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between bg-white">
             <div>
-                <div class="flex items-center gap-3 mb-8">
-                    <div class="bg-amber-400 text-slate-900 font-black w-10 h-10 rounded-xl flex items-center justify-center shadow-md border-2 border-amber-300 text-sm">
+                <!-- Branding Header -->
+                <div class="flex items-center gap-3 mb-6 sm:mb-8">
+                    <div class="bg-amber-400 text-slate-900 font-black w-10 h-10 rounded-xl flex items-center justify-center shadow-md border-2 border-amber-300 text-sm shrink-0">
                         UB
                     </div>
                     <div>
@@ -38,7 +44,7 @@
                     </div>
                 </div>
 
-                <div class="mb-6">
+                <div class="mb-5 sm:mb-6">
                     <h2 class="text-xl font-bold text-slate-800">Masuk ke Akun Anda</h2>
                     <p class="text-xs text-slate-500 mt-1">Silakan masukkan kredensial akun akademik Anda.</p>
                 </div>
@@ -79,55 +85,53 @@
                 </form>
 
                 <!-- Shortcut Demo -->
-                <div class="mt-6 pt-5 border-t border-slate-100">
+                <div class="mt-6 pt-4 border-t border-slate-200/60">
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center mb-2.5">Akses Pintas Demo</p>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="user_dashboard.html" class="py-2 px-3 bg-slate-50 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-slate-700 font-bold text-[11px] rounded-xl text-center transition flex items-center justify-center gap-1.5">
+                        <a href="user_dashboard.html" class="py-2.5 px-3 bg-slate-50 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-slate-700 font-bold text-[11px] rounded-xl text-center transition flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-desktop text-blue-600"></i> Demo Client
                         </a>
-                        <a href="admin_dashboard.html" class="py-2 px-3 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200 text-slate-700 font-bold text-[11px] rounded-xl text-center transition flex items-center justify-center gap-1.5">
+                        <a href="admin_dashboard.html" class="py-2.5 px-3 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200 text-slate-700 font-bold text-[11px] rounded-xl text-center transition flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-user-shield text-indigo-600"></i> Demo Admin
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <div class="mt-8 pt-4 border-t border-slate-100 text-center lg:text-left">
+            <!-- Footer Kiri -->
+            <div class="mt-6 pt-3 border-t border-slate-200/60 text-center lg:text-left">
                 <p class="text-[10px] text-slate-400 font-medium">&copy; 2026 Universitas Islam Bandung. All rights reserved.</p>
             </div>
         </div>
 
-        <!-- SISI KANAN: Visual Hero Kampus dengan Overlay Blue Glass -->
-        <div class="lg:col-span-7 campus-bg relative hidden lg:flex flex-col justify-between p-12 text-white overflow-hidden">
-            <!-- Overlay Biru & Gradient khas Kampus -->
-            <div class="absolute inset-0 bg-gradient-to-tr from-blue-950/95 via-blue-900/80 to-blue-800/60 mix-blend-multiply"></div>
-            
-            <!-- Ornamen Geometris Lingkaran Khas UI Rujukan -->
-            <div class="absolute -right-20 -bottom-20 w-96 h-96 border-[40px] border-amber-400/20 rounded-full blur-sm"></div>
-            <div class="absolute right-32 top-10 w-64 h-64 bg-blue-500/20 rounded-full blur-2xl"></div>
+        <!-- SISI KANAN: Deep Navy Solid Premium Screen -->
+        <div class="lg:col-span-6 bg-navy-solid relative hidden lg:flex flex-col justify-between p-10 text-white overflow-hidden">
+            <!-- Ornaments Sisi Kanan -->
+            <div class="absolute -right-16 -top-16 w-60 h-60 bg-blue-500/20 rounded-full blur-2xl"></div>
+            <div class="absolute right-10 bottom-10 w-48 h-48 border-[20px] border-amber-400/10 rounded-full"></div>
 
-            <!-- Header Kanan (Logo / Tagline Atas) -->
-            <div class="relative z-10 flex justify-end">
-                <span class="text-xs font-semibold tracking-widest uppercase bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full text-amber-300">
+            <!-- Badge Atas -->
+            <div class="flex justify-end relative z-10">
+                <span class="text-[10px] font-extrabold tracking-widest uppercase bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3.5 py-1.5 rounded-full shadow-sm">
                     <i class="fa-solid fa-graduation-cap mr-1"></i> UNIVERSITAS ISLAM BANDUNG
                 </span>
             </div>
 
-            <!-- Content Kanan (Tagline Utama & Quote) -->
-            <div class="relative z-10 my-auto max-w-lg">
-                <div class="w-12 h-1 bg-amber-400 rounded-full mb-6"></div>
-                <h2 class="text-2xl font-black uppercase tracking-wide leading-snug text-white drop-shadow-md">
+            <!-- Content Tagline -->
+            <div class="my-auto max-w-md relative z-10">
+                <div class="w-12 h-1 bg-amber-400 rounded-full mb-5 shadow-sm"></div>
+                <h2 class="text-2xl font-black uppercase tracking-wide leading-snug text-white drop-shadow">
                     Sistem Integrasi SDM & Administrasi Umum
                 </h2>
-                <p class="text-xs text-blue-100 mt-3 leading-relaxed font-light backdrop-blur-xs">
-                    Mewujudkan kelancaran tata kelola administrasi, verifikasi kode gaji asisten laboratorium (SIGAS), serta efisiensi pencairan honorarium (SIPHON).
+                <p class="text-xs text-blue-100/90 mt-3 leading-relaxed font-normal">
+                    Mewujudkan kelancaran tata kelola administrasi, verifikasi kode gaji asisten laboratorium (SIGAS), serta efisiensi pengajuan honorarium (SIPHON).
                 </p>
             </div>
 
-            <!-- Footer Kanan (Status Indicator) -->
-            <div class="relative z-10 flex items-center justify-between text-[11px] text-blue-200/80 border-t border-white/10 pt-4">
-                <span><i class="fa-solid fa-shield-halved text-amber-400 mr-1"></i> Terenkripsi & Terintegrasi</span>
+            <!-- Footer Kanan -->
+            <div class="flex items-center justify-between text-[10px] text-blue-200/70 border-t border-blue-800/60 pt-4 relative z-10">
+                <span><i class="fa-solid fa-shield-halved text-amber-400 mr-1.5"></i> Terenkripsi & Terintegrasi</span>
+                <span class="font-mono text-[10px] bg-blue-900/60 px-2 py-0.5 rounded border border-blue-700/50">v2.4 - Academic</span>
             </div>
         </div>
 
