@@ -6,7 +6,11 @@
     <title>Client Dashboard - SISFO UNISBA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>.bg-unisba { background-color: #0d1e3a; }</style>
+    <style>
+        .bg-unisba { background-color: #0d1e3a; }
+        .tab-active { @apply bg-blue-50/80 text-blue-700 border-b-2 border-blue-600 font-bold shadow-sm; }
+        .tab-inactive { @apply text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-medium; }
+    </style>
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
 
@@ -30,17 +34,17 @@
     </header>
 
     <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
-        <!-- Navigation Tabs -->
-        <div class="flex border-b border-slate-200 mb-6 bg-white rounded-t-xl px-4 pt-2 shadow-sm">
-            <button onclick="switchTab('sigas')" id="tab-sigas" class="px-5 py-3 text-sm font-bold border-b-2 border-blue-600 text-blue-600">
+        <!-- Dynamic Navigation Tabs -->
+        <div class="flex gap-2 border-b border-slate-200 mb-6 bg-white rounded-t-xl p-2 shadow-sm">
+            <button onclick="switchTab('sigas')" id="tab-sigas" class="px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active">
                 <i class="fa-solid fa-id-card"></i> SIGAS (Kode Gaji)
             </button>
-            <button onclick="switchTab('siphon')" id="tab-siphon" class="px-5 py-3 text-sm font-semibold text-slate-500 hover:text-blue-600">
+            <button onclick="switchTab('siphon')" id="tab-siphon" class="px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive">
                 <i class="fa-solid fa-file-invoice-dollar"></i> SIPHON (Honorarium)
             </button>
         </div>
 
-        <!-- SIGAS Content -->
+        <!-- MODUL 1: SIGAS CONTENT -->
         <div id="module-sigas" class="space-y-6">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
@@ -52,8 +56,8 @@
                         <input type="text" id="aslab-nama" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">NPM / NIK</label>
-                        <input type="text" id="aslab-npm" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">NIK (KTP - 16 Digit)</label>
+                        <input type="text" id="aslab-nik" required pattern="[0-9]{16}" maxlength="16" placeholder="Contoh: 3273012304020001" title="NIK harus 16 digit angka" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Tempat Lahir</label>
@@ -75,12 +79,10 @@
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Laboratorium Unit</label>
                         <select id="aslab-lab" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Rekening Bank</label>
-                        <input type="text" id="aslab-rekening" required placeholder="13000XXXXX" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="md:col-span-3 flex justify-end gap-2 mt-2">
-                        <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-md">Kirim Pengajuan</button>
+                    <div class="md:col-span-2 flex items-end justify-end">
+                        <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-md transition">
+                            <i class="fa-solid fa-paper-plane mr-1"></i> Kirim Pengajuan
+                        </button>
                     </div>
                 </form>
             </div>
@@ -89,7 +91,7 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-base font-bold text-slate-800">Status Pengajuan Kode Gaji Saya</h3>
-                    <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg flex items-center gap-1">
+                    <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg flex items-center gap-1 shadow-sm">
                         <i class="fa-solid fa-file-excel"></i> Export CSV
                     </button>
                 </div>
@@ -99,7 +101,7 @@
                             <tr class="bg-slate-100 text-slate-700 border-b">
                                 <th class="p-3">No</th>
                                 <th class="p-3">Nama Aslab</th>
-                                <th class="p-3">NPM</th>
+                                <th class="p-3">NIK (16 Digit)</th>
                                 <th class="p-3">TTL</th>
                                 <th class="p-3">Prodi / Lab</th>
                                 <th class="p-3">Kode Gaji</th>
@@ -112,10 +114,57 @@
             </div>
         </div>
 
-        <!-- SIPHON Content -->
-        <div id="module-siphon" class="hidden bg-white p-6 rounded-xl shadow-sm border">
-            <h3 class="text-base font-bold text-slate-800 mb-2">Modul SIPHON - Pengajuan Honorarium</h3>
-            <p class="text-xs text-slate-500">Fitur pengajuan honorarium berdasarkan Aslab yang statusnya Aktif dan sudah memiliki Kode Gaji dari Admin.</p>
+        <!-- MODUL 2: SIPHON CONTENT -->
+        <div id="module-siphon" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-calculator text-blue-600"></i> Form Kalkulasi Honorarium Asisten (SIPHON)
+                </h3>
+                <form onsubmit="calculateHonor(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Aslab Aktif (Kode Gaji Verified)</label>
+                        <select id="siphon-aslab-select" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Jumlah SKS / Modul</label>
+                        <input type="number" id="siphon-sks" min="1" value="2" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Total Jam Mengajar / Praktikum</label>
+                        <input type="number" id="siphon-jam" min="1" value="14" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tarif Per Jam (SK Rektor)</label>
+                        <input type="text" readonly value="Rp 35.000" class="w-full px-3 py-2 border rounded-lg text-sm bg-slate-100 text-slate-600 font-semibold">
+                    </div>
+                    <div class="md:col-span-2 flex items-end justify-end">
+                        <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-md transition">
+                            <i class="fa-solid fa-calculator mr-1"></i> Hitung & Ajukan Honor
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabel Rekap Honor SIPHON -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-base font-bold text-slate-800 mb-4">Rekapitulasi Pengajuan Honorarium SIPHON</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b">
+                                <th class="p-3">No</th>
+                                <th class="p-3">Nama Aslab</th>
+                                <th class="p-3">Kode Gaji</th>
+                                <th class="p-3">SKS</th>
+                                <th class="p-3">Total Jam</th>
+                                <th class="p-3">Total Honorarium</th>
+                                <th class="p-3">Status Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="siphon-table-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -127,11 +176,16 @@
         };
 
         let masterData = JSON.parse(localStorage.getItem('master_data')) || defaultMasterData;
-        let sigasData = JSON.parse(localStorage.getItem('sigas_data')) || [];
+        let sigasData = JSON.parse(localStorage.getItem('sigas_data')) || [
+            { id: 1, nama: "Rizky Pratama", nik: "3273011405020001", tempatLahir: "Bandung", tglLahir: "2002-05-14", fakultas: "Fakultas Teknik", prodi: "Teknik Informatika", lab: "Lab Rekayasa Perangkat Lunak", kodeGaji: "KG-2026-001", statusAktif: true }
+        ];
+        let siphonData = JSON.parse(localStorage.getItem('siphon_data')) || [];
 
         window.onload = function() {
             populateDropdowns();
-            renderTable();
+            renderSigasTable();
+            renderSiphonDropdown();
+            renderSiphonTable();
         };
 
         function populateDropdowns() {
@@ -149,43 +203,98 @@
 
         function handleSigasSubmit(e) {
             e.preventDefault();
+            const nikInput = document.getElementById('aslab-nik').value.trim();
+            if(nikInput.length !== 16 || isNaN(nikInput)) {
+                return alert('NIK wajib 16 digit angka!');
+            }
+
             sigasData.push({
                 id: Date.now(),
                 nama: document.getElementById('aslab-nama').value,
-                npm: document.getElementById('aslab-npm').value,
+                nik: nikInput,
                 tempatLahir: document.getElementById('aslab-tempat-lahir').value,
                 tglLahir: document.getElementById('aslab-tgl-lahir').value,
                 fakultas: document.getElementById('aslab-fakultas').value,
                 prodi: document.getElementById('aslab-prodi').value,
                 lab: document.getElementById('aslab-lab').value,
-                rekening: document.getElementById('aslab-rekening').value,
                 kodeGaji: null,
                 statusAktif: true
             });
             localStorage.setItem('sigas_data', JSON.stringify(sigasData));
-            renderTable();
+            renderSigasTable();
+            renderSiphonDropdown();
             e.target.reset();
-            alert('Pengajuan berhasil dikirim!');
+            alert('Pengajuan Kode Gaji Aslab Berhasil Dikirim!');
         }
 
-        function renderTable() {
+        function renderSigasTable() {
             const tbody = document.getElementById('sigas-table-body');
             tbody.innerHTML = sigasData.map((item, idx) => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3">${idx + 1}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
-                    <td class="p-3">${item.npm}</td>
+                    <td class="p-3 font-mono">${item.nik}</td>
                     <td class="p-3">${item.tempatLahir}, ${item.tglLahir}</td>
                     <td class="p-3">${item.prodi} <br><span class="text-[10px] text-slate-400">${item.lab}</span></td>
                     <td class="p-3">${item.kodeGaji ? `<span class="bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded font-bold">${item.kodeGaji}</span>` : `<span class="text-slate-400 italic">Belum Terbit</span>`}</td>
-                    <td class="p-3">${item.statusAktif ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px]">Aktif</span>` : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-[10px]">Non-Aktif</span>`}</td>
+                    <td class="p-3">${item.statusAktif ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-semibold">Aktif</span>` : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-[10px] font-semibold">Non-Aktif</span>`}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderSiphonDropdown() {
+            const activeAslabs = sigasData.filter(x => x.statusAktif && x.kodeGaji);
+            const select = document.getElementById('siphon-aslab-select');
+            if (activeAslabs.length === 0) {
+                select.innerHTML = `<option value="">-- Tidak ada Aslab Aktif Ber-Kode Gaji --</option>`;
+            } else {
+                select.innerHTML = activeAslabs.map(a => `<option value="${a.id}">${a.nama} (${a.kodeGaji})</option>`).join('');
+            }
+        }
+
+        function calculateHonor(e) {
+            e.preventDefault();
+            const aslabId = parseInt(document.getElementById('siphon-aslab-select').value);
+            const aslab = sigasData.find(x => x.id === aslabId);
+            if (!aslab) return alert('Silakan pilih Aslab!');
+
+            const sks = parseInt(document.getElementById('siphon-sks').value);
+            const jam = parseInt(document.getElementById('siphon-jam').value);
+            const total = jam * 35000;
+
+            siphonData.push({
+                id: Date.now(),
+                nama: aslab.nama,
+                kodeGaji: aslab.kodeGaji,
+                sks: sks,
+                jam: jam,
+                total: total,
+                status: 'Menunggu Approval'
+            });
+
+            localStorage.setItem('siphon_data', JSON.stringify(siphonData));
+            renderSiphonTable();
+            alert('Pengajuan Honor SIPHON Berhasil Dihitung!');
+        }
+
+        function renderSiphonTable() {
+            const tbody = document.getElementById('siphon-table-body');
+            tbody.innerHTML = siphonData.map((item, idx) => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3">${idx + 1}</td>
+                    <td class="p-3 font-semibold">${item.nama}</td>
+                    <td class="p-3 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
+                    <td class="p-3">${item.sks} SKS</td>
+                    <td class="p-3">${item.jam} Jam</td>
+                    <td class="p-3 font-bold text-emerald-700">Rp ${item.total.toLocaleString('id-ID')}</td>
+                    <td class="p-3"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-semibold">${item.status}</span></td>
                 </tr>
             `).join('');
         }
 
         function exportToCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,Nama,NPM,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
-            sigasData.forEach(r => { csvContent += `"${r.nama}","${r.npm}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
+            let csvContent = "data:text/csv;charset=utf-8,Nama,NIK,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
+            sigasData.forEach(r => { csvContent += `"${r.nama}","${r.nik}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
             const link = document.createElement("a");
             link.href = encodeURI(csvContent);
             link.download = `SIGAS_Client_Export.csv`;
@@ -193,8 +302,20 @@
         }
 
         function switchTab(tab) {
-            document.getElementById('module-sigas').classList.toggle('hidden', tab !== 'sigas');
-            document.getElementById('module-siphon').classList.toggle('hidden', tab !== 'siphon');
+            const sigasBtn = document.getElementById('tab-sigas');
+            const siphonBtn = document.getElementById('tab-siphon');
+
+            if (tab === 'sigas') {
+                document.getElementById('module-sigas').classList.remove('hidden');
+                document.getElementById('module-siphon').classList.add('hidden');
+                sigasBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active";
+                siphonBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive";
+            } else {
+                document.getElementById('module-sigas').classList.add('hidden');
+                document.getElementById('module-siphon').classList.remove('hidden');
+                sigasBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-inactive";
+                siphonBtn.className = "px-5 py-2.5 text-sm rounded-lg flex items-center gap-2 transition-all tab-active";
+            }
         }
     </script>
 </body>
