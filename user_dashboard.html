@@ -8,8 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .bg-unisba { background-color: #0d1e3a; }
-        .tab-active { @apply text-blue-600 font-bold border-b-2 border-blue-600 pb-2 transition-all; }
-        .tab-inactive { @apply text-slate-500 hover:text-slate-800 font-medium border-b-2 border-transparent pb-2 transition-all; }
     </style>
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
@@ -34,12 +32,12 @@
     </header>
 
     <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
-        <!-- Dynamic Navigation Tabs dengan Underline -->
-        <div class="flex gap-8 border-b border-slate-200 mb-6 px-4 pt-3 bg-white rounded-t-xl">
-            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 tab-active">
+        <!-- Navigation Tabs dengan Indikator Aktif Rapi -->
+        <div class="bg-white p-1.5 rounded-xl shadow-sm border border-slate-200 mb-6 flex gap-2 w-fit">
+            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm">
                 <i class="fa-solid fa-id-card"></i> SIGAS (Kode Gaji)
             </button>
-            <button onclick="switchTab('siphon')" id="tab-siphon" class="flex items-center gap-2 tab-inactive">
+            <button onclick="switchTab('siphon')" id="tab-siphon" class="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
                 <i class="fa-solid fa-file-invoice-dollar"></i> SIPHON (Honorarium)
             </button>
         </div>
@@ -119,9 +117,12 @@
         <div id="module-siphon" class="hidden space-y-6">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-calculator text-blue-600"></i> Form Kalkulasi Honorarium Asisten (SIPHON)
+                    <i class="fa-solid fa-calculator text-blue-600"></i> Form Kalkulasi & Data Rekening Honorarium (SIPHON)
                 </h3>
                 <form onsubmit="calculateHonor(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-3 font-semibold text-xs text-blue-700 bg-blue-50 p-2 rounded border border-blue-100">
+                        1. Informasi Kegiatan & Jam Praktikum
+                    </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Aslab Aktif (Kode Gaji Verified)</label>
                         <select id="siphon-aslab-select" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></select>
@@ -138,9 +139,33 @@
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Tarif Per Jam (SK Rektor)</label>
                         <input type="text" readonly value="Rp 35.000" class="w-full px-3 py-2 border rounded-lg text-sm bg-slate-100 text-slate-600 font-semibold">
                     </div>
-                    <div class="md:col-span-2 flex items-end justify-end">
+
+                    <div class="md:col-span-3 font-semibold text-xs text-emerald-700 bg-emerald-50 p-2 rounded border border-emerald-100 mt-2">
+                        2. Data Rekening Bank Penerima Honorarium
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Bank</label>
+                        <select id="siphon-bank" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Bank Mandiri">Bank Mandiri</option>
+                            <option value="Bank BCA">Bank BCA</option>
+                            <option value="Bank BNI">Bank BNI</option>
+                            <option value="Bank BRI">Bank BRI</option>
+                            <option value="Bank BSI">Bank BSI</option>
+                            <option value="Bank DKI / Daerah">Bank Daerah / Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Rekening</label>
+                        <input type="text" id="siphon-norek" placeholder="Contoh: 131001234567" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Pemilik Rekening</label>
+                        <input type="text" id="siphon-an" placeholder="Sesuai Buku Tabungan" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="md:col-span-3 flex items-end justify-end mt-2">
                         <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-md transition">
-                            <i class="fa-solid fa-calculator mr-1"></i> Hitung & Ajukan Honor
+                            <i class="fa-solid fa-calculator mr-1"></i> Hitung & Ajukan Honorarium
                         </button>
                     </div>
                 </form>
@@ -156,8 +181,8 @@
                                 <th class="p-3">No</th>
                                 <th class="p-3">Nama Aslab</th>
                                 <th class="p-3">Kode Gaji</th>
-                                <th class="p-3">SKS</th>
-                                <th class="p-3">Total Jam</th>
+                                <th class="p-3">Data Rekening Bank</th>
+                                <th class="p-3">SKS / Jam</th>
                                 <th class="p-3">Total Honorarium</th>
                                 <th class="p-3">Status Verification</th>
                             </tr>
@@ -210,7 +235,7 @@
 
         let masterData = JSON.parse(localStorage.getItem('master_data')) || defaultMasterData;
         let sigasData = JSON.parse(localStorage.getItem('sigas_data')) || [
-            { id: 1, nama: "Rizky Pratama", nik: "3273011405020001", tempatLahir: "Bandung", tglLahir: "2002-05-14", fakultas: "Fakultas Teknik", prodi: "Teknik Informatika", lab: "Lab Rekayasa Perangkat Lunak", kodeGaji: "KG-2026-001", statusAktif: true }
+            { id: 1, nama: "Faturizki", nik: "3273012000093001", tempatLahir: "Bandung", tglLahir: "2000-09-30", fakultas: "Fakultas Teknik", prodi: "Teknik Informatika", lab: "Lab Rekayasa Perangkat Lunak", kodeGaji: "KG-2026-274", statusAktif: true }
         ];
         let siphonData = JSON.parse(localStorage.getItem('siphon_data')) || [];
 
@@ -266,7 +291,7 @@
                 <tr class="hover:bg-slate-50">
                     <td class="p-3">${idx + 1}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
-                    <td class="p-3 font-mono">${item.nik}</td>
+                    <td class="p-3 font-mono">${item.nik || '-'}</td>
                     <td class="p-3">${item.tempatLahir}, ${item.tglLahir}</td>
                     <td class="p-3">${item.prodi} <br><span class="text-[10px] text-slate-400">${item.lab}</span></td>
                     <td class="p-3">${item.kodeGaji ? `<span class="bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded font-bold">${item.kodeGaji}</span>` : `<span class="text-slate-400 italic">Belum Terbit</span>`}</td>
@@ -285,7 +310,7 @@
             if (!item) return;
             document.getElementById('edit-client-id').value = item.id;
             document.getElementById('edit-client-nama').value = item.nama;
-            document.getElementById('edit-client-nik').value = item.nik;
+            document.getElementById('edit-client-nik').value = item.nik || '';
             document.getElementById('edit-client-tempat').value = item.tempatLahir;
             document.getElementById('edit-client-tgl').value = item.tglLahir;
             document.getElementById('modal-edit-client').classList.remove('hidden');
@@ -331,6 +356,10 @@
             const jam = parseInt(document.getElementById('siphon-jam').value);
             const total = jam * 35000;
 
+            const bank = document.getElementById('siphon-bank').value;
+            const norek = document.getElementById('siphon-norek').value;
+            const an = document.getElementById('siphon-an').value;
+
             siphonData.push({
                 id: Date.now(),
                 nama: aslab.nama,
@@ -338,6 +367,9 @@
                 sks: sks,
                 jam: jam,
                 total: total,
+                bank: bank,
+                norek: norek,
+                an: an,
                 status: 'Menunggu Approval'
             });
 
@@ -353,8 +385,12 @@
                     <td class="p-3">${idx + 1}</td>
                     <td class="p-3 font-semibold">${item.nama}</td>
                     <td class="p-3 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
-                    <td class="p-3">${item.sks} SKS</td>
-                    <td class="p-3">${item.jam} Jam</td>
+                    <td class="p-3">
+                        <span class="font-semibold text-slate-700">${item.bank || 'Bank Mandiri'}</span><br>
+                        <span class="font-mono text-slate-500">${item.norek || '13100029381'}</span> <br>
+                        <span class="text-[10px] text-slate-400">a.n. ${item.an || item.nama}</span>
+                    </td>
+                    <td class="p-3">${item.sks} SKS / ${item.jam} Jam</td>
                     <td class="p-3 font-bold text-emerald-700">Rp ${item.total.toLocaleString('id-ID')}</td>
                     <td class="p-3">
                         <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${item.status === 'Disetujui' ? 'bg-emerald-100 text-emerald-800' : item.status === 'Ditolak' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">
@@ -367,7 +403,7 @@
 
         function exportToCSV() {
             let csvContent = "data:text/csv;charset=utf-8,Nama,NIK,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
-            sigasData.forEach(r => { csvContent += `"${r.nama}","${r.nik}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
+            sigasData.forEach(r => { csvContent += `"${r.nama}","${r.nik||''}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
             const link = document.createElement("a");
             link.href = encodeURI(csvContent);
             link.download = `SIGAS_Client_Export.csv`;
@@ -381,13 +417,15 @@
             if (tab === 'sigas') {
                 document.getElementById('module-sigas').classList.remove('hidden');
                 document.getElementById('module-siphon').classList.add('hidden');
-                sigasBtn.className = "flex items-center gap-2 tab-active";
-                siphonBtn.className = "flex items-center gap-2 tab-inactive";
+                
+                sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
+                siphonBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
             } else {
                 document.getElementById('module-sigas').classList.add('hidden');
                 document.getElementById('module-siphon').classList.remove('hidden');
-                sigasBtn.className = "flex items-center gap-2 tab-inactive";
-                siphonBtn.className = "flex items-center gap-2 tab-active";
+                
+                sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+                siphonBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-600 border-b-2 border-blue-600 shadow-sm";
             }
         }
     </script>
