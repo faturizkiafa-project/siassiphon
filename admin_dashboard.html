@@ -1,305 +1,220 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PORTAL SISFO - Admin & Verifikator (SIAS & SIPHON)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .brand-font { font-family: 'Montserrat', sans-serif; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SISFO UNISBA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>.bg-unisba { background-color: #0d1e3a; }</style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
 
-  <!-- TOPBAR HEADER ADMIN -->
-  <header class="bg-amber-600 text-white sticky top-0 z-30 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16 items-center">
-        <div class="flex items-center space-x-3">
-          <div class="w-9 h-9 rounded-lg bg-blue-950 text-amber-400 font-black text-base flex items-center justify-center brand-font shadow">
-            ADM
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h1 class="text-base font-bold tracking-wide brand-font leading-tight">PORTAL SISFO ADMIN</h1>
-              <span class="bg-amber-800 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded text-amber-200">Kepegawaian & SDM</span>
+    <header class="bg-unisba text-white px-6 py-3 flex items-center justify-between shadow-md">
+        <div class="flex items-center gap-3">
+            <div class="bg-amber-400 text-slate-900 font-bold px-2.5 py-0.5 rounded text-sm">UB</div>
+            <div>
+                <h1 class="font-bold text-sm tracking-wide">PORTAL SISFO UNISBA</h1>
+                <p class="text-[10px] text-amber-400 uppercase tracking-widest">Admin LSIK / Keuangan Mode</p>
             </div>
-            <p class="text-[10px] text-amber-100">Verifikasi NIK KTP, Penerbitan Kode Gaji & Approval Honorarium</p>
-          </div>
+        </div>
+        <a href="index.html" class="bg-red-500/20 hover:bg-red-500/30 text-red-200 px-3 py-1.5 rounded text-xs border border-red-500/30">
+            <i class="fa-solid fa-sign-out-alt"></i> Keluar
+        </a>
+    </header>
+
+    <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-slate-200 mb-6 bg-white rounded-t-xl px-4 pt-2 shadow-sm">
+            <button onclick="switchTab('sigas')" id="tab-sigas" class="px-5 py-3 text-sm font-bold border-b-2 border-blue-600 text-blue-600">
+                <i class="fa-solid fa-id-card"></i> Kelola SIGAS & Kode Gaji
+            </button>
+            <button onclick="switchTab('master')" id="tab-master" class="px-5 py-3 text-sm font-semibold text-slate-500 hover:text-blue-600">
+                <i class="fa-solid fa-database text-amber-500"></i> Master Data (Fakultas, Prodi, Lab)
+            </button>
         </div>
 
-        <div class="flex items-center space-x-4">
-          <div class="hidden sm:flex items-center space-x-3 bg-amber-700/80 px-3 py-1.5 rounded-lg border border-amber-500/50">
-            <div class="w-7 h-7 rounded-full bg-blue-950 text-amber-400 font-bold flex items-center justify-center text-xs">
-              KG
+        <!-- SIGAS Admin Management -->
+        <div id="module-sigas" class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-800">Verifikasi & Penerbitan Kode Gaji Aslab</h3>
+                        <p class="text-xs text-slate-500">Terbitkan kode gaji resmi dan atur status keaktifan Aslab</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg">
+                            <i class="fa-solid fa-file-excel"></i> Export CSV
+                        </button>
+                        <button onclick="openImportModal()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg">
+                            <i class="fa-solid fa-file-import"></i> Import CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b">
+                                <th class="p-3">No</th>
+                                <th class="p-3">Nama Aslab</th>
+                                <th class="p-3">NPM</th>
+                                <th class="p-3">TTL</th>
+                                <th class="p-3">Prodi / Lab</th>
+                                <th class="p-3">Kode Gaji</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-center">Aksi Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-sigas-table" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
             </div>
-            <div class="text-left">
-              <p class="text-xs font-semibold leading-tight">Siti Hazar, M.Si.</p>
-              <p class="text-[10px] text-amber-200">Admin Kepegawaian / SDM</p>
+        </div>
+
+        <!-- Master Data Management -->
+        <div id="module-master" class="hidden bg-white p-6 rounded-xl shadow-sm border">
+            <h3 class="text-base font-bold text-slate-800 mb-4">Kelola Master Data Struktur</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tambah Fakultas -->
+                <div class="bg-slate-50 p-4 rounded-xl border">
+                    <h4 class="font-bold text-xs text-slate-700 uppercase mb-2">Tambah Fakultas</h4>
+                    <div class="flex gap-2 mb-3">
+                        <input type="text" id="input-fakultas" placeholder="Fakultas Baru" class="flex-1 px-3 py-1.5 border rounded text-xs">
+                        <button onclick="addMasterFakultas()" class="px-3 py-1.5 bg-amber-500 text-white text-xs rounded font-semibold">Tambah</button>
+                    </div>
+                    <ul id="list-fakultas" class="space-y-1 text-xs max-h-40 overflow-y-auto"></ul>
+                </div>
+
+                <!-- Tambah Lab -->
+                <div class="bg-slate-50 p-4 rounded-xl border">
+                    <h4 class="font-bold text-xs text-slate-700 uppercase mb-2">Tambah Laboratorium</h4>
+                    <div class="flex gap-2 mb-3">
+                        <input type="text" id="input-lab" placeholder="Nama Lab Baru" class="flex-1 px-3 py-1.5 border rounded text-xs">
+                        <button onclick="addMasterLab()" class="px-3 py-1.5 bg-amber-500 text-white text-xs rounded font-semibold">Tambah</button>
+                    </div>
+                    <ul id="list-lab" class="space-y-1 text-xs max-h-40 overflow-y-auto"></ul>
+                </div>
             </div>
-          </div>
-
-          <a href="index.html" class="bg-red-700 hover:bg-red-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-sm">
-            <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">Keluar</span>
-          </a>
         </div>
-      </div>
+    </main>
+
+    <!-- Modal Import -->
+    <div id="modal-import" class="hidden fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full p-6">
+            <h3 class="font-bold text-slate-800 text-sm mb-2">Import Data CSV Aslab</h3>
+            <textarea id="import-text" rows="5" placeholder="Format: Nama,NPM,TempatLahir,TglLahir,Fakultas,Prodi,Lab,Rekening" class="w-full p-2 border rounded text-xs font-mono mb-4"></textarea>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeImportModal()" class="px-3 py-1.5 bg-slate-200 text-xs rounded">Batal</button>
+                <button onclick="processImport()" class="px-3 py-1.5 bg-purple-600 text-white text-xs rounded">Import</button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <!-- NAVIGATION TABS -->
-  <div class="bg-white border-b border-slate-200 sticky top-16 z-20 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex space-x-8">
-        <button id="tabAdminSias" onclick="switchAdminTab('SIAS')" class="py-4 text-sm font-bold border-b-2 border-amber-600 text-amber-700 flex items-center gap-2 transition">
-          <i data-lucide="shield-check" class="w-4 h-4"></i>
-          <span>SIAS Admin</span>
-          <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">Input Kode Gaji</span>
-        </button>
-        <button id="tabAdminSiphon" onclick="switchAdminTab('SIPHON')" class="py-4 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition">
-          <i data-lucide="file-check-2" class="w-4 h-4"></i>
-          <span>SIPHON Admin</span>
-          <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">Approval Honor</span>
-        </button>
-      </div>
-    </div>
-  </div>
+    <script>
+        let sigasData = JSON.parse(localStorage.getItem('sigas_data')) || [];
+        let masterData = JSON.parse(localStorage.getItem('master_data')) || { fakultas: [], prodi: {}, labs: [] };
 
-  <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        window.onload = function() {
+            renderTable();
+            renderMasterLists();
+        };
 
-    <!-- MODULE 1: SIAS ADMIN -->
-    <section id="moduleAdminSias" class="space-y-6">
-      <div class="bg-gradient-to-r from-amber-700 via-amber-800 to-slate-900 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <span class="bg-amber-400 text-slate-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Verifikator Kepegawaian</span>
-          <h2 class="text-xl font-extrabold brand-font">Verifikasi Permohonan Kode Gaji Aslab</h2>
-          <p class="text-xs text-amber-100 mt-1">Cek keabsahan NIK KTP asisten, lalu terbitkan Kode Gaji resmi.</p>
-        </div>
-        <button onclick="renderAdminData()" class="bg-amber-600 hover:bg-amber-500 border border-amber-400 text-xs px-3 py-2 rounded-lg text-white font-semibold flex items-center gap-1.5 shadow transition">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Data
-        </button>
-      </div>
+        function renderTable() {
+            const tbody = document.getElementById('admin-sigas-table');
+            tbody.innerHTML = sigasData.map((item, idx) => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3">${idx + 1}</td>
+                    <td class="p-3 font-semibold">${item.nama}</td>
+                    <td class="p-3">${item.npm}</td>
+                    <td class="p-3">${item.tempatLahir}, ${item.tglLahir}</td>
+                    <td class="p-3">${item.prodi} <br><span class="text-[10px] text-slate-400">${item.lab}</span></td>
+                    <td class="p-3">${item.kodeGaji ? `<span class="bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded font-bold">${item.kodeGaji}</span>` : `<span class="text-slate-400 italic">Belum Terbit</span>`}</td>
+                    <td class="p-3">${item.statusAktif ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px]">Aktif</span>` : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-[10px]">Non-Aktif</span>`}</td>
+                    <td class="p-3 text-center">
+                        ${!item.kodeGaji ? `<button onclick="generateKode(${item.id})" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] mr-1">Terbitkan Kode</button>` : ''}
+                        <button onclick="toggleStatus(${item.id})" class="px-2 py-1 bg-slate-200 text-slate-700 rounded text-[10px]">Toggle Status</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60 flex justify-between items-center">
-          <div class="flex items-center gap-2">
-            <i data-lucide="users" class="w-5 h-5 text-amber-600"></i>
-            <h3 class="font-bold text-slate-800 text-sm">Daftar Pengajuan Masuk Dari Fakultas / Lab</h3>
-          </div>
-          <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-bold">Verifikasi SDM</span>
-        </div>
+        function generateKode(id) {
+            const item = sigasData.find(x => x.id === id);
+            if (item) {
+                item.kodeGaji = `KG-2026-${Math.floor(Math.random() * 899 + 100)}`;
+                localStorage.setItem('sigas_data', JSON.stringify(sigasData));
+                renderTable();
+            }
+        }
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-100/80 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
-              <tr>
-                <th class="py-3 px-6">Tgl</th>
-                <th class="py-3 px-4">Nama & NIK KTP</th>
-                <th class="py-3 px-4">Unit Lab / Prodi / Fakultas</th>
-                <th class="py-3 px-4">Kontak</th>
-                <th class="py-3 px-4">Status</th>
-                <th class="py-3 px-6 text-center">Input Kode Gaji Resmi</th>
-              </tr>
-            </thead>
-            <tbody id="adminSiasTableBody" class="divide-y divide-slate-100">
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+        function toggleStatus(id) {
+            const item = sigasData.find(x => x.id === id);
+            if (item) {
+                item.statusAktif = !item.statusAktif;
+                localStorage.setItem('sigas_data', JSON.stringify(sigasData));
+                renderTable();
+            }
+        }
 
-    <!-- MODULE 2: SIPHON ADMIN -->
-    <section id="moduleAdminSiphon" class="hidden space-y-6">
-      <div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-blue-950 rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <span class="bg-indigo-400 text-indigo-950 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full mb-2 inline-block">Verifikator Keuangan / SDM</span>
-          <h2 class="text-xl font-extrabold brand-font">Approval Pengajuan Honorarium Lab</h2>
-          <p class="text-xs text-indigo-200 mt-1">Pemeriksaan pencairan honor berdasarkan Kode Gaji resmi.</p>
-        </div>
-        <button onclick="renderAdminData()" class="bg-indigo-700 hover:bg-indigo-600 border border-indigo-500 text-xs px-3 py-2 rounded-lg text-white font-semibold flex items-center gap-1.5 shadow transition">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh Data
-        </button>
-      </div>
+        function renderMasterLists() {
+            document.getElementById('list-fakultas').innerHTML = masterData.fakultas.map(f => `<li class="p-1.5 bg-white border rounded">${f}</li>`).join('');
+            document.getElementById('list-lab').innerHTML = masterData.labs.map(l => `<li class="p-1.5 bg-white border rounded">${l}</li>`).join('');
+        }
 
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60 flex justify-between items-center">
-          <div class="flex items-center gap-2">
-            <i data-lucide="file-check" class="w-5 h-5 text-indigo-700"></i>
-            <h3 class="font-bold text-slate-800 text-sm">Daftar Tagihan Honorarium Masuk</h3>
-          </div>
-          <span class="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-full font-bold">Verifikasi SDM</span>
-        </div>
+        function addMasterFakultas() {
+            const val = document.getElementById('input-fakultas').value.trim();
+            if (val && !masterData.fakultas.includes(val)) {
+                masterData.fakultas.push(val);
+                localStorage.setItem('master_data', JSON.stringify(masterData));
+                renderMasterLists();
+            }
+        }
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-100/80 text-slate-700 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
-              <tr>
-                <th class="py-3 px-6">Tgl</th>
-                <th class="py-3 px-4">Asisten & Kode Gaji</th>
-                <th class="py-3 px-4">Mata Kuliah Praktikum</th>
-                <th class="py-3 px-4">Total Nominal</th>
-                <th class="py-3 px-6 text-center">Keputusan Admin</th>
-              </tr>
-            </thead>
-            <tbody id="adminSiphonTableBody" class="divide-y divide-slate-100">
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+        function addMasterLab() {
+            const val = document.getElementById('input-lab').value.trim();
+            if (val && !masterData.labs.includes(val)) {
+                masterData.labs.push(val);
+                localStorage.setItem('master_data', JSON.stringify(masterData));
+                renderMasterLists();
+            }
+        }
 
-  </main>
+        function openImportModal() { document.getElementById('modal-import').classList.remove('hidden'); }
+        function closeImportModal() { document.getElementById('modal-import').classList.add('hidden'); }
 
-  <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
-      &copy; 2026 Portal SISFO UNISBA - Admin Side Dashboard
-    </div>
-  </footer>
+        function processImport() {
+            const text = document.getElementById('import-text').value.trim();
+            if (!text) return;
+            text.split('\n').forEach(line => {
+                const cols = line.split(',').map(c => c.trim());
+                if (cols.length >= 7) {
+                    sigasData.push({
+                        id: Date.now() + Math.random(),
+                        nama: cols[0], npm: cols[1], tempatLahir: cols[2], tglLahir: cols[3],
+                        fakultas: cols[4], prodi: cols[5], lab: cols[6], rekening: cols[7] || '-',
+                        kodeGaji: null, statusAktif: true
+                    });
+                }
+            });
+            localStorage.setItem('sigas_data', JSON.stringify(sigasData));
+            renderTable();
+            closeImportModal();
+        }
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      renderAdminData();
-    });
+        function exportToCSV() {
+            let csv = "data:text/csv;charset=utf-8,Nama,NPM,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
+            sigasData.forEach(r => { csv += `"${r.nama}","${r.npm}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
+            const link = document.createElement("a");
+            link.href = encodeURI(csv);
+            link.download = `SIGAS_Admin_Rekap.csv`;
+            link.click();
+        }
 
-    window.addEventListener('storage', () => {
-      renderAdminData();
-    });
-
-    function renderAdminData() {
-      const siasData = JSON.parse(localStorage.getItem('siasRequests')) || [];
-      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
-
-      // SIAS Admin Table
-      const siasBody = document.getElementById('adminSiasTableBody');
-      siasBody.innerHTML = siasData.map(item => `
-        <tr class="hover:bg-slate-50 ${item.status === 'On Process' ? 'bg-amber-50/20' : ''}">
-          <td class="py-3 px-6 text-slate-500 font-mono">${item.tgl}</td>
-          <td class="py-3 px-4">
-            <div class="font-bold text-slate-800">${item.nama}</div>
-            <div class="text-[10px] text-slate-500 font-mono">NIK: ${item.nik}</div>
-          </td>
-          <td class="py-3 px-4">
-            <div class="text-slate-800 font-bold">${item.lab || '-'}</div>
-            <div class="text-[10px] text-slate-400">${item.fakultas || '-'} - ${item.prodi || '-'}</div>
-          </td>
-          <td class="py-3 px-4 text-slate-600">
-            <div>Tgl Lahir: ${item.tglLahir || '-'}</div>
-            <div class="text-[10px] text-slate-400">HP: ${item.hp || '-'}</div>
-          </td>
-          <td class="py-3 px-4">
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${item.status === 'Done' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-              ${item.status}
-            </span>
-          </td>
-          <td class="py-3 px-6 text-center">
-            ${item.status === 'Done' ? `
-              <span class="font-mono font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded border border-blue-200">${item.kodeGaji}</span>
-            ` : `
-              <div class="flex items-center justify-center gap-2">
-                <input type="text" id="input-kg-${item.id}" placeholder="e.g. KG-FAR-002" class="text-xs border border-slate-300 rounded px-2 py-1 font-mono font-bold w-32 uppercase focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                <button onclick="approveKodeGaji(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1 rounded font-bold transition">
-                  Simpan
-                </button>
-              </div>
-            `}
-          </td>
-        </tr>
-      `).join('');
-
-      // SIPHON Admin Table
-      const siphonBody = document.getElementById('adminSiphonTableBody');
-      siphonBody.innerHTML = siphonData.map(item => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-3 px-6 text-slate-500 font-mono">${item.tgl}</td>
-          <td class="py-3 px-4">
-            <div class="font-bold text-slate-800">${item.aslab}</div>
-          </td>
-          <td class="py-3 px-4 text-slate-700 font-medium">${item.matkul}</td>
-          <td class="py-3 px-4 font-extrabold text-indigo-700">Rp ${parseInt(item.nominal || 0).toLocaleString('id-ID')}</td>
-          <td class="py-3 px-6 text-center">
-            ${item.status === 'Approved SDM' ? `
-              <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">Cair (Approved SDM)</span>
-            ` : `
-              <div class="flex items-center justify-center gap-1.5">
-                <button onclick="approveHonor(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-3 py-1.5 rounded-lg font-bold transition">Approve SDM</button>
-                <button onclick="rejectHonor(${item.id})" class="bg-red-600 hover:bg-red-700 text-white text-[11px] px-2.5 py-1.5 rounded-lg font-bold transition">Tolak</button>
-              </div>
-            `}
-          </td>
-        </tr>
-      `).join('');
-
-      lucide.createIcons();
-    }
-
-    function approveKodeGaji(id) {
-      const input = document.getElementById(`input-kg-${id}`);
-      const val = input ? input.value.trim().toUpperCase() : '';
-
-      if (!val) {
-        alert('Harap masukkan Kode Gaji terlebih dahulu!');
-        return;
-      }
-
-      const siasData = JSON.parse(localStorage.getItem('siasRequests')) || [];
-      const index = siasData.findIndex(i => i.id == id);
-
-      if (index !== -1) {
-        siasData[index].status = 'Done';
-        siasData[index].kodeGaji = val;
-        localStorage.setItem('siasRequests', JSON.stringify(siasData));
-        renderAdminData();
-        alert(`Kode Gaji ${val} berhasil diterbitkan!`);
-      }
-    }
-
-    function approveHonor(id) {
-      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
-      const index = siphonData.findIndex(i => i.id == id);
-
-      if (index !== -1) {
-        siphonData[index].status = 'Approved SDM';
-        localStorage.setItem('siphonRequests', JSON.stringify(siphonData));
-        renderAdminData();
-        alert('Pencairan honorarium berhasil disetujui!');
-      }
-    }
-
-    function rejectHonor(id) {
-      const siphonData = JSON.parse(localStorage.getItem('siphonRequests')) || [];
-      const index = siphonData.findIndex(i => i.id == id);
-
-      if (index !== -1) {
-        siphonData[index].status = 'Ditolak';
-        localStorage.setItem('siphonRequests', JSON.stringify(siphonData));
-        renderAdminData();
-      }
-    }
-
-    function switchAdminTab(tabName) {
-      const moduleSias = document.getElementById('moduleAdminSias');
-      const moduleSiphon = document.getElementById('moduleAdminSiphon');
-      const tabSias = document.getElementById('tabAdminSias');
-      const tabSiphon = document.getElementById('tabAdminSiphon');
-
-      if (tabName === 'SIAS') {
-        moduleSias.classList.remove('hidden');
-        moduleSiphon.classList.add('hidden');
-        tabSias.className = "py-4 text-sm font-bold border-b-2 border-amber-600 text-amber-700 flex items-center gap-2 transition";
-        tabSiphon.className = "py-4 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition";
-      } else {
-        moduleSias.classList.add('hidden');
-        moduleSiphon.classList.remove('hidden');
-        tabSiphon.className = "py-4 text-sm font-bold border-b-2 border-indigo-700 text-indigo-700 flex items-center gap-2 transition";
-        tabSias.className = "py-4 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 transition";
-      }
-    }
-  </script>
+        function switchTab(tab) {
+            document.getElementById('module-sigas').classList.toggle('hidden', tab !== 'sigas');
+            document.getElementById('module-master').classList.toggle('hidden', tab !== 'master');
+        }
+    </script>
 </body>
 </html>
