@@ -1,149 +1,93 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PORTAL SISFO UNISBA - Login SIAS & SIPHON</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .brand-font { font-family: 'Montserrat', sans-serif; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTAL SISFO - UNISBA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-unisba { background-color: #0d1e3a; }
+        .bg-unisba-card { background-color: #12284c; }
+    </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 antialiased">
+<body class="bg-slate-100 font-sans min-h-screen flex items-center justify-center p-4">
 
-  <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-slate-200">
-    
-    <!-- LEFT PANEL: BRANDING & SYSTEM INFO -->
-    <div class="bg-gradient-to-br from-blue-900 via-blue-950 to-slate-950 p-8 text-white flex flex-col justify-between relative overflow-hidden">
-      <!-- Decorative Backdrop Circles -->
-      <div class="absolute -right-10 -top-10 w-40 h-40 bg-amber-500/10 rounded-full blur-2xl"></div>
-      <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
+    <div class="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+        <!-- Branding Side -->
+        <div class="bg-unisba text-white p-8 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-amber-400 text-slate-900 font-bold px-3 py-1 rounded-lg text-lg">UB</div>
+                    <div>
+                        <h1 class="font-bold tracking-wider text-xl">PORTAL SISFO</h1>
+                        <p class="text-xs text-amber-400 uppercase tracking-widest">Universitas Islam Bandung</p>
+                    </div>
+                </div>
 
-      <!-- Header Brand -->
-      <div class="relative z-10">
-        <div class="flex items-center space-x-3 mb-6">
-          <div class="w-11 h-11 rounded-xl bg-amber-500 text-blue-950 font-black text-xl flex items-center justify-center brand-font shadow-lg">
-            UB
-          </div>
-          <div>
-            <h1 class="text-xl font-extrabold brand-font tracking-wide">PORTAL SISFO</h1>
-            <p class="text-xs text-amber-400 font-semibold">UNIVERSITAS ISLAM BANDUNG</p>
-          </div>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-unisba-card border border-slate-700/50">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Modul 1</span>
+                        <h3 class="font-bold text-lg text-white">SIGAS</h3>
+                        <p class="text-xs text-slate-300">Sistem Pengajuan Kode Gaji Asisten Laboratorium</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-unisba-card border border-slate-700/50">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Modul 2</span>
+                        <h3 class="font-bold text-lg text-white">SIPHON</h3>
+                        <p class="text-xs text-slate-300">Sistem Pengajuan Honor Lab (Kalkulasi & Approval Berjenjang)</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-8">© 2026 Lembaga Sistem Informasi & Kepegawaian UNISBA</p>
         </div>
 
-        <div class="space-y-4 mt-8">
-          <div class="p-3.5 bg-blue-900/50 rounded-xl border border-blue-700/50 backdrop-blur-sm">
-            <span class="text-[10px] font-extrabold text-amber-400 uppercase tracking-wider block mb-1">Modul 1</span>
-            <h3 class="text-sm font-bold brand-font">SIAS</h3>
-            <p class="text-xs text-blue-200">Sistem Pengajuan Asisten Lab (Penerbitan Kode Gaji Resmi)</p>
-          </div>
+        <!-- Form Side -->
+        <div class="p-8 flex flex-col justify-center">
+            <h2 class="text-2xl font-bold text-slate-800 mb-1">Masuk Portal</h2>
+            <p class="text-xs text-slate-500 mb-6">Silakan pilih jenis pengguna untuk masuk ke sistem</p>
 
-          <div class="p-3.5 bg-indigo-900/50 rounded-xl border border-indigo-700/50 backdrop-blur-sm">
-            <span class="text-[10px] font-extrabold text-indigo-300 uppercase tracking-wider block mb-1">Modul 2</span>
-            <h3 class="text-sm font-bold brand-font">SIPHON</h3>
-            <p class="text-xs text-indigo-200">Sistem Pengajuan Honor Lab (Kalkulasi & Approval Berjenjang)</p>
-          </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Jenis Pengguna</label>
+                    <select id="login-role" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="user_dashboard.html">Dosen / Kasie Lab / PIC (Client)</option>
+                        <option value="admin_dashboard.html">Admin LSIK / Keuangan (Admin)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">NIP / Username</label>
+                    <input type="text" required placeholder="Masukkan NIP atau Username" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Kata Sandi</label>
+                    <input type="password" required value="******" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-lg shadow-blue-500/30">
+                    Masuk ke Sistem <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-slate-100">
+                <p class="text-xs text-center text-slate-400 mb-3 font-semibold uppercase tracking-wider">Quick Login Demo Lomba</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="user_dashboard.html" class="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-user"></i> Demo Client
+                    </a>
+                    <a href="admin_dashboard.html" class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-medium rounded-lg flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-user-shield"></i> Demo Admin
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <!-- Footer Info -->
-      <div class="mt-8 pt-4 border-t border-blue-800/60 text-[11px] text-blue-300 relative z-10">
-        &copy; 2026 Lembaga Sistem Informasi & Kepegawaian UNISBA
-      </div>
     </div>
 
-    <!-- RIGHT PANEL: LOGIN FORM -->
-    <div class="p-8 flex flex-col justify-between">
-      <div>
-        <div class="mb-6">
-          <h2 class="text-2xl font-bold text-slate-800 brand-font">Masuk Portal</h2>
-          <p class="text-xs text-slate-500 mt-1">Silakan masuk menggunakan kredensial akun Anda</p>
-        </div>
-
-        <!-- FORM UTAMA -->
-        <form onsubmit="handleGeneralLogin(event)" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Jenis Pengguna</label>
-            <select id="loginRole" class="w-full text-xs border border-slate-300 rounded-lg p-2.5 bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
-              <option value="USER">Dosen / Kasie Lab / PIC (Client)</option>
-              <option value="ADMIN">Admin Kepegawaian / SDM (Verifikator)</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">NIP / Username</label>
-            <div class="relative">
-              <input type="text" id="loginUser" placeholder="Masukkan NIP atau Username" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 pl-9 focus:ring-2 focus:ring-blue-600 focus:outline-none font-mono">
-              <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5"></i>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Kata Sandi</label>
-            <div class="relative">
-              <input type="password" id="loginPass" value="******" required class="w-full text-xs border border-slate-300 rounded-lg p-2.5 pl-9 focus:ring-2 focus:ring-blue-600 focus:outline-none">
-              <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5"></i>
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2">
-            <span>Masuk ke Sistem</span>
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-          </button>
-        </form>
-
-        <!-- QUICK LOGIN DEMO FOR PRESENTATION -->
-        <div class="mt-6 pt-6 border-t border-slate-200 space-y-2">
-          <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center">Quick Login Demo Lomba</p>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="quickLogin('USER')" class="bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-[11px] font-semibold py-2 px-3 rounded-lg text-left flex items-center justify-between transition">
-              <span>Demo Client Side</span>
-              <i data-lucide="user-check" class="w-3.5 h-3.5 text-blue-600"></i>
-            </button>
-            <button onclick="quickLogin('ADMIN')" class="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[11px] font-semibold py-2 px-3 rounded-lg text-left flex items-center justify-between transition">
-              <span>Demo Admin Side</span>
-              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-600"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <p class="text-[10px] text-slate-400 text-center mt-6">
-        Sistem Informasi Akuntansi & Kepegawaian Praktikum
-      </p>
-    </div>
-
-  </div>
-
-  <script>
-    lucide.createIcons();
-
-    // Handler Form Login Manual
-    function handleGeneralLogin(e) {
-      e.preventDefault();
-      const role = document.getElementById('loginRole').value;
-      
-      if (role === 'ADMIN') {
-        window.location.href = 'admin_dashboard.html';
-      } else {
-        window.location.href = 'user_dashboard.html';
-      }
-    }
-
-    // Quick Login Demo Redirection
-    function quickLogin(role) {
-      if (role === 'ADMIN') {
-        window.location.href = 'admin_dashboard.html';
-      } else {
-        window.location.href = 'user_dashboard.html';
-      }
-    }
-  </script>
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const targetPage = document.getElementById('login-role').value;
+            window.location.href = targetPage;
+        }
+    </script>
 </body>
 </html>
