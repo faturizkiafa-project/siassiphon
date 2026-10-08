@@ -3,488 +3,1008 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Dashboard - PORTAL SDM DAN ADMINISTRASI UMUM UNIVERSITAS ISLAM BANDUNG</title>
+    <title>UB - User Dashboard v2.9 Final</title>
+    <!-- Tailwind CSS & FontAwesome CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2pdf.js & QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
-        .bg-unisba { background: linear-gradient(135deg, #0b192e 0%, #1e3a8a 100%); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* Custom Scrollbar */
+        .overflow-x-auto::-webkit-scrollbar {
+            height: 6px;
+        }
+        .overflow-x-auto::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .badge-role-glow {
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+        }
     </style>
 </head>
-<body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
+<body class="text-slate-800 min-h-screen">
 
-    <header class="bg-unisba text-white px-6 py-3.5 flex items-center justify-between shadow-md border-b border-blue-900/50">
+    <!-- NAVBAR -->
+    <nav class="bg-slate-900 text-white px-6 py-3.5 flex justify-between items-center shadow-md border-b border-slate-800">
         <div class="flex items-center gap-3">
-            <div class="bg-amber-400 text-slate-900 font-black px-2.5 py-1 rounded-lg text-sm shadow">UB</div>
+            <div class="bg-amber-500 text-slate-900 font-extrabold px-2.5 py-1 rounded text-lg tracking-wider">UB</div>
             <div>
-                <h1 class="font-extrabold text-xs sm:text-sm tracking-wide text-amber-300 leading-tight">
-                    PORTAL SDM DAN ADMINISTRASI UMUM UNIVERSITAS ISLAM BANDUNG
-                </h1>
-                <p class="text-[10px] text-slate-300 font-medium">Client / Dosen / Aslab Mode</p>
-            </div>
-        </div>
-        <div class="flex items-center gap-4">
-            <div class="text-right hidden sm:block">
-                <p class="text-xs font-semibold text-white">Dr. Ahmad, M.T.</p>
-                <p class="text-[10px] text-slate-300">NIP: 198203112009121003</p>
-            </div>
-            <a href="index.html" class="bg-red-500/20 hover:bg-red-500/30 text-red-200 px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 transition">
-                <i class="fa-solid fa-sign-out-alt"></i> Keluar
-            </a>
-        </div>
-    </header>
-
-    <main class="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
-        <!-- Navigation Tabs -->
-        <div class="bg-white p-1.5 rounded-xl shadow-sm border border-slate-200 mb-6 flex gap-2 w-fit">
-            <button onclick="switchTab('sigas')" id="tab-sigas" class="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm">
-                <i class="fa-solid fa-id-card"></i> SIGAS (Kode Gaji)
-            </button>
-            <button onclick="switchTab('siphon')" id="tab-siphon" class="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
-                <i class="fa-solid fa-file-invoice-dollar"></i> SIPHON (Honorarium)
-            </button>
-        </div>
-
-        <!-- MODUL 1: SIGAS CONTENT -->
-        <div id="module-sigas" class="space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-user-plus text-blue-600"></i> Form Pengajuan Kode Gaji Asisten Laboratorium
-                </h3>
-                <form onsubmit="handleSigasSubmit(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Pengajuan</label>
-                        <input type="date" id="aslab-tgl-pengajuan" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
-                        <input type="text" id="aslab-nama" required placeholder="Nama Lengkap" class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">NIK (KTP - 16 Digit)</label>
-                        <input type="text" id="aslab-nik" required pattern="[0-9]{16}" maxlength="16" placeholder="Contoh: 3273012304020001" title="NIK harus 16 digit angka" class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tempat Lahir</label>
-                        <input type="text" id="aslab-tempat-lahir" required placeholder="Contoh: Bandung" class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Lahir</label>
-                        <input type="date" id="aslab-tgl-lahir" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Fakultas</label>
-                        <select id="aslab-fakultas" onchange="updateProdiDropdown()" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"></select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Program Studi</label>
-                        <select id="aslab-prodi" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"></select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Laboratorium Unit</label>
-                        <select id="aslab-lab" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"></select>
-                    </div>
-                    <div class="md:col-span-1 flex items-end justify-end">
-                        <button type="submit" class="w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md transition">
-                            <i class="fa-solid fa-paper-plane mr-1"></i> Kirim Pengajuan
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Tabel Data -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-base font-bold text-slate-800">Status Pengajuan Kode Gaji Saya</h3>
-                    <button onclick="exportToCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-file-excel"></i> Export CSV
-                    </button>
+                <div class="flex items-center gap-2">
+                    <h1 class="font-bold tracking-wide text-base">USER DASHBOARD v2.9</h1>
+                    <span id="roleBadge" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs px-2 py-0.5 rounded font-semibold badge-role-glow">MODE: LABORAN</span>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
-                                <th class="p-3">No</th>
-                                <th class="p-3">Tgl Pengajuan</th>
-                                <th class="p-3">Nama Aslab</th>
-                                <th class="p-3">NIK (16 Digit)</th>
-                                <th class="p-3">TTL</th>
-                                <th class="p-3">Prodi / Lab</th>
-                                <th class="p-3">Kode Gaji</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3 text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sigas-table-body" class="divide-y divide-slate-100"></tbody>
-                    </table>
-                </div>
+                <p class="text-[11px] text-slate-400">Pengajuan Kode Gaji Aslab (SIGAS) & Honorarium Praktikum (SIPHON)</p>
             </div>
         </div>
 
-        <!-- MODUL 2: SIPHON CONTENT -->
-        <div id="module-siphon" class="hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-calculator text-blue-600"></i> Form Kalkulasi & Data Rekening Honorarium (SIPHON)
-                </h3>
-                <form onsubmit="calculateHonor(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-3 font-semibold text-xs text-blue-800 bg-blue-50 p-2.5 rounded-xl border border-blue-100">
-                        1. Informasi Kegiatan & Jam Praktikum
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Pengajuan Honor</label>
-                        <input type="date" id="siphon-tgl-pengajuan" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Aslab Aktif (Kode Gaji Verified)</label>
-                        <select id="siphon-aslab-select" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"></select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Jumlah SKS / Modul</label>
-                        <input type="number" id="siphon-sks" min="1" value="2" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Total Jam Mengajar / Praktikum</label>
-                        <input type="number" id="siphon-jam" min="1" value="14" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tarif Per Jam (SK Rektor)</label>
-                        <input type="text" readonly value="Rp 35.000" class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-100 text-slate-600 font-semibold">
-                    </div>
+        <div class="flex items-center gap-3">
+            <!-- NAVBAR ROLE SWITCHER -->
+            <div class="flex items-center gap-2 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-xs">
+                <i class="fa-solid fa-user-gear text-amber-400"></i>
+                <span class="text-slate-300 font-medium">Role Active:</span>
+                <select id="roleSelect" onchange="changeRole(this.value)" class="bg-slate-900 text-amber-400 font-bold focus:outline-none cursor-pointer rounded px-1.5 py-0.5 border border-slate-700">
+                    <option value="LABORAN">LABORAN</option>
+                    <option value="KASIE_LAB">KASIE LAB</option>
+                </select>
+            </div>
 
-                    <div class="md:col-span-3 font-semibold text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-xl border border-emerald-100 mt-2">
-                        2. Data Rekening / E-Wallet Penerima Honorarium
-                    </div>
+            <button onclick="toggleForm('sigas')" class="bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-id-card"></i> Form SIGAS
+            </button>
+            <button onclick="toggleForm('siphon')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Form SIPHON
+            </button>
+
+            <!-- LOGOUT BUTTON IN NAVBAR -->
+            <button onclick="logoutUser()" class="bg-rose-600/90 hover:bg-rose-600 text-white font-medium text-xs px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 shadow ml-2 border border-rose-500/30">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="max-w-7xl mx-auto p-6 space-y-6">
+
+        <!-- INLINE FORM SIGAS (TAMPIL DI ATAS) -->
+        <div id="sectionFormSigas" class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hidden transition-all">
+            <div class="bg-slate-900 px-6 py-3.5 flex justify-between items-center text-white">
+                <h3 class="font-bold text-sm flex items-center gap-2"><i class="fa-solid fa-id-card text-sky-400"></i> FORM PENGAJUAN KODE GAJI ASISTEN LAB (SIGAS)</h3>
+                <button onclick="toggleForm('sigas')" class="text-slate-400 hover:text-white text-xs font-semibold flex items-center gap-1 bg-slate-800 px-2.5 py-1 rounded border border-slate-700">
+                    <i class="fa-solid fa-xmark"></i> Tutup
+                </button>
+            </div>
+            <form onsubmit="submitSigas(event)" class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Metode Pembayaran</label>
-                        <select id="siphon-bank" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                            <optgroup label="Bank Transfer">
-                                <option value="BRI (Bank Rakyat Indonesia)">BRI (Bank Rakyat Indonesia)</option>
-                                <option value="Bank Mandiri" selected>Bank Mandiri</option>
-                                <option value="BNI (Bank Negara Indonesia)">BNI (Bank Negara Indonesia)</option>
-                                <option value="BTN (Bank Tabungan Negara)">BTN (Bank Tabungan Negara)</option>
-                                <option value="BSI (Bank Syariah Indonesia)">BSI (Bank Syariah Indonesia)</option>
-                                <option value="Bank DKI">Bank DKI</option>
-                                <option value="Bank BJB">Bank BJB</option>
-                                <option value="Bank Jatim">Bank Jatim</option>
-                                <option value="Bank Jateng">Bank Jateng</option>
-                                <option value="BCA (Bank Central Asia)">BCA (Bank Central Asia)</option>
-                                <option value="Bank CIMB Niaga">Bank CIMB Niaga</option>
-                                <option value="Bank Danamon">Bank Danamon</option>
-                                <option value="Bank Permata">Bank Permata</option>
-                                <option value="Bank OCBC Indonesia">Bank OCBC Indonesia</option>
-                                <option value="Maybank Indonesia">Maybank Indonesia</option>
-                                <option value="Panin Bank">Panin Bank</option>
-                                <option value="Bank Mega">Bank Mega</option>
-                                <option value="SMBC Indonesia (BTPN)">SMBC Indonesia (BTPN)</option>
-                                <option value="Bank Jago">Bank Jago</option>
-                                <option value="blu by BCA Digital">blu by BCA Digital</option>
-                                <option value="SeaBank">SeaBank</option>
-                                <option value="Jenius">Jenius</option>
-                                <option value="Bank Neo Commerce">Bank Neo Commerce</option>
-                                <option value="Allo Bank">Allo Bank</option>
-                                <option value="Superbank">Superbank</option>
-                                <option value="Bank Raya">Bank Raya</option>
-                                <option value="Krom Bank">Krom Bank</option>
-                            </optgroup>
-                            <optgroup label="E-Wallet">
-                                <option value="GoPay">GoPay</option>
-                                <option value="OVO">OVO</option>
-                                <option value="DANA">DANA</option>
-                                <option value="ShopeePay">ShopeePay</option>
-                                <option value="LinkAja">LinkAja</option>
-                            </optgroup>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Pilih Fakultas <span class="text-rose-500">*</span></label>
+                        <select id="sigasFakultas" onchange="onFakultasChange(this.value)" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                            <option value="">-- Pilih Fakultas --</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Rekening / No. HP E-Wallet</label>
-                        <input type="text" id="siphon-norek" placeholder="Contoh: 131001234567 atau 08123456789" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Pilih Program Studi <span class="text-rose-500">*</span></label>
+                        <select id="sigasProdi" onchange="onProdiChange(this.value)" required disabled class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50">
+                            <option value="">-- Pilih Program Studi --</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Pemilik Rekening / E-Wallet</label>
-                        <input type="text" id="siphon-an" placeholder="Sesuai Buku Tabungan / Akun E-Wallet" required class="w-full px-3 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Pilih Nama Laboratorium <span class="text-rose-500">*</span></label>
+                        <select id="sigasLab" required disabled class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50">
+                            <option value="">-- Pilih Laboratorium --</option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="md:col-span-3 flex items-end justify-end mt-2">
-                        <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md transition">
-                            <i class="fa-solid fa-calculator mr-1"></i> Hitung & Ajukan Honorarium
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <hr class="border-slate-200" />
 
-            <!-- Tabel Rekap Honor SIPHON -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-slate-800 mb-4">Rekapitulasi Pengajuan Honorarium SIPHON</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
-                                <th class="p-3">No</th>
-                                <th class="p-3">Tgl Pengajuan</th>
-                                <th class="p-3">Nama Aslab</th>
-                                <th class="p-3">Kode Gaji</th>
-                                <th class="p-3">Data Rekening / E-Wallet</th>
-                                <th class="p-3">SKS / Jam</th>
-                                <th class="p-3">Total Honorarium</th>
-                                <th class="p-3">Status Verification</th>
-                            </tr>
-                        </thead>
-                        <tbody id="siphon-table-body" class="divide-y divide-slate-100"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Modal Edit Aslab Client -->
-    <div id="modal-edit-client" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
-            <h3 class="font-bold text-slate-800 text-sm mb-4">Edit Data Aslab</h3>
-            <form onsubmit="saveClientEdit(event)" class="space-y-3">
-                <input type="hidden" id="edit-client-id">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Pengajuan</label>
-                    <input type="date" id="edit-client-tgl-pengajuan" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
-                    <input type="text" id="edit-client-nama" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">NIK (16 Digit)</label>
-                    <input type="text" id="edit-client-nik" required pattern="[0-9]{16}" maxlength="16" class="w-full px-3 py-1.5 border rounded-lg text-xs">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tempat Lahir</label>
-                        <input type="text" id="edit-client-tempat" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap <span class="text-rose-500">*</span></label>
+                        <input type="text" id="sigasNama" required placeholder="Contoh: Andika Triputra Tresnasena" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tanggal Lahir</label>
-                        <input type="date" id="edit-client-tgl" required class="w-full px-3 py-1.5 border rounded-lg text-xs">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">NIK / No. KTP (16 Digit) <span class="text-rose-500">*</span></label>
+                        <input type="text" id="sigasNik" maxlength="16" required placeholder="3271012003980001" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">No. Telp / No. Whatsapp <span class="text-rose-500">*</span></label>
+                        <input type="text" id="sigasHp" required placeholder="081234567890" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
                     </div>
                 </div>
-                <div class="flex justify-end gap-2 pt-3">
-                    <button type="button" onclick="closeClientEditModal()" class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded-lg font-semibold">Batal</button>
-                    <button type="submit" class="px-3 py-1.5 bg-blue-600 text-white text-xs rounded-lg font-bold">Simpan Perubahan</button>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tempat Lahir <span class="text-rose-500">*</span></label>
+                        <input type="text" id="sigasTmptLahir" required placeholder="Bandung" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Lahir <span class="text-rose-500">*</span></label>
+                        <input type="date" id="sigasTglLahir" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Lengkap <span class="text-rose-500">*</span></label>
+                        <input type="text" id="sigasAlamat" required placeholder="Jl. Tamansari No. 1, Bandung" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="toggleForm('sigas')" class="px-4 py-2 border rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-semibold shadow">Kirim Pengajuan SIGAS</button>
                 </div>
             </form>
         </div>
+
+        <!-- INLINE FORM SIPHON (TAMPIL DI ATAS) -->
+        <div id="sectionFormSiphon" class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hidden transition-all">
+            <div class="bg-slate-900 px-6 py-3.5 flex justify-between items-center text-white">
+                <h3 class="font-bold text-sm flex items-center gap-2"><i class="fa-solid fa-file-invoice-dollar text-emerald-400"></i> FORM PENGAJUAN HONORARIUM (SIPHON)</h3>
+                <button onclick="toggleForm('siphon')" class="text-slate-400 hover:text-white text-xs font-semibold flex items-center gap-1 bg-slate-800 px-2.5 py-1 rounded border border-slate-700">
+                    <i class="fa-solid fa-xmark"></i> Tutup
+                </button>
+            </div>
+            <form onsubmit="submitSiphon(event)" class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kode Gaji Aslab <span class="text-rose-500">*</span></label>
+                        <select id="siphonKodeGaji" onchange="onKodeGajiSelect(this.value)" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none font-bold text-emerald-700">
+                            <option value="">-- Pilih Kode Gaji (Yang Terbit) --</option>
+                        </select>
+                    </div>
+
+                    <!-- READONLY AUTO-FILLED FIELDS -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 grid grid-cols-2 gap-2 text-xs">
+                        <div><span class="text-slate-500">Nama Aslab:</span> <strong id="siphonAutoNama" class="text-slate-800 font-bold block">-</strong></div>
+                        <div><span class="text-slate-500">NIK Aslab:</span> <span id="siphonAutoNik" class="text-slate-700 block">-</span></div>
+                        <div><span class="text-slate-500">Fakultas / Prodi:</span> <span id="siphonAutoFakProdi" class="text-slate-700 block">-</span></div>
+                        <div><span class="text-slate-500">Laboratorium:</span> <span id="siphonAutoLab" class="text-slate-700 block">-</span></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Pengajuan Mulai <span class="text-rose-500">*</span></label>
+                        <input type="date" id="siphonTglMulai" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Sampai Tanggal <span class="text-rose-500">*</span></label>
+                        <input type="date" id="siphonTglSelesai" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tarif Honor (Rp/Jam)</label>
+                        <select id="siphonTarif" onchange="calcHonor()" required class="w-full border border-slate-300 rounded-lg px-2.5 py-2 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            <option value="16445">Rp 16.445 (Aslab)</option>
+                            <option value="18590">Rp 18.590 (Dosen/Instruktur)</option>
+                            <option value="20000">Rp 20.000 (Khusus)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Jam / Shift</label>
+                        <input type="number" id="siphonJam" value="3" min="1" oninput="calcHonor()" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Pertemuan / Bln</label>
+                        <input type="number" id="siphonPertemuan" value="3" min="1" oninput="calcHonor()" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2 text-center">
+                        <span class="text-[10px] text-slate-500 uppercase font-semibold">Total Honorarium (Auto):</span>
+                        <div id="siphonTotalText" class="text-sm font-extrabold text-emerald-700">Rp 148.005</div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="toggleForm('siphon')" class="px-4 py-2 border rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow">Kirim Pengajuan SIPHON</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- TAB NAVIGATION -->
+        <div class="flex border-b border-slate-200 bg-white rounded-t-xl px-4 pt-2 shadow-sm">
+            <button id="tabSigasBtn" onclick="switchTab('sigas')" class="px-5 py-3 font-semibold text-sm border-b-2 border-sky-600 text-sky-600 flex items-center gap-2">
+                <i class="fa-solid fa-list-check"></i> Riwayat Pengajuan SIGAS
+            </button>
+            <button id="tabSiphonBtn" onclick="switchTab('siphon')" class="px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-receipt"></i> Riwayat Pengajuan SIPHON
+            </button>
+        </div>
+
+        <!-- SIGAS VIEW -->
+        <div id="viewSigas" class="bg-white rounded-b-xl shadow-sm border border-slate-200 p-6 border-t-0">
+            <div class="flex justify-between items-center mb-5">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 uppercase tracking-tight">PENGAJUAN KODE GAJI ASISTEN LAB (SIGAS)</h2>
+                    <p class="text-xs text-slate-500">Daftar histori permohonan kode gaji asisten laboratorium baru</p>
+                </div>
+                <button onclick="toggleForm('sigas')" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus"></i> Pengajuan Kode Gaji
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider border-b border-slate-200">
+                            <th class="py-3 px-3">TANGGAL PENGAJUAN</th>
+                            <th class="py-3 px-3">NAMA ASLAB</th>
+                            <th class="py-3 px-3">NIK</th>
+                            <th class="py-3 px-3">FAKULTAS</th>
+                            <th class="py-3 px-3">PROGRAM STUDI</th>
+                            <th class="py-3 px-3">LABORATORIUM</th>
+                            <th class="py-3 px-3">ACC KASIE LAB</th>
+                            <th class="py-3 px-3">STATUS PENGAJUAN</th>
+                            <th class="py-3 px-3">KODE GAJI TERBIT</th>
+                            <th id="thKasieActionSigas" class="py-3 px-3 text-center hidden">AKSI KASIE LAB</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sigasTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SIPHON VIEW -->
+        <div id="viewSiphon" class="bg-white rounded-b-xl shadow-sm border border-slate-200 p-6 hidden border-t-0">
+            <div class="flex justify-between items-center mb-5">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 uppercase tracking-tight">PENGAJUAN HONORARIUM PRAKTIKUM (SIPHON)</h2>
+                    <p class="text-xs text-slate-500">Daftar rekapitulasi honorarium asisten laboratorium berdasarkan jam mengajar</p>
+                </div>
+                <button onclick="toggleForm('siphon')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus"></i> Pengajuan Honorarium
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider border-b border-slate-200">
+                            <th class="py-3 px-2">TANGGAL</th>
+                            <th class="py-3 px-2">KODE GAJI</th>
+                            <th class="py-3 px-2">TANGGAL PENGAJUAN</th>
+                            <th class="py-3 px-2">NAMA ASLAB</th>
+                            <th class="py-3 px-2">NIK</th>
+                            <th class="py-3 px-2">FAKULTAS</th>
+                            <th class="py-3 px-2">PROGRAM STUDI</th>
+                            <th class="py-3 px-2">LABORATORIUM</th>
+                            <th class="py-3 px-2 font-bold text-slate-900">TOTAL HONORARIUM</th>
+                            <th class="py-3 px-2">ACC KASIE LAB</th>
+                            <th class="py-3 px-2">PIMPINAN</th>
+                            <th class="py-3 px-2">STATUS PENGAJUAN</th>
+                            <th class="py-3 px-2 text-center">FILE (HASIL PDF)</th>
+                            <th id="thKasieActionSiphon" class="py-3 px-2 text-center hidden">AKSI KASIE LAB</th>
+                        </tr>
+                    </thead>
+                    <tbody id="siphonTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
+    <!-- MODAL PREVIEW PDF & DOWNLOAD -->
+    <div id="modalPdfPreview" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden border border-slate-200 max-h-[92vh] flex flex-col">
+            <div class="bg-slate-900 px-6 py-3.5 flex justify-between items-center text-white">
+                <h3 class="font-bold text-sm flex items-center gap-2"><i class="fa-solid fa-file-pdf text-rose-400"></i> PREVIEW DOKUMEN PDF (SIPHON)</h3>
+                <div class="flex items-center gap-2">
+                    <button id="btnDownloadFromModal" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded text-xs font-semibold flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-download"></i> Download PDF
+                    </button>
+                    <button onclick="closePdfModal()" class="text-slate-400 hover:text-white px-2 py-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+            </div>
+            <!-- PREVIEW CONTAINER BODY -->
+            <div class="p-6 overflow-y-auto bg-slate-100 flex-1">
+                <div id="pdfModalContent" class="bg-white p-6 rounded shadow-md mx-auto max-w-[800px]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL REJECT (KASIE LAB) -->
+    <div id="modalReject" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden border border-slate-200">
+            <div class="bg-rose-700 px-6 py-4 flex justify-between items-center text-white">
+                <h3 class="font-bold text-sm flex items-center gap-2"><i class="fa-solid fa-circle-xmark"></i> ALASAN PENOLAKAN KASIE LAB</h3>
+                <button onclick="closeModal('reject')" class="text-slate-200 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="rejectItemIndex">
+                <input type="hidden" id="rejectItemType">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Masukan Alasan Penolakan Pengajuan:</label>
+                    <textarea id="rejectReasonInput" rows="3" placeholder="Contoh: Berkas persyaratan/NIK belum valid atau jam mengajar melampaui kuota." class="w-full border border-slate-300 rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2 border-t">
+                    <button type="button" onclick="closeModal('reject')" class="px-4 py-2 border rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100">Batal</button>
+                    <button type="button" onclick="confirmReject()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold">Konfirmasi Tolak</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SCRIPT LOGIC -->
     <script>
-        const today = new Date().toISOString().split('T')[0];
-
-        const defaultMasterData = {
-            fakultas: ["Fakultas Teknik", "Fakultas Ekonomi & Bisnis", "Fakultas MIPA"],
-            prodi: { "Fakultas Teknik": ["Teknik Informatika", "Teknik Industri"], "Fakultas Ekonomi & Bisnis": ["Akuntansi", "Manajemen"], "Fakultas MIPA": ["Farmasi"] },
-            labs: ["Lab Rekayasa Perangkat Lunak", "Lab Jaringan Computer", "Lab Simulasi Bisnis"]
+        // DATA MASTER FAKULTAS, PRODI, DAN LABORATORIUM
+        const MASTER_DATA = {
+            "Dakwah": {
+                "Komunikasi dan Penyiaran Islam": [
+                    "Lab. Produksi Film, Siaran Radio, Televisi & Multimedia Dakwah"
+                ]
+            },
+            "Ekonomi dan Bisnis": {
+                "Akuntansi": [
+                    "Laboratorium Program Studi Akuntansi"
+                ],
+                "Manajemen": [
+                    "Manajemen",
+                    "Prodi Manajemen, Konsentrasi Pemasaran"
+                ]
+            },
+            "Ilmu Komunikasi": {
+                "Ilmu Komunikasi": [
+                    "Laboratorium Film",
+                    "Laboratorium Fotografi",
+                    "Laboratorium Komunikasi Grafis",
+                    "Laboratorium Multimedia",
+                    "Laboratorium Radio",
+                    "Laboratorium Simulasi",
+                    "Laboratorium Televisi"
+                ]
+            },
+            "Farmasi dan Sains": {
+                "Farmasi": [
+                    "Laboratorium Farmasi Klinik dan Komunitas",
+                    "Laboratorium Farmasi Terpadu Unit A",
+                    "Laboratorium Farmasi Terpadu Unit B",
+                    "Laboratorium Farmasi Terpadu Unit C",
+                    "Laboratorium Farmasi Terpadu Unit D",
+                    "Laboratorium Farmasi Terpadu Unit E"
+                ],
+                "Matematika": [
+                    "Laboratorium Komputasi Matematika"
+                ],
+                "Statistika": [
+                    "Laboratorium Statistika"
+                ]
+            },
+            "Psikologi": {
+                "Psikologi": [
+                    "Laboratorium Psikologi"
+                ]
+            },
+            "Syari'ah": {
+                "Syariah": [
+                    "Laboratorium Keuangan & Perbankan Syariah"
+                ]
+            },
+            "Teknik": {
+                "Perencanaan Wilayah dan Kota": [
+                    "Laboratorium Energi dan Lingkungan",
+                    "Laboratorium Perencanaan dan Perancangan Sistem Ruang",
+                    "Laboratorium Perpetaan",
+                    "Laboratorium Studio"
+                ],
+                "Pertambangan": [
+                    "Laboratorium Eksplorasi",
+                    "Laboratorium Geologi",
+                    "Laboratorium Simulasi dan Perencanaan Tambang",
+                    "Laboratorium Tambang"
+                ],
+                "Teknik Industri": [
+                    "Laboratorium APK & Ergonomi",
+                    "Laboratorium Manajemen Kualitas",
+                    "Laboratorium Sistem Produksi",
+                    "LSIK (Laboratorium Sistem Informasi dan Keputusan)"
+                ]
+            }
         };
 
-        let masterData = JSON.parse(localStorage.getItem('master_data')) || defaultMasterData;
-        let sigasData = JSON.parse(localStorage.getItem('sigas_data')) || [
-            { id: 1, tglPengajuan: today, nama: "Faturizki", nik: "3273012000093001", tempatLahir: "Bandung", tglLahir: "2000-09-30", fakultas: "Fakultas Teknik", prodi: "Teknik Informatika", lab: "Lab Rekayasa Perangkat Lunak", kodeGaji: "KG-2026-274", statusAktif: true }
+        // INITIAL MOCK DATA SIGAS
+        let sigasData = [
+            {
+                tgl: '2026-04-02',
+                nama: 'Andika Triputra Tresnasena',
+                nik: '3271012003980001',
+                tmptLahir: 'Bandung',
+                tglLahir: '1998-03-20',
+                alamat: 'Jl. Tamansari No. 1, Bandung',
+                hp: '081234567890',
+                fakultas: 'Farmasi dan Sains',
+                prodi: 'Matematika',
+                lab: 'Laboratorium Komputasi Matematika',
+                accKasie: 'ACC',
+                status: 'Disetujui',
+                kodeGaji: 'G-037',
+                alasan: ''
+            },
+            {
+                tgl: '2026-04-05',
+                nama: 'Fadly Andika Pras\'ad',
+                nik: '3271021505990002',
+                tmptLahir: 'Jakarta',
+                tglLahir: '1999-05-15',
+                alamat: 'Jl. Ranggagading No. 8, Bandung',
+                hp: '089876543210',
+                fakultas: 'Farmasi dan Sains',
+                prodi: 'Matematika',
+                lab: 'Laboratorium Komputasi Matematika',
+                accKasie: 'ACC',
+                status: 'Menunggu ACC Admin',
+                kodeGaji: '-',
+                alasan: ''
+            }
         ];
-        let siphonData = JSON.parse(localStorage.getItem('siphon_data')) || [];
 
-        window.onload = function() {
-            document.getElementById('aslab-tgl-pengajuan').value = today;
-            document.getElementById('siphon-tgl-pengajuan').value = today;
-            populateDropdowns();
-            renderSigasTable();
-            renderSiphonDropdown();
-            renderSiphonTable();
-        };
-
-        function populateDropdowns() {
-            const fakSelect = document.getElementById('aslab-fakultas');
-            fakSelect.innerHTML = masterData.fakultas.map(f => `<option value="${f}">${f}</option>`).join('');
-            updateProdiDropdown();
-            document.getElementById('aslab-lab').innerHTML = masterData.labs.map(l => `<option value="${l}">${l}</option>`).join('');
-        }
-
-        function updateProdiDropdown() {
-            const selectedFak = document.getElementById('aslab-fakultas').value;
-            const prodiList = masterData.prodi[selectedFak] || [];
-            document.getElementById('aslab-prodi').innerHTML = prodiList.map(p => `<option value="${p}">${p}</option>`).join('');
-        }
-
-        function handleSigasSubmit(e) {
-            e.preventDefault();
-            const nikInput = document.getElementById('aslab-nik').value.trim();
-            if(nikInput.length !== 16 || isNaN(nikInput)) {
-                return alert('NIK wajib 16 digit angka!');
+        // INITIAL MOCK DATA SIPHON
+        let siphonData = [
+            {
+                tgl: '2026-04-10',
+                kodeGaji: 'G-037',
+                tglPengajuan: '2026-04-01 s/d 2026-04-30',
+                nama: 'Andika Triputra Tresnasena',
+                nik: '3271012003980001',
+                fakultas: 'Farmasi dan Sains',
+                prodi: 'Matematika',
+                lab: 'Laboratorium Komputasi Matematika',
+                tarif: 16445,
+                jam: 3,
+                pertemuan: 3,
+                totalHonor: 148005,
+                accKasie: 'ACC',
+                pimpinan: 'ACC',
+                status: 'Selesai',
+                alasan: ''
             }
+        ];
 
-            sigasData.push({
-                id: Date.now(),
-                tglPengajuan: document.getElementById('aslab-tgl-pengajuan').value,
-                nama: document.getElementById('aslab-nama').value,
-                nik: nikInput,
-                tempatLahir: document.getElementById('aslab-tempat-lahir').value,
-                tglLahir: document.getElementById('aslab-tgl-lahir').value,
-                fakultas: document.getElementById('aslab-fakultas').value,
-                prodi: document.getElementById('aslab-prodi').value,
-                lab: document.getElementById('aslab-lab').value,
-                kodeGaji: null,
-                statusAktif: true
+        let currentRole = 'LABORAN';
+        let currentPdfItemIndex = null;
+
+        // INIT ON LOAD
+        document.addEventListener('DOMContentLoaded', () => {
+            initFakultasDropdown();
+            renderTables();
+            calcHonor();
+        });
+
+        // LOGOUT HANDLER
+        function logoutUser() {
+            if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+                alert('Anda telah berhasil logout.');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // TOGGLE FORM INLINE AT TOP
+        function toggleForm(type) {
+            const formSigas = document.getElementById('sectionFormSigas');
+            const formSiphon = document.getElementById('sectionFormSiphon');
+
+            if (type === 'sigas') {
+                formSiphon.classList.add('hidden');
+                if (formSigas.classList.contains('hidden')) {
+                    formSigas.classList.remove('hidden');
+                    formSigas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    formSigas.classList.add('hidden');
+                }
+            } else if (type === 'siphon') {
+                formSigas.classList.add('hidden');
+                if (formSiphon.classList.contains('hidden')) {
+                    populateKodeGajiOptions();
+                    formSiphon.classList.remove('hidden');
+                    formSiphon.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    formSiphon.classList.add('hidden');
+                }
+            }
+        }
+
+        // INITIALIZE FAKULTAS DROPDOWN
+        function initFakultasDropdown() {
+            const fakultasSelect = document.getElementById('sigasFakultas');
+            fakultasSelect.innerHTML = '<option value="">-- Pilih Fakultas --</option>';
+            
+            Object.keys(MASTER_DATA).forEach(fakultas => {
+                const opt = document.createElement('option');
+                opt.value = fakultas;
+                opt.textContent = fakultas;
+                fakultasSelect.appendChild(opt);
             });
-            localStorage.setItem('sigas_data', JSON.stringify(sigasData));
-            renderSigasTable();
-            renderSiphonDropdown();
-            e.target.reset();
-            document.getElementById('aslab-tgl-pengajuan').value = today;
-            alert('Pengajuan Kode Gaji Aslab Berhasil Dikirim!');
         }
 
-        function renderSigasTable() {
-            const tbody = document.getElementById('sigas-table-body');
-            tbody.innerHTML = sigasData.map((item, idx) => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-3">${idx + 1}</td>
-                    <td class="p-3 font-medium text-slate-600">${item.tglPengajuan || today}</td>
-                    <td class="p-3 font-semibold">${item.nama}</td>
-                    <td class="p-3 font-mono">${item.nik || '-'}</td>
-                    <td class="p-3">${item.tempatLahir}, ${item.tglLahir}</td>
-                    <td class="p-3">${item.prodi} <br><span class="text-[10px] text-slate-400">${item.lab}</span></td>
-                    <td class="p-3">${item.kodeGaji ? `<span class="bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded font-bold">${item.kodeGaji}</span>` : `<span class="text-slate-400 italic">Belum Terbit</span>`}</td>
-                    <td class="p-3">${item.statusAktif ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-semibold">Aktif</span>` : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-[10px] font-semibold">Non-Aktif</span>`}</td>
-                    <td class="p-3 text-center">
-                        <button onclick="openClientEditModal(${item.id})" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded text-[10px]">
-                            <i class="fa-solid fa-pen-to-square"></i> Edit
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
+        // CHAINED DROPDOWN HANDLERS
+        function onFakultasChange(selectedFakultas) {
+            const prodiSelect = document.getElementById('sigasProdi');
+            const labSelect = document.getElementById('sigasLab');
 
-        function openClientEditModal(id) {
-            const item = sigasData.find(x => x.id === id);
-            if (!item) return;
-            document.getElementById('edit-client-id').value = item.id;
-            document.getElementById('edit-client-tgl-pengajuan').value = item.tglPengajuan || today;
-            document.getElementById('edit-client-nama').value = item.nama;
-            document.getElementById('edit-client-nik').value = item.nik || '';
-            document.getElementById('edit-client-tempat').value = item.tempatLahir;
-            document.getElementById('edit-client-tgl').value = item.tglLahir;
-            document.getElementById('modal-edit-client').classList.remove('hidden');
-        }
+            prodiSelect.innerHTML = '<option value="">-- Pilih Program Studi --</option>';
+            labSelect.innerHTML = '<option value="">-- Pilih Laboratorium --</option>';
+            labSelect.disabled = true;
+            labSelect.classList.add('bg-slate-50');
 
-        function closeClientEditModal() {
-            document.getElementById('modal-edit-client').classList.add('hidden');
-        }
-
-        function saveClientEdit(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('edit-client-id').value);
-            const item = sigasData.find(x => x.id === id);
-            if (item) {
-                item.tglPengajuan = document.getElementById('edit-client-tgl-pengajuan').value;
-                item.nama = document.getElementById('edit-client-nama').value;
-                item.nik = document.getElementById('edit-client-nik').value;
-                item.tempatLahir = document.getElementById('edit-client-tempat').value;
-                item.tglLahir = document.getElementById('edit-client-tgl').value;
-                localStorage.setItem('sigas_data', JSON.stringify(sigasData));
-                renderSigasTable();
-                closeClientEditModal();
-                alert('Data Aslab berhasil diperbarui!');
+            if (!selectedFakultas || !MASTER_DATA[selectedFakultas]) {
+                prodiSelect.disabled = true;
+                prodiSelect.classList.add('bg-slate-50');
+                return;
             }
+
+            prodiSelect.disabled = false;
+            prodiSelect.classList.remove('bg-slate-50');
+
+            Object.keys(MASTER_DATA[selectedFakultas]).forEach(prodi => {
+                const opt = document.createElement('option');
+                opt.value = prodi;
+                opt.textContent = prodi;
+                prodiSelect.appendChild(opt);
+            });
         }
 
-        function renderSiphonDropdown() {
-            const activeAslabs = sigasData.filter(x => x.statusAktif && x.kodeGaji);
-            const select = document.getElementById('siphon-aslab-select');
-            if (activeAslabs.length === 0) {
-                select.innerHTML = `<option value="">-- Tidak ada Aslab Aktif Ber-Kode Gaji --</option>`;
+        function onProdiChange(selectedProdi) {
+            const selectedFakultas = document.getElementById('sigasFakultas').value;
+            const labSelect = document.getElementById('sigasLab');
+
+            labSelect.innerHTML = '<option value="">-- Pilih Laboratorium --</option>';
+
+            if (!selectedProdi || !MASTER_DATA[selectedFakultas] || !MASTER_DATA[selectedFakultas][selectedProdi]) {
+                labSelect.disabled = true;
+                labSelect.classList.add('bg-slate-50');
+                return;
+            }
+
+            labSelect.disabled = false;
+            labSelect.classList.remove('bg-slate-50');
+
+            const labs = MASTER_DATA[selectedFakultas][selectedProdi];
+            labs.forEach(lab => {
+                const opt = document.createElement('option');
+                opt.value = lab;
+                opt.textContent = lab;
+                labSelect.appendChild(opt);
+            });
+        }
+
+        // ROLE SWITCHING
+        function changeRole(role) {
+            currentRole = role;
+            document.getElementById('roleBadge').innerText = `MODE: ${role === 'KASIE_LAB' ? 'KASIE LAB' : 'LABORAN'}`;
+            
+            const thKasieSigas = document.getElementById('thKasieActionSigas');
+            const thKasieSiphon = document.getElementById('thKasieActionSiphon');
+
+            if (role === 'KASIE_LAB') {
+                thKasieSigas.classList.remove('hidden');
+                thKasieSiphon.classList.remove('hidden');
             } else {
-                select.innerHTML = activeAslabs.map(a => `<option value="${a.id}">${a.nama} (${a.kodeGaji})</option>`).join('');
+                thKasieSigas.classList.add('hidden');
+                thKasieSiphon.classList.add('hidden');
             }
+
+            renderTables();
         }
 
-        function calculateHonor(e) {
-            e.preventDefault();
-            const aslabId = parseInt(document.getElementById('siphon-aslab-select').value);
-            const aslab = sigasData.find(x => x.id === aslabId);
-            if (!aslab) return alert('Silakan pilih Aslab!');
-
-            const tglPengajuan = document.getElementById('siphon-tgl-pengajuan').value;
-            const sks = parseInt(document.getElementById('siphon-sks').value);
-            const jam = parseInt(document.getElementById('siphon-jam').value);
-            const total = jam * 35000;
-
-            const bank = document.getElementById('siphon-bank').value;
-            const norek = document.getElementById('siphon-norek').value;
-            const an = document.getElementById('siphon-an').value;
-
-            siphonData.push({
-                id: Date.now(),
-                tglPengajuan: tglPengajuan,
-                nama: aslab.nama,
-                kodeGaji: aslab.kodeGaji,
-                sks: sks,
-                jam: jam,
-                total: total,
-                bank: bank,
-                norek: norek,
-                an: an,
-                status: 'Menunggu Approval'
-            });
-
-            localStorage.setItem('siphon_data', JSON.stringify(siphonData));
-            renderSiphonTable();
-            alert('Pengajuan Honor SIPHON Berhasil Dihitung & Dikirim ke Admin!');
-        }
-
-        function renderSiphonTable() {
-            const tbody = document.getElementById('siphon-table-body');
-            tbody.innerHTML = siphonData.map((item, idx) => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-3">${idx + 1}</td>
-                    <td class="p-3 font-medium text-slate-600">${item.tglPengajuan || today}</td>
-                    <td class="p-3 font-semibold">${item.nama}</td>
-                    <td class="p-3 font-mono font-bold text-blue-700">${item.kodeGaji}</td>
-                    <td class="p-3">
-                        <span class="font-semibold text-slate-700">${item.bank}</span><br>
-                        <span class="font-mono text-slate-500">${item.norek}</span> <br>
-                        <span class="text-[10px] text-slate-400">a.n. ${item.an}</span>
-                    </td>
-                    <td class="p-3">${item.sks} SKS / ${item.jam} Jam</td>
-                    <td class="p-3 font-bold text-emerald-700">Rp ${item.total.toLocaleString('id-ID')}</td>
-                    <td class="p-3">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${item.status === 'Disetujui' ? 'bg-emerald-100 text-emerald-800' : item.status === 'Ditolak' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">
-                            ${item.status}
-                        </span>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function exportToCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,Tgl Pengajuan,Nama,NIK,Tempat Lahir,Tanggal Lahir,Fakultas,Prodi,Lab,Kode Gaji,Status\n";
-            sigasData.forEach(r => { csvContent += `"${r.tglPengajuan||''}","${r.nama}","${r.nik||''}","${r.tempatLahir}","${r.tglLahir}","${r.fakultas}","${r.prodi}","${r.lab}","${r.kodeGaji||''}","${r.statusAktif?'Aktif':'Non-Aktif'}"\n`; });
-            const link = document.createElement("a");
-            link.href = encodeURI(csvContent);
-            link.download = `SIGAS_Client_Export.csv`;
-            link.click();
-        }
-
+        // TAB SWITCHING
         function switchTab(tab) {
-            const sigasBtn = document.getElementById('tab-sigas');
-            const siphonBtn = document.getElementById('tab-siphon');
+            const vSigas = document.getElementById('viewSigas');
+            const vSiphon = document.getElementById('viewSiphon');
+            const btnSigas = document.getElementById('tabSigasBtn');
+            const btnSiphon = document.getElementById('tabSiphonBtn');
 
             if (tab === 'sigas') {
-                document.getElementById('module-sigas').classList.remove('hidden');
-                document.getElementById('module-siphon').classList.add('hidden');
-                
-                sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm";
-                siphonBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+                vSigas.classList.remove('hidden');
+                vSiphon.classList.add('hidden');
+                btnSigas.className = "px-5 py-3 font-semibold text-sm border-b-2 border-sky-600 text-sky-600 flex items-center gap-2";
+                btnSiphon.className = "px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2";
             } else {
-                document.getElementById('module-sigas').classList.add('hidden');
-                document.getElementById('module-siphon').classList.remove('hidden');
-                
-                sigasBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg transition-all text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
-                siphonBtn.className = "flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all bg-blue-50 text-blue-700 border-b-2 border-blue-600 shadow-sm";
+                vSigas.classList.add('hidden');
+                vSiphon.classList.remove('hidden');
+                btnSiphon.className = "px-5 py-3 font-semibold text-sm border-b-2 border-emerald-600 text-emerald-600 flex items-center gap-2";
+                btnSigas.className = "px-5 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2";
             }
+        }
+
+        // RENDER TABLES
+        function renderTables() {
+            // 1. SIGAS TABLE
+            const sigasBody = document.getElementById('sigasTableBody');
+            sigasBody.innerHTML = '';
+            sigasData.forEach((item, idx) => {
+                let accBadge = '<span class="bg-amber-100 text-amber-700 font-semibold px-2 py-0.5 rounded text-[10px]"><i class="fa-regular fa-clock"></i> Menunggu</span>';
+                if (item.accKasie === 'ACC') {
+                    accBadge = '<span class="bg-emerald-100 text-emerald-700 font-semibold px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-check"></i> ACC Kasie</span>';
+                } else if (item.accKasie === 'Ditolak') {
+                    accBadge = `<span class="bg-rose-100 text-rose-700 font-semibold px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-xmark"></i> Ditolak</span>`;
+                }
+
+                let statusBadge = `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-semibold text-[10px]">${item.status}</span>`;
+                if (item.status === 'Disetujui') {
+                    statusBadge = '<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold text-[10px]"><i class="fa-solid fa-circle-check"></i> Disetujui</span>';
+                } else if (item.status === 'Ditolak') {
+                    statusBadge = `<span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-semibold text-[10px]">Ditolak</span>`;
+                }
+
+                let kasieActionCell = '';
+                if (currentRole === 'KASIE_LAB') {
+                    if (item.accKasie === 'Menunggu') {
+                        kasieActionCell = `
+                            <td class="py-3 px-3 text-center">
+                                <div class="flex items-center justify-center gap-1">
+                                    <button onclick="approveItem('sigas', ${idx})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-0.5 rounded text-[10px] font-semibold flex items-center gap-1">
+                                        <i class="fa-solid fa-check"></i> ACC
+                                    </button>
+                                    <button onclick="openRejectModal('sigas', ${idx})" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded text-[10px] font-semibold flex items-center gap-1">
+                                        <i class="fa-solid fa-xmark"></i> Tolak
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                    } else {
+                        kasieActionCell = `<td class="py-3 px-3 text-center text-slate-400 italic text-[10px]">${item.alasan ? 'Ket: '+item.alasan : 'Selesai'}</td>`;
+                    }
+                }
+
+                sigasBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-3">${item.tgl}</td>
+                        <td class="py-3 px-3 font-bold text-slate-900">${item.nama}</td>
+                        <td class="py-3 px-3">${item.nik}</td>
+                        <td class="py-3 px-3">${item.fakultas}</td>
+                        <td class="py-3 px-3">${item.prodi}</td>
+                        <td class="py-3 px-3">${item.lab}</td>
+                        <td class="py-3 px-3">${accBadge}</td>
+                        <td class="py-3 px-3">${statusBadge} ${item.alasan ? `<div class="text-[9px] text-rose-600 italic">Alasan: ${item.alasan}</div>` : ''}</td>
+                        <td class="py-3 px-3 font-bold ${item.kodeGaji !== '-' ? 'text-sky-600' : 'text-slate-400'}">${item.kodeGaji}</td>
+                        ${kasieActionCell}
+                    </tr>
+                `;
+            });
+
+            // 2. SIPHON TABLE
+            const siphonBody = document.getElementById('siphonTableBody');
+            siphonBody.innerHTML = '';
+            siphonData.forEach((item, idx) => {
+                let accKasieBadge = '<span class="bg-amber-100 text-amber-700 font-semibold px-1.5 py-0.5 rounded text-[10px]">Menunggu</span>';
+                if (item.accKasie === 'ACC') {
+                    accKasieBadge = '<span class="bg-emerald-100 text-emerald-700 font-semibold px-1.5 py-0.5 rounded text-[10px]">ACC</span>';
+                } else if (item.accKasie === 'Ditolak') {
+                    accKasieBadge = '<span class="bg-rose-100 text-rose-700 font-semibold px-1.5 py-0.5 rounded text-[10px]">Ditolak</span>';
+                }
+
+                let pimpinanBadge = '<span class="bg-slate-100 text-slate-600 font-semibold px-1.5 py-0.5 rounded text-[10px]">Menunggu</span>';
+                if (item.pimpinan === 'ACC') {
+                    pimpinanBadge = '<span class="bg-emerald-100 text-emerald-700 font-semibold px-1.5 py-0.5 rounded text-[10px]">ACC</span>';
+                }
+
+                let pdfButton = item.status === 'Selesai' 
+                    ? `<button onclick="previewSiphonPdf(${idx})" class="bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded text-[10px] font-medium flex items-center gap-1 mx-auto shadow-sm">
+                        <i class="fa-solid fa-file-pdf text-rose-400"></i> Preview / Download PDF
+                       </button>`
+                    : `<span class="text-slate-400 italic text-[10px]">Pending ACC</span>`;
+
+                let kasieActionCell = '';
+                if (currentRole === 'KASIE_LAB') {
+                    if (item.accKasie === 'Menunggu') {
+                        kasieActionCell = `
+                            <td class="py-3 px-2 text-center">
+                                <div class="flex items-center justify-center gap-1">
+                                    <button onclick="approveItem('siphon', ${idx})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-0.5 rounded text-[10px] font-semibold flex items-center gap-1">
+                                        <i class="fa-solid fa-check"></i> ACC
+                                    </button>
+                                    <button onclick="openRejectModal('siphon', ${idx})" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded text-[10px] font-semibold flex items-center gap-1">
+                                        <i class="fa-solid fa-xmark"></i> Tolak
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                    } else {
+                        kasieActionCell = `<td class="py-3 px-2 text-center text-slate-400 italic text-[10px]">${item.alasan ? 'Ket: '+item.alasan : 'Selesai'}</td>`;
+                    }
+                }
+
+                siphonBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-2">${item.tgl}</td>
+                        <td class="py-3 px-2 font-bold text-emerald-600">${item.kodeGaji}</td>
+                        <td class="py-3 px-2 text-[11px]">${item.tglPengajuan}</td>
+                        <td class="py-3 px-2 font-bold text-slate-900">${item.nama}</td>
+                        <td class="py-3 px-2">${item.nik}</td>
+                        <td class="py-3 px-2">${item.fakultas}</td>
+                        <td class="py-3 px-2">${item.prodi}</td>
+                        <td class="py-3 px-2">${item.lab}</td>
+                        <td class="py-3 px-2 font-bold text-slate-900">Rp ${item.totalHonor.toLocaleString('id-ID')}</td>
+                        <td class="py-3 px-2">${accKasieBadge}</td>
+                        <td class="py-3 px-2">${pimpinanBadge}</td>
+                        <td class="py-3 px-2"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold text-[10px]">${item.status}</span> ${item.alasan ? `<div class="text-[9px] text-rose-600 italic">Alasan: ${item.alasan}</div>` : ''}</td>
+                        <td class="py-3 px-2 text-center">${pdfButton}</td>
+                        ${kasieActionCell}
+                    </tr>
+                `;
+            });
+        }
+
+        // APPROVE / REJECT LOGIC
+        function approveItem(type, index) {
+            if (type === 'sigas') {
+                sigasData[index].accKasie = 'ACC';
+                sigasData[index].status = 'Menunggu ACC Admin';
+            } else {
+                siphonData[index].accKasie = 'ACC';
+                siphonData[index].pimpinan = 'ACC';
+                siphonData[index].status = 'Selesai';
+            }
+            renderTables();
+        }
+
+        function openRejectModal(type, index) {
+            document.getElementById('rejectItemType').value = type;
+            document.getElementById('rejectItemIndex').value = index;
+            document.getElementById('rejectReasonInput').value = '';
+            document.getElementById('modalReject').classList.remove('hidden');
+        }
+
+        function confirmReject() {
+            const type = document.getElementById('rejectItemType').value;
+            const index = parseInt(document.getElementById('rejectItemIndex').value);
+            const reason = document.getElementById('rejectReasonInput').value.trim();
+
+            if (!reason) {
+                alert('Mohon isi alasan penolakan!');
+                return;
+            }
+
+            if (type === 'sigas') {
+                sigasData[index].accKasie = 'Ditolak';
+                sigasData[index].status = 'Ditolak';
+                sigasData[index].alasan = reason;
+            } else {
+                siphonData[index].accKasie = 'Ditolak';
+                siphonData[index].status = 'Ditolak';
+                siphonData[index].alasan = reason;
+            }
+
+            closeModal('reject');
+            renderTables();
+        }
+
+        function closeModal(type) {
+            if(type === 'reject') document.getElementById('modalReject').classList.add('hidden');
+        }
+
+        // AUTO-FILL SIPHON FORM FROM KODE GAJI
+        function populateKodeGajiOptions() {
+            const select = document.getElementById('siphonKodeGaji');
+            select.innerHTML = '<option value="">-- Pilih Kode Gaji (Yang Terbit) --</option>';
+            
+            const validCodes = sigasData.filter(item => item.kodeGaji && item.kodeGaji !== '-');
+            validCodes.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.kodeGaji;
+                opt.textContent = `${item.kodeGaji} - ${item.nama}`;
+                select.appendChild(opt);
+            });
+        }
+
+        function onKodeGajiSelect(kode) {
+            const found = sigasData.find(item => item.kodeGaji === kode);
+            if (found) {
+                document.getElementById('siphonAutoNama').innerText = found.nama;
+                document.getElementById('siphonAutoNik').innerText = found.nik;
+                document.getElementById('siphonAutoFakProdi').innerText = `${found.fakultas} / ${found.prodi}`;
+                document.getElementById('siphonAutoLab').innerText = found.lab;
+            } else {
+                document.getElementById('siphonAutoNama').innerText = '-';
+                document.getElementById('siphonAutoNik').innerText = '-';
+                document.getElementById('siphonAutoFakProdi').innerText = '-';
+                document.getElementById('siphonAutoLab').innerText = '-';
+            }
+        }
+
+        // FORM CALCULATIONS
+        function calcHonor() {
+            const tarif = parseFloat(document.getElementById('siphonTarif').value) || 0;
+            const jam = parseFloat(document.getElementById('siphonJam').value) || 0;
+            const pert = parseFloat(document.getElementById('siphonPertemuan').value) || 0;
+            const total = tarif * jam * pert;
+            document.getElementById('siphonTotalText').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        // SUBMIT HANDLERS
+        function submitSigas(e) {
+            e.preventDefault();
+            const today = new Date().toISOString().split('T')[0];
+
+            sigasData.push({
+                tgl: today,
+                nama: document.getElementById('sigasNama').value,
+                nik: document.getElementById('sigasNik').value,
+                tmptLahir: document.getElementById('sigasTmptLahir').value,
+                tglLahir: document.getElementById('sigasTglLahir').value,
+                alamat: document.getElementById('sigasAlamat').value,
+                hp: document.getElementById('sigasHp').value,
+                fakultas: document.getElementById('sigasFakultas').value,
+                prodi: document.getElementById('sigasProdi').value,
+                lab: document.getElementById('sigasLab').value,
+                accKasie: 'Menunggu',
+                status: 'Proses ACC Kasie',
+                kodeGaji: '-',
+                alasan: ''
+            });
+
+            toggleForm('sigas');
+            renderTables();
+            e.target.reset();
+        }
+
+        function submitSiphon(e) {
+            e.preventDefault();
+            const kode = document.getElementById('siphonKodeGaji').value;
+            const found = sigasData.find(item => item.kodeGaji === kode);
+
+            if (!found) {
+                alert('Mohon pilih Kode Gaji yang valid!');
+                return;
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            const tglMulai = document.getElementById('siphonTglMulai').value;
+            const tglSelesai = document.getElementById('siphonTglSelesai').value;
+            const tarif = parseFloat(document.getElementById('siphonTarif').value) || 0;
+            const jam = parseFloat(document.getElementById('siphonJam').value) || 0;
+            const pert = parseFloat(document.getElementById('siphonPertemuan').value) || 0;
+
+            siphonData.push({
+                tgl: today,
+                kodeGaji: kode,
+                tglPengajuan: `${tglMulai} s/d ${tglSelesai}`,
+                nama: found.nama,
+                nik: found.nik,
+                fakultas: found.fakultas,
+                prodi: found.prodi,
+                lab: found.lab,
+                tarif: tarif,
+                jam: jam,
+                pertemuan: pert,
+                totalHonor: tarif * jam * pert,
+                accKasie: 'Menunggu',
+                pimpinan: 'Menunggu',
+                status: 'Proses ACC Kasie',
+                alasan: ''
+            });
+
+            toggleForm('siphon');
+            renderTables();
+            e.target.reset();
+        }
+
+        // PREVIEW PDF MODAL LOGIC
+        function previewSiphonPdf(index) {
+            currentPdfItemIndex = index;
+            const item = siphonData[index];
+            const totalJam = item.jam * item.pertemuan;
+
+            const htmlContent = `
+                <div id="pdfPrintArea" style="padding: 20px; font-family: 'Arial', sans-serif; color: #1e293b; font-size: 11px; background: white;">
+                    <!-- KOP SURAT UNISBA -->
+                    <div style="display: flex; align-items: center; justify-content: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;">
+                        <div style="text-align: center;">
+                            <h3 style="margin: 0; font-size: 13px; font-weight: bold; text-transform: uppercase;">${item.lab.toUpperCase()}</h3>
+                            <h4 style="margin: 2px 0; font-size: 12px; font-weight: bold; text-transform: uppercase;">PROGRAM STUDI ${item.prodi.toUpperCase()}</h4>
+                            <h2 style="margin: 2px 0; font-size: 14px; font-weight: bold; text-transform: uppercase;">UNIVERSITAS ISLAM BANDUNG</h2>
+                            <p style="margin: 0; font-size: 10px; color: #475569;">Jl. Rangagading No. 8 Bandung Telp 4203368</p>
+                        </div>
+                    </div>
+
+                    <!-- JUDUL DOCUMENT -->
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <h4 style="margin: 0; font-size: 12px; font-weight: bold; text-decoration: underline;">DAFTAR HONORARIUM PRAKTIKUM</h4>
+                        <p style="margin: 2px 0; font-size: 10px; font-weight: bold;">${item.lab.toUpperCase()} SEMESTER GENAP 2025/2026</p>
+                        <p style="margin: 0; font-size: 10px; text-transform: uppercase;">PERIODE: ${item.tglPengajuan}</p>
+                    </div>
+
+                    <!-- TABEL DETAIL HONORARIUM -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 10px;" border="1" cellpadding="5">
+                        <thead style="background-color: #f1f5f9; text-align: center;">
+                            <tr>
+                                <th>NO</th>
+                                <th>KODE GAJI</th>
+                                <th>NAMA ASISTEN</th>
+                                <th>GOL</th>
+                                <th>JUMLAH PERTEMUAN</th>
+                                <th>JAM/ PERTEMUAN</th>
+                                <th>JAM PERTEMUAN</th>
+                                <th>HONOR/JAM</th>
+                                <th>JUMLAH HONOR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="text-align: center;">
+                                <td>1</td>
+                                <td style="font-weight: bold;">${item.kodeGaji}</td>
+                                <td style="text-align: left; font-weight: bold;">${item.nama}</td>
+                                <td>B1</td>
+                                <td>${item.pertemuan}</td>
+                                <td>${item.jam}</td>
+                                <td>${totalJam}</td>
+                                <td>Rp ${item.tarif.toLocaleString('id-ID')}</td>
+                                <td style="text-align: right; font-weight: bold;">Rp ${item.totalHonor.toLocaleString('id-ID')}</td>
+                            </tr>
+                            <tr style="font-weight: bold; background-color: #f8fafc;">
+                                <td colspan="8" style="text-align: right;">JUMLAH</td>
+                                <td style="text-align: right;">Rp ${item.totalHonor.toLocaleString('id-ID')}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="font-size: 10px; font-style: italic; margin-bottom: 25px;">
+                        Terbilang: ## Seratus Empat Puluh Delapan Ribu Lima Rupiah ##
+                    </div>
+
+                    <!-- SIGNATURE & DIGITAL BARCODE VALIDATION -->
+                    <div style="margin-top: 20px;">
+                        <p style="margin-bottom: 15px;">Bandung, ${item.tgl}</p>
+                        <table style="width: 100%; text-align: center; font-size: 10px;">
+                            <tr>
+                                <td style="width: 33%;">
+                                    <p style="margin-bottom: 5px;">Kasie. Lab. ${item.prodi}</p>
+                                    <div id="qrKasie" style="display: flex; justify-content: center; margin: 8px 0;"></div>
+                                    <p style="font-weight: bold; margin-top: 5px;"><u>Fariz Fahmi Fikri, S.Si., M.Si.</u></p>
+                                </td>
+                                <td style="width: 33%;">
+                                    <p style="margin-bottom: 5px;">Menyetujui/Mengetahui,<br/>Wakil Dekan Bidang Perencanaan</p>
+                                    <div id="qrWadek" style="display: flex; justify-content: center; margin: 8px 0;"></div>
+                                    <p style="font-weight: bold; margin-top: 5px;"><u>apt. Yani Lukmayani, S.Si., M.Si.</u></p>
+                                </td>
+                                <td style="width: 33%;">
+                                    <p style="margin-bottom: 5px;">Mengetahui,<br/>Wakil Rektor Bidang Perencanaan</p>
+                                    <div id="qrWarek" style="display: flex; justify-content: center; margin: 8px 0;"></div>
+                                    <p style="font-weight: bold; margin-top: 5px;"><u>Dr. Helmi Aziz, S.Pd.I., M.Pd.I.</u></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            const pdfContainer = document.getElementById('pdfModalContent');
+            pdfContainer.innerHTML = htmlContent;
+
+            // Generate Barcode / QR
+            new QRCode(document.getElementById("qrKasie"), { text: `VALIDATED_KASIE_LAB_${item.kodeGaji}_${item.nama}`, width: 55, height: 55 });
+            new QRCode(document.getElementById("qrWadek"), { text: `VALIDATED_WADEK_UNISBA_${item.kodeGaji}`, width: 55, height: 55 });
+            new QRCode(document.getElementById("qrWarek"), { text: `VALIDATED_WAREK_UNISBA_${item.kodeGaji}`, width: 55, height: 55 });
+
+            document.getElementById('btnDownloadFromModal').onclick = () => generatePdfDownload(item);
+            document.getElementById('modalPdfPreview').classList.remove('hidden');
+        }
+
+        function closePdfModal() {
+            document.getElementById('modalPdfPreview').classList.add('hidden');
+        }
+
+        function generatePdfDownload(item) {
+            const element = document.getElementById('pdfPrintArea');
+            const opt = {
+                margin:       0.3,
+                filename:     `SIPHON_${item.kodeGaji}_${item.nama}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
         }
     </script>
 </body>
