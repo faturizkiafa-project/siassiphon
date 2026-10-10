@@ -1,160 +1,466 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - PORTAL SDM DAN ADMINISTRASI UMUM UNIVERSITAS ISLAM BANDUNG</title>
+    <meta name="theme-color" content="#07142b">
+    <title>Portal Layanan Asisten Laboratorium — SIGAS & SIPHON</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: { 900: '#0b192c', 950: '#060d18' },
+                        brand: { blue: '#2563eb', teal: '#10b981' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
     <style>
-        .campus-bg {
-            background-image: linear-gradient(135deg, rgba(11, 25, 46, 0.92) 0%, rgba(30, 58, 138, 0.85) 100%), 
-                              url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        :root { color-scheme: dark; }
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #060d18; }
+        .glass-nav { background: rgba(6, 13, 24, .72); backdrop-filter: blur(18px); }
+        .glass-card { background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(14px); }
+        .text-gradient { background: linear-gradient(110deg,#fff 10%,#bfdbfe 58%,#6ee7b7); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .hero-glow { background: radial-gradient(ellipse at center,rgba(37,99,235,.23),transparent 68%); }
+        .hero-stage { min-height: 850px; }
+        .hero-copy { position: relative; z-index: 5; }
+        .hero-laptop-wrap { position:absolute; z-index:2; inset:0; pointer-events:none; }
+        .laptop-hero {
+            position: absolute; z-index: 2; width: min(78vw, 970px); left: 59%; top: 315px;
+            transform: translateX(-50%) perspective(1500px) rotateX(6deg) rotateY(-3deg);
+            opacity: .11; filter: saturate(.9); pointer-events:none;
         }
-        .bg-navy-solid {
-            background: linear-gradient(145deg, #0b192e 0%, #1e3a8a 100%);
+        .device-shell {
+            padding: 10px 10px 0; border: 1px solid rgba(255,255,255,.32); border-radius: 20px 20px 5px 5px;
+            background: linear-gradient(145deg,#384454,#111827 25%,#263449 78%,#64748b);
+            box-shadow: 0 40px 100px rgba(0,0,0,.56), 0 0 65px rgba(59,130,246,.18);
+        }
+        .device-screen { aspect-ratio: 16/9.5; position:relative; overflow:hidden; border-radius:12px 12px 0 0; background:#eaf0f9; }
+        .login-preview { height:100%; display:grid; grid-template-columns: 1fr .9fr; color:#1e293b; }
+        .login-left { padding:5% 7%; background:#fff; display:flex; flex-direction:column; justify-content:center; }
+        .login-brand { display:flex; gap:8px; align-items:center; margin-bottom:4%; color:#17366b; font-weight:800; font-size:clamp(7px,1.05vw,13px); }
+        .login-brand img { width:clamp(16px,2vw,26px); height:clamp(16px,2vw,26px); object-fit:contain; }
+        .login-left h3 { font-size:clamp(10px,1.5vw,18px); font-weight:800; color:#1e293b; }
+        .login-left p { font-size:clamp(5px,.68vw,8px); color:#64748b; margin:2px 0 4%; }
+        .fake-label { font-size:clamp(5px,.56vw,7px); font-weight:800; text-transform:uppercase; color:#64748b; margin:2% 0 1%; }
+        .fake-input { border:1px solid #dbe3ee; background:#f8fafc; border-radius:6px; height:clamp(14px,2.25vw,26px); margin-bottom:2%; }
+        .fake-captcha { display:flex; align-items:center; gap:5px; border:1px solid #dbe3ee; border-radius:6px; padding:5px; margin:2% 0; font:700 clamp(6px,.8vw,10px) monospace; color:#1e3a8a; }
+        .fake-submit { margin-top:2%; padding:2.4% 8px; border-radius:7px; background:linear-gradient(100deg,#1d4ed8,#1e40af); color:white; text-align:center; font-size:clamp(6px,.8vw,10px); font-weight:700; }
+        .login-right { background:linear-gradient(145deg,#101d3a,#1b3471 68%,#24458a); color:#fff; padding:8%; display:flex; flex-direction:column; justify-content:space-between; }
+        .login-right .uni-tag { align-self:flex-end; border:1px solid rgba(251,191,36,.4); background:rgba(251,191,36,.1); color:#fde68a; padding:4px 7px; border-radius:99px; font-size:clamp(4px,.55vw,7px); font-weight:800; }
+        .login-right h4 { font-size:clamp(9px,1.55vw,18px); line-height:1.3; font-weight:900; }
+        .login-right p { max-width:260px; font-size:clamp(5px,.65vw,8px); color:#dbeafe; line-height:1.65; margin-top:6px; }
+        .laptop-base { width:108%; height:14px; margin-left:-4%; border-radius:0 0 16px 16px; background:linear-gradient(#e2e8f0,#64748b); box-shadow:0 22px 28px rgba(0,0,0,.36); }
+        .pdf-float {
+            position:absolute; z-index:4; right:0; bottom:8px; width:240px; padding:14px;
+            transform: perspective(900px) rotateY(-10deg) rotateZ(2deg);
+            border:1px solid rgba(255,255,255,.55); border-radius:14px; color:#334155;
+            background:rgba(255,255,255,.9); box-shadow:0 24px 55px rgba(0,0,0,.4); backdrop-filter:blur(14px);
+        }
+        .pdf-paper { margin-top:9px; background:white; border-radius:7px; padding:10px; box-shadow:0 2px 8px rgba(15,23,42,.1); }
+        .pdf-qr { width:34px;height:34px; flex:none; background-color:#fff; background-image:linear-gradient(90deg,#172554 25%,transparent 25%,transparent 50%,#172554 50%,#172554 75%,transparent 75%),linear-gradient(#172554 25%,transparent 25%,transparent 50%,#172554 50%,#172554 75%,transparent 75%); background-size:10px 10px; border:3px solid white; outline:1px solid #cbd5e1; }
+        .float-pill { position:absolute; z-index:4; left:2%; bottom:55px; display:flex; align-items:center; gap:9px; padding:10px 13px; border:1px solid rgba(255,255,255,.2); border-radius:14px; background:rgba(9,20,40,.74); backdrop-filter:blur(14px); box-shadow:0 16px 30px rgba(0,0,0,.24); }
+        .feature-card { position:relative; min-height:330px; overflow:hidden; border:1px solid rgba(255,255,255,.12); border-radius:28px; padding:26px; isolation:isolate; transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease; }
+        .feature-card:hover { transform:translateY(-7px) rotateX(2deg); border-color:rgba(255,255,255,.26); box-shadow:0 28px 70px rgba(0,0,0,.28); }
+        .feature-card::after { content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.1),transparent 45%);pointer-events:none; }
+        .feature-blue { background:radial-gradient(ellipse at 80% 15%,rgba(59,130,246,.34),transparent 45%),linear-gradient(145deg,#101d34,#0b1424); }
+        .feature-green { background:radial-gradient(ellipse at 80% 15%,rgba(16,185,129,.3),transparent 45%),linear-gradient(145deg,#10251f,#0b1720); }
+        .feature-visual { margin-top:22px; padding:14px; border-radius:18px; border:1px solid rgba(255,255,255,.15); background:rgba(2,8,20,.5); box-shadow:0 18px 35px rgba(0,0,0,.24); transform:perspective(700px) rotateX(4deg) rotateY(-4deg); }
+        .mini-line { height:7px;border-radius:99px;background:rgba(148,163,184,.28); }
+        .history-scroll { scrollbar-color:#475569 #0f172a; scrollbar-width:thin; -webkit-overflow-scrolling:touch; }
+        .history-table { min-width:1180px; }
+        .history-tab[aria-selected="true"] { color:#fff; background:linear-gradient(120deg,#2563eb,#1d4ed8); box-shadow:0 8px 20px rgba(37,99,235,.25); }
+        .history-tab[data-history="siphon"][aria-selected="true"] { background:linear-gradient(120deg,#059669,#047857); box-shadow:0 8px 20px rgba(5,150,105,.24); }
+        .history-view[hidden] { display:none; }
+        .status-pill { display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:5px 9px;font-size:10px;font-weight:700; }
+        .status-wait { color:#fbbf24;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2); }
+        .status-done { color:#34d399;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2); }
+        .status-reject { color:#fb7185;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2); }
+        .pdf-section { background:radial-gradient(ellipse at 74% 45%,rgba(16,185,129,.12),transparent 42%),linear-gradient(145deg,#0b192c,#091321); }
+        .pdf-sheet { background:#fff; color:#334155; border-radius:12px; padding:20px; box-shadow:0 28px 70px rgba(0,0,0,.4); transform:perspective(1000px) rotateY(-8deg) rotateX(2deg); }
+        @media (min-width: 768px) {
+            .hero-copy { width:62%; margin-right:auto; text-align:left; }
+            .hero-stage { display:flex; align-items:flex-start; justify-content:center; padding-top:155px; }
+            .pdf-float { right:5%; bottom:140px; }
+            .float-pill { bottom:175px; }
+        }
+        @media (max-width: 767px) {
+            .hero-stage { min-height:0; padding-top:116px; padding-bottom:40px; }
+            .hero-copy { text-align:center; }
+            .laptop-hero { position:relative; left:auto; top:auto; width:100%; margin:38px auto 0; transform:perspective(900px) rotateX(3deg); opacity:.96; }
+            .device-shell { padding:5px 5px 0; border-radius:12px 12px 3px 3px; }
+            .device-screen { border-radius:7px 7px 0 0; }
+            .laptop-base { height:8px; }
+            .login-left { padding:4% 5%; }
+            .login-brand { margin-bottom:2%; }
+            .login-left p { margin-bottom:2%; }
+            .fake-input { border-radius:3px; margin-bottom:1%; }
+            .fake-captcha { padding:2px 4px; margin:1%; }
+            .pdf-float { width:150px; right:-3px; bottom:-38px; padding:8px; border-radius:10px; transform:rotate(2deg); }
+            .pdf-paper { margin-top:5px; padding:6px; }
+            .pdf-paper .pdf-small-hide { display:none; }
+            .pdf-qr { width:24px;height:24px; }
+            .float-pill { left:-2px; bottom:-27px; padding:7px 9px; gap:6px; }
+            .hero-laptop-wrap { position:relative; inset:auto; width:100%; margin-top:32px; }
+            .feature-card { min-height:0; padding:21px; border-radius:24px; }
+            .feature-visual { margin-top:17px; padding:11px; }
+            .mobile-space { padding-left:16px;padding-right:16px; }
+            .pdf-sheet { transform:none; }
+                .history-table { min-width:1120px; }
+                .history-table-siphon { min-width:1500px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; }
         }
     </style>
 </head>
-<body class="campus-bg font-sans min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10 relative overflow-x-hidden">
-
-    <!-- Ornamen Glow Latar Belakang -->
-    <div class="fixed -right-20 -bottom-20 w-80 h-80 lg:w-96 lg:h-96 border-[30px] border-amber-400/20 rounded-full blur-sm pointer-events-none"></div>
-    <div class="fixed -left-20 -top-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
-
-    <!-- Card Container Main -->
-    <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-slate-200/50 relative z-10 my-auto">
-        
-        <!-- SISI KIRI: Form Login -->
-        <div class="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between bg-white">
-            <div>
-                <!-- Branding Header -->
-                <div class="flex items-center gap-3 mb-6 sm:mb-8">
-                    <div class="bg-amber-400 text-slate-900 font-black w-10 h-10 rounded-xl flex items-center justify-center shadow-md border-2 border-amber-300 text-sm shrink-0">
-                        UB
-                    </div>
-                    <div>
-                        <h1 class="font-extrabold text-xs tracking-wider text-blue-900 uppercase leading-tight">
-                            PORTAL SDM & ADM UMUM
-                        </h1>
-                        <p class="text-[11px] text-slate-500 font-medium">Universitas Islam Bandung</p>
-                    </div>
-                </div>
-
-                <div class="mb-5 sm:mb-6">
-                    <h2 class="text-xl font-bold text-slate-800">Masuk ke Akun Anda</h2>
-                    <p class="text-xs text-slate-500 mt-1">Silakan masukkan kredensial akun sesuai peran Anda.</p>
-                </div>
-
-                <!-- Form Login -->
-                <form onsubmit="handleLogin(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Username / NIP / NPM</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-xs">
-                                <i class="fa-solid fa-user"></i>
-                            </span>
-                            <input type="text" id="username" placeholder="Masukkan Username..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Kata Sandi</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-xs">
-                                <i class="fa-solid fa-lock"></i>
-                            </span>
-                            <input type="password" id="password" placeholder="••••••••" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">Masuk Sebagai</label>
-                        <select id="role-select" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
-                            <option value="laboran">Laboran / PIC Laboratorium</option>
-                            <option value="kasie">Kasie. Laboratorium</option>
-                            <option value="pimpinan">Pimpinan Unit / Fakultas</option>
-                            <option value="admin">Admin Master (LSIK / Keuangan)</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="w-full mt-2 py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow-lg shadow-blue-900/20 transition duration-200 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
-                    </button>
-                </form>
-
-                <!-- Shortcut Demo Multi-Role -->
-                <div class="mt-6 pt-4 border-t border-slate-200/60">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center mb-2.5">Akses Pintas Demo Role</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <a href="user_dashboard.html?role=laboran" class="py-2 px-2.5 bg-slate-50 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 text-slate-700 font-bold text-[10px] rounded-xl text-center transition flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-flask text-blue-600"></i> Laboran
-                        </a>
-                        <a href="user_dashboard.html?role=kasie" class="py-2 px-2.5 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200 text-slate-700 font-bold text-[10px] rounded-xl text-center transition flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-user-gear text-indigo-600"></i> Kasie. Lab
-                        </a>
-                        <a href="admin_dashboard.html?role=pimpinan" class="py-2 px-2.5 bg-slate-50 hover:bg-amber-50 hover:text-amber-700 border border-slate-200 text-slate-700 font-bold text-[10px] rounded-xl text-center transition flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-user-tie text-amber-600"></i> Pimpinan Unit
-                        </a>
-                        <a href="admin_dashboard.html?role=admin" class="py-2 px-2.5 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 border border-slate-200 text-slate-700 font-bold text-[10px] rounded-xl text-center transition flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-shield-halved text-emerald-600"></i> Admin Master
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Kiri -->
-            <div class="mt-6 pt-3 border-t border-slate-200/60 text-center lg:text-left">
-                <p class="text-[10px] text-slate-400 font-medium">&copy; 2026 Universitas Islam Bandung. All rights reserved.</p>
-            </div>
+<body class="overflow-x-hidden bg-navy-950 font-sans text-slate-100 antialiased">
+    <nav class="glass-nav fixed inset-x-0 top-0 z-50 border-b border-white/10">
+        <div class="mx-auto flex h-16 max-w-7xl items-center justify-end px-4 sm:px-6">
+            <a href="#fitur" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-bold text-slate-900 shadow-lg shadow-blue-950/30 transition hover:-translate-y-0.5 hover:bg-blue-50">
+                Jelajahi Portal <i data-lucide="arrow-down-right" class="h-4 w-4"></i>
+            </a>
         </div>
+    </nav>
 
-        <!-- SISI KANAN: Deep Navy Solid Premium Screen -->
-        <div class="lg:col-span-6 bg-navy-solid relative hidden lg:flex flex-col justify-between p-10 text-white overflow-hidden">
-            <!-- Ornaments Sisi Kanan -->
-            <div class="absolute -right-16 -top-16 w-60 h-60 bg-blue-500/20 rounded-full blur-2xl"></div>
-            <div class="absolute right-10 bottom-10 w-48 h-48 border-[20px] border-amber-400/10 rounded-full"></div>
-
-            <!-- Badge Atas -->
-            <div class="flex justify-end relative z-10">
-                <span class="text-[10px] font-extrabold tracking-widest uppercase bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3.5 py-1.5 rounded-full shadow-sm">
-                    <i class="fa-solid fa-graduation-cap mr-1"></i> UNISBA Excellent Portal
-                </span>
-            </div>
-
-            <!-- Content Tagline -->
-            <div class="my-auto max-w-md relative z-10">
-                <div class="w-12 h-1 bg-amber-400 rounded-full mb-5 shadow-sm"></div>
-                <h2 class="text-2xl font-black uppercase tracking-wide leading-snug text-white drop-shadow">
-                    Sistem Integrasi SDM & Administrasi Umum
-                </h2>
-                <p class="text-xs text-blue-100/90 mt-3 leading-relaxed font-normal">
-                    Mewujudkan kelancaran tata kelola administrasi, verifikasi kode gaji asisten laboratorium (SIGAS), serta efisiensi pencairan honorarium (SIPHON) berlandaskan nilai-nilai 3S (Mujahid, Muthahhir, Mu'addib).
+    <main>
+        <section class="hero-stage relative isolate overflow-hidden px-4 sm:px-6">
+            <div class="hero-glow pointer-events-none absolute inset-0"></div>
+            <div class="pointer-events-none absolute -left-36 top-16 h-80 w-80 rounded-full bg-blue-500/10 blur-[100px]"></div>
+            <div class="hero-copy mx-auto max-w-7xl">
+                <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-300/15 bg-blue-300/[.07] px-3 py-1.5 text-[11px] font-semibold tracking-wide text-blue-100 sm:text-xs">
+                    <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]"></span>
+                    PORTAL LAYANAN SDM · UNIVERSITAS ISLAM BANDUNG
+                </div>
+                <h1 class="max-w-3xl text-4xl font-black leading-[1.06] tracking-tight [text-shadow:0_2px_18px_rgba(0,0,0,.45)] sm:text-6xl lg:text-7xl">
+                    Layanan Asisten<br class="hidden sm:block"> Laboratorium.
+                    <span class="text-gradient"> Lebih tertata.</span>
+                </h1>
+                <p class="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-slate-300 sm:mx-0 sm:text-lg">
+                    Satu portal untuk pengajuan Kode Gaji Asisten Laboratorium melalui <strong class="text-white">SIGAS</strong> dan pengajuan honorarium melalui <strong class="text-white">SIPHON</strong>.
                 </p>
+                <a href="#fitur" class="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 px-6 text-sm font-bold text-white shadow-xl shadow-blue-950/50 transition hover:-translate-y-0.5 hover:from-blue-500 hover:to-blue-400">
+                    Jelajahi fitur portal <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </a>
+                <p class="mt-4 text-[10px] text-slate-400 sm:text-xs">Visual halaman login dan seluruh data pada presentasi ini merupakan ilustrasi.</p>
             </div>
 
-            <!-- Footer Kanan -->
-            <div class="flex items-center justify-between text-[10px] text-blue-200/70 border-t border-blue-800/60 pt-4 relative z-10">
-                <span><i class="fa-solid fa-shield-halved text-amber-400 mr-1.5"></i> Terenkripsi & Terintegrasi</span>
-                <span class="font-mono text-[10px] bg-blue-900/60 px-2 py-0.5 rounded border border-blue-700/50">v2.4 - Academic</span>
+            <div class="hero-laptop-wrap mx-auto max-w-7xl" aria-label="Ilustrasi laptop menampilkan halaman login portal SIGAS dan SIPHON">
+                <div class="laptop-hero">
+                    <div class="device-shell">
+                        <div class="device-screen">
+                            <div class="login-preview">
+                                <div class="login-left">
+                                    <div class="login-brand"><img src="unisba.png" alt=""><span>PORTAL<br>SIGAS &amp; SIPHON</span></div>
+                                    <h3>Masuk ke Akun Anda</h3>
+                                    <p>Gunakan akun resmi Universitas Islam Bandung untuk mengakses layanan.</p>
+                                    <span class="fake-label">NIK / Username</span><div class="fake-input"></div>
+                                    <span class="fake-label">Kata Sandi</span><div class="fake-input"></div>
+                                    <div class="fake-captcha"><span>KODE KEAMANAN</span><strong>A7K3P</strong></div>
+                                    <div class="fake-submit">Masuk Sekarang</div>
+                                </div>
+                                <div class="login-right">
+                                    <span class="uni-tag">UNIVERSITAS ISLAM BANDUNG</span>
+                                    <div><div class="mb-2 h-1 w-8 rounded bg-amber-400"></div><h4>PORTAL LAYANAN SDM</h4><p>Layanan pengajuan dan verifikasi kode gaji asisten laboratorium serta administrasi honorarium.</p></div>
+                                    <span class="text-[clamp(4px,.55vw,7px)] text-blue-100/70">www.unisba.ac.id</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="laptop-base"></div>
+                </div>
+                <div class="float-pill">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/20 text-blue-300"><i data-lucide="shield-check" class="h-4 w-4"></i></span>
+                    <span><span class="block text-[9px] font-bold text-white sm:text-[10px]">Portal terintegrasi</span><span class="block text-[8px] text-slate-400 sm:text-[9px]">SIGAS · SIPHON</span></span>
+                </div>
+                <div class="pdf-float">
+                        <div class="flex items-center justify-between text-[9px] font-extrabold text-slate-700"><span>PRATINJAU PDF</span><i data-lucide="file-check-2" class="h-4 w-4 text-emerald-600"></i></div>
+                        <div class="pdf-paper">
+                            <div class="mb-2 flex items-center gap-1.5"><img src="unisba.png" alt="" class="h-5 w-5 object-contain"><span class="text-[7px] font-extrabold text-blue-900">UNIVERSITAS ISLAM BANDUNG</span></div>
+                            <div class="border-y border-slate-200 py-1.5 text-center text-[8px] font-black text-slate-800">PENGAJUAN HONORARIUM ASISTEN LAB</div>
+                            <div class="pdf-small-hide mt-2 space-y-1.5"><div class="mini-line w-4/5 !h-1.5 !bg-slate-200"></div><div class="mini-line w-3/5 !h-1.5 !bg-slate-200"></div></div>
+                            <div class="mt-2 flex items-end justify-between"><div class="text-[7px] leading-relaxed text-slate-500">Nama: Asisten Contoh<br>Total honor: Rp 280.000<br>Status: Selesai</div><div class="pdf-qr" aria-label="Ilustrasi QR verifikasi"></div></div>
+                        </div>
+                </div>
             </div>
+            <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-navy-950 to-transparent"></div>
+        </section>
+
+        <section id="fitur" class="mobile-space relative mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 sm:py-24">
+            <div class="mx-auto mb-10 max-w-2xl text-center sm:mb-14">
+                <span class="text-xs font-extrabold uppercase tracking-[.22em] text-blue-300">Dua layanan · Satu alur kerja</span>
+                <h2 class="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl">Dirancang untuk kebutuhan asisten lab</h2>
+                <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">Pilih layanan yang tepat dan ikuti status pengajuannya melalui portal.</p>
+            </div>
+            <div class="grid gap-5 md:grid-cols-2">
+                <article class="feature-card feature-blue">
+                    <div class="relative z-10 flex items-start justify-between gap-3">
+                        <div><span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-blue-300">01 · Pendaftaran asisten</span><h3 class="mt-2 text-2xl font-black text-white sm:text-3xl">SIGAS</h3><p class="mt-2 max-w-md text-xs leading-relaxed text-slate-300 sm:text-sm">Pengajuan Kode Gaji Asisten Laboratorium melalui identitas asisten dan pilihan fakultas, program studi, serta laboratorium.</p></div>
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-blue-300/20 bg-blue-400/10 text-blue-200 shadow-lg shadow-blue-950/30"><i data-lucide="id-card" class="h-6 w-6"></i></span>
+                    </div>
+                    <div class="feature-visual">
+                        <div class="mb-3 flex items-center justify-between"><span class="text-[10px] font-bold text-slate-200">FORM PENGAJUAN KODE GAJI</span><span class="rounded-full bg-blue-400/15 px-2 py-1 text-[8px] font-bold text-blue-200">SIGAS</span></div>
+                        <div class="grid grid-cols-2 gap-2"><div class="rounded-lg bg-white/[.06] p-2"><span class="mb-1 block text-[8px] text-slate-400">FAKULTAS</span><div class="mini-line w-4/5"></div></div><div class="rounded-lg bg-white/[.06] p-2"><span class="mb-1 block text-[8px] text-slate-400">PROGRAM STUDI</span><div class="mini-line w-3/4"></div></div><div class="rounded-lg bg-white/[.06] p-2"><span class="mb-1 block text-[8px] text-slate-400">LABORATORIUM</span><div class="mini-line w-2/3"></div></div><div class="rounded-lg bg-white/[.06] p-2"><span class="mb-1 block text-[8px] text-slate-400">NAMA ASISTEN</span><div class="mini-line w-4/5"></div></div></div>
+                        <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-3"><span class="text-[9px] text-slate-400">Kasie Lab → Admin Master</span><span class="rounded-full bg-amber-400/10 px-2 py-1 text-[8px] font-bold text-amber-300">Kode terbit setelah disetujui</span></div>
+                    </div>
+                </article>
+
+                <article class="feature-card feature-green">
+                    <div class="relative z-10 flex items-start justify-between gap-3">
+                        <div><span class="text-[10px] font-extrabold uppercase tracking-[.2em] text-emerald-300">02 · Pengajuan honorarium</span><h3 class="mt-2 text-2xl font-black text-white sm:text-3xl">SIPHON</h3><p class="mt-2 max-w-md text-xs leading-relaxed text-slate-300 sm:text-sm">Gunakan Kode Gaji yang sudah terbit. Data asisten mengikuti kode, sementara total honor dihitung dari tarif, jam, dan pertemuan.</p></div>
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-emerald-300/20 bg-emerald-400/10 text-emerald-200 shadow-lg shadow-emerald-950/30"><i data-lucide="wallet-cards" class="h-6 w-6"></i></span>
+                    </div>
+                    <div class="feature-visual">
+                        <div class="mb-3 flex items-center justify-between"><span class="text-[10px] font-bold text-slate-200">FORM PENGAJUAN HONORARIUM</span><span class="rounded-full bg-emerald-400/15 px-2 py-1 text-[8px] font-bold text-emerald-200">SIPHON</span></div>
+                        <div class="grid grid-cols-2 gap-2"><div class="rounded-lg bg-white/[.06] p-2"><span class="mb-1 block text-[8px] text-slate-400">KODE GAJI</span><div class="mini-line w-3/4"></div></div><div class="rounded-lg bg-white/[.06] p-2"><span class="mb-1 block text-[8px] text-slate-400">PERIODE</span><div class="mini-line w-4/5"></div></div></div>
+                        <div class="mt-2 flex items-center justify-between rounded-lg border border-emerald-300/15 bg-emerald-300/[.06] p-2.5"><span class="text-[9px] text-emerald-100">Tarif × Jam × Pertemuan</span><strong class="text-xs text-white">Total dihitung sistem</strong></div>
+                        <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-3"><span class="text-[9px] text-slate-400">Kasie Lab → Pimpinan → Admin</span><span class="rounded-full bg-emerald-400/10 px-2 py-1 text-[8px] font-bold text-emerald-300">PDF setelah Selesai</span></div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="mt-5 grid gap-4 sm:grid-cols-3">
+                <div class="glass-card flex gap-3 rounded-2xl p-4"><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-400/10 text-blue-300"><i data-lucide="list-checks" class="h-5 w-5"></i></span><div><h3 class="text-sm font-bold text-white">Status dapat ditelusuri</h3><p class="mt-1 text-xs leading-relaxed text-slate-400">Riwayat dan hasil verifikasi tercatat sesuai akses akun.</p></div></div>
+                <div class="glass-card flex gap-3 rounded-2xl p-4"><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-300"><i data-lucide="calculator" class="h-5 w-5"></i></span><div><h3 class="text-sm font-bold text-white">Perhitungan honor</h3><p class="mt-1 text-xs leading-relaxed text-slate-400">Rumus konsisten: tarif per jam × jam × pertemuan.</p></div></div>
+                <div class="glass-card flex gap-3 rounded-2xl p-4"><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-400/10 text-violet-300"><i data-lucide="file-check-2" class="h-5 w-5"></i></span><div><h3 class="text-sm font-bold text-white">PDF pengajuan SIPHON</h3><p class="mt-1 text-xs leading-relaxed text-slate-400">Dokumen tersedia setelah proses persetujuan berstatus selesai.</p></div></div>
+            </div>
+        </section>
+
+        <section class="pdf-section mobile-space overflow-hidden px-4 py-16 sm:px-6 sm:py-20">
+            <div class="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[1.1fr_.9fr]">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-[.2em] text-emerald-300">Dokumen hasil pengajuan</span>
+                    <h2 class="mt-3 text-3xl font-black leading-tight text-white sm:text-4xl">Hasil proses tersaji dalam PDF</h2>
+                    <p class="mt-4 max-w-lg text-sm leading-relaxed text-slate-300">Pratinjau ilustratif dokumen SIPHON. PDF pada portal aktif setelah pengajuan berstatus Selesai dan memuat data pengajuan serta penanda verifikasi.</p>
+                    <div class="mt-6 flex flex-wrap gap-2"><span class="rounded-full border border-emerald-300/20 bg-emerald-300/[.08] px-3 py-1.5 text-[10px] font-semibold text-emerald-100">Format siap ditinjau</span><span class="rounded-full border border-white/10 bg-white/[.04] px-3 py-1.5 text-[10px] font-semibold text-slate-300">QR verifikasi portal</span></div>
+                    <p class="mt-4 text-[10px] leading-relaxed text-slate-500">Sistem mendukung administrasi pengajuan, bukan melakukan transfer atau pencairan dana. QR merupakan kode verifikasi portal, bukan tanda tangan elektronik tersertifikasi.</p>
+                </div>
+                <div class="mx-auto w-full max-w-md">
+                    <div class="pdf-sheet">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                            <div class="flex items-center gap-2"><img src="unisba.png" alt="Logo UNISBA" class="h-9 w-9 object-contain"><div><div class="text-[9px] font-black text-blue-950">UNIVERSITAS ISLAM BANDUNG</div><div class="text-[7px] text-slate-500">PORTAL LAYANAN SDM</div></div></div>
+                            <span class="rounded-full bg-emerald-50 px-2 py-1 text-[8px] font-bold text-emerald-700">ILUSTRASI PDF</span>
+                        </div>
+                        <h3 class="py-4 text-center text-xs font-black leading-relaxed text-slate-800">REKAP PENGAJUAN HONORARIUM<br>ASISTEN LABORATORIUM</h3>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2 border-y border-slate-100 py-3 text-[8px]">
+                            <div><span class="text-slate-400">NAMA ASISTEN</span><strong class="mt-0.5 block text-slate-700">Asisten Contoh 01</strong></div>
+                            <div><span class="text-slate-400">KODE GAJI</span><strong class="mt-0.5 block text-slate-700">Kode terbit · contoh</strong></div>
+                            <div><span class="text-slate-400">FAKULTAS / PRODI</span><strong class="mt-0.5 block text-slate-700">Fakultas Contoh</strong></div>
+                            <div><span class="text-slate-400">LABORATORIUM</span><strong class="mt-0.5 block text-slate-700">Lab Contoh</strong></div>
+                            <div><span class="text-slate-400">PERIODE</span><strong class="mt-0.5 block text-slate-700">Oktober 2026</strong></div>
+                            <div><span class="text-slate-400">STATUS</span><strong class="mt-0.5 block text-emerald-700">Selesai</strong></div>
+                        </div>
+                        <div class="mt-3 rounded-lg bg-slate-50 p-3">
+                            <div class="flex justify-between text-[8px] text-slate-500"><span>Tarif × Jam × Pertemuan</span><span>Rp 35.000 × 2 × 4</span></div>
+                            <div class="mt-2 flex justify-between border-t border-slate-200 pt-2 text-[10px] font-black text-slate-800"><span>TOTAL HONORARIUM</span><span>Rp 280.000</span></div>
+                        </div>
+                        <div class="mt-4 flex items-end justify-between">
+                            <div class="text-center text-[7px] text-slate-500"><p>Dokumen dihasilkan oleh portal</p><div class="mx-auto mt-6 w-24 border-t border-slate-300 pt-1">Penanda verifikasi</div></div>
+                            <div class="text-center"><div class="pdf-qr mx-auto !h-11 !w-11"></div><span class="mt-1 block text-[6px] text-slate-400">QR ILUSTRASI</span></div>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-center text-[10px] text-slate-500">Contoh tampilan dokumen · bukan data pengajuan nyata</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="riwayat" class="mobile-space mx-auto max-w-7xl scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
+            <div class="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                <div class="max-w-2xl">
+                    <span class="text-xs font-extrabold uppercase tracking-[.2em] text-blue-300">Ilustrasi data · bukan data nyata</span>
+                    <h2 class="mt-3 text-3xl font-black text-white sm:text-4xl">Riwayat Pengajuan</h2>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-400">Pilih SIGAS atau SIPHON untuk melihat contoh riwayat dengan kolom yang mengikuti tabel masing-masing di portal.</p>
+                </div>
+            </div>
+            <div class="mb-5 inline-flex w-full rounded-2xl border border-white/10 bg-white/[.04] p-1 sm:w-auto" role="tablist" aria-label="Pilih riwayat pengajuan">
+                <button id="historyTabSigas" type="button" class="history-tab min-h-11 flex-1 rounded-xl px-5 text-xs font-bold text-slate-300 transition sm:min-w-36 sm:flex-none" role="tab" aria-selected="true" aria-controls="historyPanelSigas" tabindex="0" data-history="sigas">
+                    <i data-lucide="id-card" class="mr-1.5 inline h-4 w-4 align-[-3px]"></i> Riwayat SIGAS
+                </button>
+                <button id="historyTabSiphon" type="button" class="history-tab min-h-11 flex-1 rounded-xl px-5 text-xs font-bold text-slate-300 transition sm:min-w-36 sm:flex-none" role="tab" aria-selected="false" aria-controls="historyPanelSiphon" tabindex="-1" data-history="siphon">
+                    <i data-lucide="wallet-cards" class="mr-1.5 inline h-4 w-4 align-[-3px]"></i> Riwayat SIPHON
+                </button>
+            </div>
+            <div id="historyPanelSigas" class="history-view" role="tabpanel" aria-labelledby="historyTabSigas">
+                <div class="mb-3 flex items-center gap-2 text-[10px] text-slate-400 sm:text-xs"><i data-lucide="move-horizontal" class="h-4 w-4 text-blue-300"></i><span>Geser tabel ke samping untuk melihat semua kolom</span></div>
+                <div class="history-scroll overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-2xl">
+                    <table class="history-table w-full border-collapse text-left text-[11px] text-slate-700">
+                        <thead class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                            <tr>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Tanggal Pengajuan</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Nama Aslab</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">NIK</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Fakultas</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Program Studi</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Laboratorium</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">ACC Kasie Lab</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Status Pengajuan</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4 text-center">Kode Gaji Terbit</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium">
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="whitespace-nowrap px-5 py-4">08 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-slate-900">Dina Contoh</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono text-slate-500">••••••••••••0001</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Laboratorium Film</td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                                <td class="whitespace-nowrap px-5 py-4 text-center font-mono font-bold text-slate-400">-</td>
+                            </tr>
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="whitespace-nowrap px-5 py-4">08 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-slate-900">Raka Presentasi</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono text-slate-500">••••••••••••0002</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Laboratorium Film</td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Disetujui</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                                <td class="whitespace-nowrap px-5 py-4 text-center font-mono font-bold text-slate-400">-</td>
+                            </tr>
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="whitespace-nowrap px-5 py-4">08 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-slate-900">Nadia Sampel</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono text-slate-500">••••••••••••0003</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Laboratorium Film</td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Disetujui</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Disetujui</span></td>
+                                <td class="whitespace-nowrap px-5 py-4 text-center font-mono font-bold text-blue-700">G-DEMO-001</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-3 text-[10px] text-slate-500">Data menggunakan akun demo lokal untuk ilustrasi, bukan data pengajuan produksi. Kode G-DEMO-001 hanya kode fiktif akun demo.</p>
+            </div>
+            <div id="historyPanelSiphon" class="history-view" role="tabpanel" aria-labelledby="historyTabSiphon" hidden>
+                <div class="mb-3 flex items-center gap-2 text-[10px] text-slate-400 sm:text-xs"><i data-lucide="move-horizontal" class="h-4 w-4 text-emerald-300"></i><span>Geser tabel ke samping untuk melihat semua kolom</span></div>
+                <div class="history-scroll overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-2xl">
+                    <table class="history-table history-table-siphon w-full border-collapse text-left text-[11px] text-slate-700">
+                        <thead class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                            <tr>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Tanggal</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Kode Gaji</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Tanggal Pengajuan</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Nama Aslab</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">NIK</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Fakultas</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Program Studi</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Laboratorium</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Total Honorarium</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">ACC Kasie Lab</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Pimpinan</th>
+                                <th class="whitespace-nowrap border-b border-slate-200 px-5 py-4">Status Pengajuan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium">
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="whitespace-nowrap px-5 py-4">08 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono font-bold text-emerald-700">G-DEMO-001</td>
+                                <td class="whitespace-nowrap px-5 py-4">01 Okt 2026 – 31 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-slate-900">Nadia Sampel</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono text-slate-500">••••••••••••0003</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Laboratorium Film</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-emerald-700">Rp 148.005</td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                            </tr>
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="whitespace-nowrap px-5 py-4">08 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono font-bold text-emerald-700">G-DEMO-001</td>
+                                <td class="whitespace-nowrap px-5 py-4">01 Okt 2026 – 31 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-slate-900">Nadia Sampel</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono text-slate-500">••••••••••••0003</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Laboratorium Film</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-emerald-700">Rp 131.560</td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Disetujui</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                            </tr>
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="whitespace-nowrap px-5 py-4">08 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono font-bold text-emerald-700">G-DEMO-001</td>
+                                <td class="whitespace-nowrap px-5 py-4">01 Okt 2026 – 31 Okt 2026</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-slate-900">Nadia Sampel</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-mono text-slate-500">••••••••••••0003</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Ilmu Komunikasi</td>
+                                <td class="whitespace-nowrap px-5 py-4">Laboratorium Film</td>
+                                <td class="whitespace-nowrap px-5 py-4 font-bold text-emerald-700">Rp 120.000</td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Disetujui</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Disetujui</span></td>
+                                <td class="whitespace-nowrap px-5 py-4"><span class="rounded-lg bg-amber-50 px-2 py-1 font-bold text-amber-700">Menunggu</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-3 text-[10px] text-slate-500">Tiga pengajuan SIPHON demo untuk asisten dan kode gaji yang sama, menampilkan tahapan persetujuan yang berbeda. Seluruh nominal dan data bersifat ilustrasi.</p>
+            </div>
+        </section>
+
+        <section class="mobile-space border-y border-white/[.06] bg-white/[.02] px-4 py-16 sm:px-6 sm:py-20">
+            <div class="mx-auto max-w-6xl">
+                <div class="mb-8 max-w-2xl"><span class="text-xs font-extrabold uppercase tracking-[.2em] text-blue-300">Alur proses</span><h2 class="mt-3 text-3xl font-black text-white sm:text-4xl">Dari pengajuan ke hasil</h2><p class="mt-3 text-sm text-slate-400">Tahapan persetujuan menyesuaikan peran pengaju dan jenis layanan.</p></div>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <article class="glass-card rounded-2xl p-5"><span class="text-2xl font-black text-blue-300">01</span><h3 class="mt-3 text-sm font-bold text-white">Ajukan SIGAS</h3><p class="mt-2 text-xs leading-relaxed text-slate-400">Lengkapi data asisten, fakultas, program studi, dan laboratorium.</p></article>
+                    <article class="glass-card rounded-2xl p-5"><span class="text-2xl font-black text-blue-300">02</span><h3 class="mt-3 text-sm font-bold text-white">Verifikasi &amp; kode</h3><p class="mt-2 text-xs leading-relaxed text-slate-400">Kasie meninjau pengajuan Laboran. Admin Master menerbitkan Kode Gaji setelah persetujuan.</p></article>
+                    <article class="glass-card rounded-2xl p-5"><span class="text-2xl font-black text-emerald-300">03</span><h3 class="mt-3 text-sm font-bold text-white">Ajukan SIPHON</h3><p class="mt-2 text-xs leading-relaxed text-slate-400">Pilih kode yang terbit, isi periode kegiatan, tarif, jam, dan jumlah pertemuan.</p></article>
+                    <article class="glass-card rounded-2xl p-5"><span class="text-2xl font-black text-emerald-300">04</span><h3 class="mt-3 text-sm font-bold text-white">Persetujuan &amp; PDF</h3><p class="mt-2 text-xs leading-relaxed text-slate-400">Pengajuan Laboran melalui Kasie Lab, Pimpinan Unit, lalu Admin Master. PDF tersedia setelah Selesai.</p></article>
+                </div>
+                <p class="mt-5 text-[10px] leading-relaxed text-slate-500">Pengajuan SIGAS oleh Kasie Lab melewati tahap Kasie. Pengajuan SIPHON oleh Kasie Lab langsung menuju Pimpinan Unit, kemudian Admin Master.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="px-4 py-8 text-center sm:px-6">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row sm:text-left">
+            <div class="flex items-center gap-2"><img src="unisba.png" alt="Logo Universitas Islam Bandung" class="h-8 w-8 rounded bg-white p-0.5 object-contain"><span class="text-xs font-bold text-slate-300">Portal Layanan SIGAS &amp; SIPHON · UNISBA</span></div>
+            <p class="text-[10px] text-slate-500">Seluruh data contoh pada halaman ini bersifat fiktif.</p>
+            <a href="#fitur" class="inline-flex min-h-10 items-center gap-1 text-xs font-bold text-blue-300 hover:text-white">Kembali ke atas <i data-lucide="arrow-up" class="h-3.5 w-3.5"></i></a>
         </div>
-
-    </div>
+    </footer>
 
     <script>
-        function handleLogin(e) {
-            e.preventDefault();
-            const role = document.getElementById('role-select').value;
-            if (role === 'admin' || role === 'pimpinan') {
-                window.location.href = 'admin_dashboard.html?role=' + role;
-            } else {
-                window.location.href = 'user_dashboard.html?role=' + role;
-            }
+        lucide.createIcons();
+        const historyTabs = Array.from(document.querySelectorAll('.history-tab'));
+
+        function selectHistory(tab) {
+            const showSiphon = tab.dataset.history === 'siphon';
+            historyTabs.forEach((item) => {
+                const selected = item === tab;
+                item.setAttribute('aria-selected', String(selected));
+                item.tabIndex = selected ? 0 : -1;
+            });
+            document.getElementById('historyPanelSigas').hidden = showSiphon;
+            document.getElementById('historyPanelSiphon').hidden = !showSiphon;
         }
+
+        historyTabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => selectHistory(tab));
+            tab.addEventListener('keydown', (event) => {
+                if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                event.preventDefault();
+                const nextIndex = (index + (event.key === 'ArrowRight' ? 1 : historyTabs.length - 1)) % historyTabs.length;
+                historyTabs[nextIndex].focus();
+                selectHistory(historyTabs[nextIndex]);
+            });
+        });
     </script>
 </body>
 </html>
